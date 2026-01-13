@@ -37,4 +37,4 @@ response = requests.get(car["url"])
 img = Image.open(BytesIO(response.content))
 greyscale = img.convert("L")
 width, height = greyscale.size
-greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6))).show()
+clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
