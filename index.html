@@ -24,16 +24,24 @@
             <div id="suggestions" class="suggestions"></div>
         </div>
         
+        <div id="hint-message" class="hint-message" style="display: none;">
+            <p>💡 Hint available! Click on any 💡 in the next row to reveal the correct value for that column.</p>
+        </div>
+        
+        <style>
+            #hint-message { display: none !important; }
+        </style>
+        
         <div class="game-grid">
             <div class="grid-header">
                 <div class="grid-cell header guess-num">#</div>
                 <div class="grid-cell header car-name">Car Make</div>
-                <div class="grid-cell header">Year</div>
-                <div class="grid-cell header">Engine Size (L)</div>
-                <div class="grid-cell header">Horsepower</div>
-                <div class="grid-cell header">Torque (lb-ft)</div>
-                <div class="grid-cell header">Price (USD)</div>
-                <div class="grid-cell header">Country</div>
+                <div class="grid-cell header" data-col="year">Year</div>
+                <div class="grid-cell header" data-col="engine">Engine Size (L)</div>
+                <div class="grid-cell header" data-col="hp">Horsepower</div>
+                <div class="grid-cell header" data-col="torque">Torque (lb-ft)</div>
+                <div class="grid-cell header" data-col="price">Price (USD)</div>
+                <div class="grid-cell header" data-col="country">Country</div>
             </div>
             <div class="grid-rows" id="grid-rows">
                 <div class="grid-row">

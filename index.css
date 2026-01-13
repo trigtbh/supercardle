@@ -51,6 +51,23 @@ body {
     text-decoration: underline;
 }
 
+.hint-message {
+    background-color: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.hint-message p {
+    margin: 0;
+    color: #856404;
+    font-weight: 600;
+}
+
 .clue-image {
     display: flex;
     justify-content: center;
@@ -206,6 +223,22 @@ body {
     font-weight: 400;
     opacity: 0.9;
 }
+
+.grid-cell.hint-text {
+    color: #333;
+    font-style: italic;
+    opacity: 1;
+    font-weight: 600;
+    background-color: #fff9e6;
+}
+
+.grid-cell.hint-available {
+    cursor: pointer;
+    font-size: 22px;
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+
 
 .grid-cell.fade-in {
     animation: fadeIn 0.3s ease-in;

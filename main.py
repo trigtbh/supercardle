@@ -13,6 +13,38 @@ df = pd.read_csv(base("cars.csv"))
 df = df.drop_duplicates(subset=['Car Make', 'Car Model'], keep='first')
 documents = df.to_dict("records")
 
+# Filter out electric cars and cars with zeros in any column
+def is_valid_car(car):
+    # Check if engine size is numeric (not electric)
+    engine_size = car.get("Engine Size (L)")
+    if engine_size is None:
+        return False
+    
+    # Check if engine size is numeric
+    try:
+        engine_val = float(engine_size)
+        if engine_val == 0:
+            return False
+    except (ValueError, TypeError):
+        # Non-numeric engine size (e.g., "Electric")
+        return False
+    
+    # Check for zeros in other numeric columns
+    numeric_columns = ["Year", "Horsepower", "Torque (lb-ft)"]
+    for col in numeric_columns:
+        val = car.get(col)
+        if val is not None:
+            try:
+                if float(val) == 0:
+                    return False
+            except (ValueError, TypeError):
+                pass
+    
+    return True
+
+# Filter documents to only include valid cars for selection
+selectable_documents = [car for car in documents if is_valid_car(car)]
+
 import random
 from PIL import Image
 import requests
@@ -68,7 +100,7 @@ def chooseCar() -> dict:
     car = None
 
     while r is None or car is None:
-        car = random.choice(documents)
+        car = random.choice(selectable_documents)
         name = car["Car Make"] + " " + car["Car Model"]
         from ddgs import DDGS
         with DDGS() as ddgs:
@@ -131,7 +163,7 @@ async def get_script():
 
 @app.get("/cars")
 async def get_cars():
-    cars = [f"{doc['Car Make']} {doc['Car Model']}" for doc in documents]
+    cars = [f"{doc['Car Make']} {doc['Car Model']}" for doc in selectable_documents]
     return cars
 
 @app.get("/day-info")
@@ -148,6 +180,8 @@ async def get_car_details(car_name: str):
         full_name = f"{doc['Car Make']} {doc['Car Model']}"
         if full_name.lower() == car_name.lower():
             return {
+                "make": doc["Car Make"],
+                "model": doc["Car Model"],
                 "year": safe_value(doc["Year"]),
                 "engine_size": safe_value(doc["Engine Size (L)"]),
                 "horsepower": safe_value(doc["Horsepower"]),

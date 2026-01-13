@@ -3,6 +3,9 @@ let currentRow = 0;
 const maxGuesses = 7;
 let correctCar = null;
 let countdownInterval = null;
+let correctColumns = new Set(); // Track which columns are fully correct
+let hintsAvailable = 0;
+let hintsUsed = 0;
 
 // Fetch the car list from the server
 fetch('/cars')
@@ -81,8 +84,26 @@ async function displayCarStats(carName, rowIndex) {
         return parseFloat(val);
     };
     
-    // First, fade out all cells in the row
+    // First, collect ALL hint text from ALL previous rows including current
+    const revealedHints = [];
+    for (let i = 0; i <= rowIndex; i++) {
+        const r = gridRows[i];
+        const c = r.querySelectorAll('.grid-cell');
+        c.forEach((cell, index) => {
+            if (cell.classList.contains('hint-text') && index >= 2) {
+                // Check if we already have this index
+                if (!revealedHints.some(h => h.index === index)) {
+                    revealedHints.push({ index: index, value: cell.textContent });
+                }
+            }
+        });
+    }
+    
+    // Then fade out all cells in the row and remove hint text/emojis
     cells.forEach(cell => {
+        cell.classList.remove('hint-text', 'hint-available');
+        cell.style.cursor = 'default';
+        delete cell.dataset.hintCol;
         cell.classList.add('fade-out');
     });
     
@@ -98,9 +119,8 @@ async function displayCarStats(carName, rowIndex) {
     await new Promise(resolve => setTimeout(resolve, 400));
     
     // Then set and fade in car name
-    const nameParts = carName.split(' ');
-    const make = nameParts[0];
-    const model = nameParts.slice(1).join(' ');
+    const make = carData.make;
+    const model = carData.model;
     cells[1].innerHTML = `${make}<br><span class="model-text">(${model})</span>`;
     cells[1].classList.remove('fade-out');
     cells[1].classList.add('fade-in');
@@ -141,6 +161,7 @@ async function displayCarStats(carName, rowIndex) {
     // Apply colors to all stat cells
     stats.forEach((stat, index) => {
         const cell = cells[index + 2];
+        let isCorrect = false;
         
         if (stat.type === 'engine') {
             const guessIsElectric = stat.value.toString().toLowerCase() === 'electric';
@@ -154,6 +175,7 @@ async function displayCarStats(carName, rowIndex) {
             } else if (guessIsElectric && correctIsElectric) {
                 // Both are electric: correct match
                 cell.classList.add('correct');
+                isCorrect = true;
             } else {
                 // Both are gas (numeric), compare values
                 const guessVal = parseNum(stat.value);
@@ -161,6 +183,7 @@ async function displayCarStats(carName, rowIndex) {
                 
                 if (guessVal === correctVal) {
                     cell.classList.add('correct');
+                    isCorrect = true;
                 } else if (guessVal < correctVal) {
                     cell.classList.add('too-low');
                     cell.innerHTML = `${stat.value}<span class="arrow">↑</span>`;
@@ -175,6 +198,7 @@ async function displayCarStats(carName, rowIndex) {
             
             if (guessVal === correctVal) {
                 cell.classList.add('correct');
+                isCorrect = true;
             } else if (guessVal < correctVal) {
                 cell.classList.add('too-low');
                 cell.innerHTML = `${stat.value}<span class="arrow">↑</span>`;
@@ -186,11 +210,60 @@ async function displayCarStats(carName, rowIndex) {
             // Country comparison (string)
             if (stat.value.toLowerCase() === stat.correct.toLowerCase()) {
                 cell.classList.add('correct');
+                isCorrect = true;
             } else {
                 cell.classList.add('incorrect');
             }
         }
+        
+        // Track correct columns
+        if (isCorrect) {
+            const colNames = ['year', 'engine', 'hp', 'torque', 'price', 'country'];
+            correctColumns.add(colNames[index]);
+        }
     });
+    
+    // Apply hint text to all subsequent rows
+    for (let i = rowIndex + 1; i < maxGuesses; i++) {
+        const row = gridRows[i];
+        const cells = row.querySelectorAll('.grid-cell');
+        revealedHints.forEach(hint => {
+            const cell = cells[hint.index];
+            if (!cell.textContent || cell.classList.contains('hint-available')) {
+                cell.textContent = hint.value;
+                cell.classList.remove('hint-available');
+                cell.classList.add('hint-text');
+                cell.style.cursor = 'default';
+            }
+        });
+    }
+    
+    // If there are hints available and we're not at the last guess, add hint emojis to next row
+    if (hintsAvailable > hintsUsed && rowIndex + 1 < maxGuesses) {
+        const nextRow = gridRows[rowIndex + 1];
+        const nextCells = nextRow.querySelectorAll('.grid-cell');
+        
+        const colMap = [
+            { index: 2, col: 'year' },
+            { index: 3, col: 'engine' },
+            { index: 4, col: 'hp' },
+            { index: 5, col: 'torque' },
+            { index: 6, col: 'price' },
+            { index: 7, col: 'country' }
+        ];
+        
+        colMap.forEach(({ index, col }) => {
+            if (!correctColumns.has(col)) {
+                const cell = nextCells[index];
+                if (!cell.classList.contains('hint-text')) {
+                    cell.textContent = '💡';
+                    cell.classList.add('hint-available');
+                    cell.dataset.hintCol = col;
+                    cell.style.cursor = 'pointer';
+                }
+            }
+        });
+    }
 }
 
 input.addEventListener('input', function() {
@@ -251,6 +324,15 @@ enterBtn.addEventListener('click', async function() {
         input.value = '';
         suggestionsDiv.classList.remove('active');
         
+        // Check for hints after guess 2 and 5
+        if (currentRow === 2 && correctColumns.size === 0) {
+            hintsAvailable++;
+            showHintMessage();
+        } else if (currentRow === 5 && correctColumns.size < 2) {
+            hintsAvailable++;
+            showHintMessage();
+        }
+        
         if (isCorrect) {
             // Won the game - keep disabled
             setTimeout(() => showGameOverModal(true), 1000);
@@ -269,6 +351,101 @@ enterBtn.addEventListener('click', async function() {
 input.addEventListener('keypress', function(e) {
     if (e.key === 'Enter' && !enterBtn.disabled) {
         enterBtn.click();
+    }
+});
+
+function showHintMessage() {
+    // Add emojis to the next row cells for columns that can be revealed
+    if (currentRow < maxGuesses) {
+        const nextRow = gridRows[currentRow];
+        const cells = nextRow.querySelectorAll('.grid-cell');
+        
+        // Column indices for data columns (skip # and Car Make)
+        const colMap = [
+            { index: 2, col: 'year' },
+            { index: 3, col: 'engine' },
+            { index: 4, col: 'hp' },
+            { index: 5, col: 'torque' },
+            { index: 6, col: 'price' },
+            { index: 7, col: 'country' }
+        ];
+        
+        colMap.forEach(({ index, col }) => {
+            if (!correctColumns.has(col)) {
+                const cell = cells[index];
+                if (!cell.classList.contains('hint-revealed')) {
+                    cell.textContent = '💡';
+                    cell.classList.add('hint-available');
+                    cell.dataset.hintCol = col;
+                    cell.style.cursor = 'pointer';
+                }
+            }
+        });
+    }
+}
+
+function revealColumn(columnName) {
+    if (hintsUsed >= hintsAvailable) return;
+    
+    hintsUsed++;
+    correctColumns.add(columnName);
+    
+    const colMap = {
+        'year': correctCar.year,
+        'engine': correctCar.engine_size,
+        'hp': correctCar.horsepower,
+        'torque': correctCar.torque,
+        'price': correctCar.price,
+        'country': correctCar.country
+    };
+    
+    const value = colMap[columnName];
+    
+    // Add faint text to this column for current row and ALL subsequent rows
+    const colIndexMap = {
+        'year': 2,
+        'engine': 3,
+        'hp': 4,
+        'torque': 5,
+        'price': 6,
+        'country': 7
+    };
+    const colIndex = colIndexMap[columnName];
+    
+    // Apply hint text to current row and all subsequent rows
+    for (let i = currentRow; i < maxGuesses; i++) {
+        const row = gridRows[i];
+        const cell = row.querySelectorAll('.grid-cell')[colIndex];
+        cell.textContent = value;
+        cell.classList.remove('hint-available');
+        cell.classList.add('hint-text');
+        cell.style.cursor = 'default';
+        delete cell.dataset.hintCol;
+    }
+    
+    // Hide hint message if all hints used
+    if (hintsUsed >= hintsAvailable) {
+        // Remove remaining emoji indicators from cells
+        if (currentRow < maxGuesses) {
+            const nextRow = gridRows[currentRow];
+            const cells = nextRow.querySelectorAll('.grid-cell.hint-available');
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('hint-available');
+                cell.style.cursor = 'default';
+                delete cell.dataset.hintCol;
+            });
+        }
+    }
+}
+
+// Add click handlers to cells with hints
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('hint-available')) {
+        const col = e.target.dataset.hintCol;
+        if (col) {
+            revealColumn(col);
+        }
     }
 });
 
