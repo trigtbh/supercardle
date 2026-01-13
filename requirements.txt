@@ -1,2 +1,4 @@
 pandas
-duckduckgo_search
+ddgs
+pillow
+requests
