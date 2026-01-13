@@ -5,6 +5,8 @@ basepath = os.path.dirname(os.path.realpath(__file__))
 base = lambda p: os.path.join(basepath, p)
 
 df = pd.read_csv(base("cars.csv"))
+# Remove duplicates based on Car Make and Car Model
+df = df.drop_duplicates(subset=['Car Make', 'Car Model'], keep='first')
 documents = df.to_dict("records")
 
 import random
@@ -17,7 +19,7 @@ def chooseCar() -> dict:
     r = None
     car = None
 
-    while r is None and car is None:
+    while r is None or car is None:
         car = random.choice(documents)
         name = car["Car Make"] + " " + car["Car Model"]
         from ddgs import DDGS
@@ -25,11 +27,14 @@ def chooseCar() -> dict:
             results = ddgs.images(name, max_results=1)
             for result in results:
                 r = result["image"]
+                try:
+                    Image.open(BytesIO(requests.get(r).content))
+                except:
+                    r = None
         if r:
             car["url"] = r
             break
 
-    assert car is not None  # linter screams if you comment out this line >:(
     return car
 
 car = chooseCar()
@@ -62,6 +67,35 @@ async def get_script():
 async def get_cars():
     cars = [f"{doc['Car Make']} {doc['Car Model']}" for doc in documents]
     return cars
+
+@app.get("/car/{car_name}")
+async def get_car_details(car_name: str):
+    # Find the car in documents
+    for doc in documents:
+        full_name = f"{doc['Car Make']} {doc['Car Model']}"
+        if full_name.lower() == car_name.lower():
+            return {
+                "year": doc["Year"],
+                "engine_size": doc["Engine Size (L)"],
+                "horsepower": doc["Horsepower"],
+                "torque": doc["Torque (lb-ft)"],
+                "price": doc["Price (in USD)"],
+                "country": doc["Country"]
+            }
+    return None
+
+@app.get("/correct-car")
+async def get_correct_car():
+    return {
+        "name": f"{car['Car Make']} {car['Car Model']}",
+        "make": car["Car Make"],
+        "year": car["Year"],
+        "engine_size": car["Engine Size (L)"],
+        "horsepower": car["Horsepower"],
+        "torque": car["Torque (lb-ft)"],
+        "price": car["Price (in USD)"],
+        "country": car["Country"]
+    }
 
 @app.get("/clue.png")
 async def get_clue():
