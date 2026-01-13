@@ -6,6 +6,38 @@ let countdownInterval = null;
 let correctColumns = new Set(); // Track which columns are fully correct
 let hintsAvailable = 0;
 let hintsUsed = 0;
+let gameState = {
+    dayNumber: null,
+    guesses: [],
+    currentRow: 0,
+    hintsUsed: 0,
+    hintsAvailable: 0,
+    correctColumns: [],
+    gameOver: false,
+    won: false
+};
+
+// Load game state from localStorage
+function loadGameState(dayNumber) {
+    const saved = localStorage.getItem('supercardle_state');
+    if (saved) {
+        const state = JSON.parse(saved);
+        if (state.dayNumber === dayNumber) {
+            return state;
+        }
+    }
+    return null;
+}
+
+// Save game state to localStorage
+function saveGameState() {
+    gameState.dayNumber = parseInt(document.getElementById('day-number').textContent.replace('Day #', ''));
+    gameState.currentRow = currentRow;
+    gameState.hintsUsed = hintsUsed;
+    gameState.hintsAvailable = hintsAvailable;
+    gameState.correctColumns = Array.from(correctColumns);
+    localStorage.setItem('supercardle_state', JSON.stringify(gameState));
+}
 
 // Fetch the car list from the server
 fetch('/cars')
@@ -27,7 +59,43 @@ fetch('/day-info')
     .then(data => {
         document.getElementById('day-number').textContent = `Day #${data.day_number}`;
         startCountdown(data.seconds_until_next);
+        
+        // Load saved game state if it exists
+        const saved = loadGameState(data.day_number);
+        if (saved && correctCar) {
+            restoreGameState(saved);
+        }
     });
+
+// Restore game state from saved data
+async function restoreGameState(saved) {
+    currentRow = saved.currentRow;
+    hintsUsed = saved.hintsUsed;
+    hintsAvailable = saved.hintsAvailable;
+    correctColumns = new Set(saved.correctColumns);
+    gameState = saved;
+    
+    // Replay all previous guesses WITHOUT animations
+    for (let i = 0; i < saved.guesses.length; i++) {
+        await displayCarStats(saved.guesses[i], i, true);
+    }
+    
+    // Show hints if available
+    if (hintsAvailable > hintsUsed) {
+        showHintMessage();
+    }
+    
+    // If game was over, disable input and show modal
+    if (saved.gameOver) {
+        input.disabled = true;
+        enterBtn.disabled = true;
+        if (saved.won) {
+            showGameOverModal(true);
+        } else {
+            showGameOverModal(false);
+        }
+    }
+}
 
 function formatTime(seconds) {
     const hours = Math.floor(seconds / 3600);
@@ -66,7 +134,7 @@ function isValidCar(value) {
     return carList.some(car => car.toLowerCase() === value.toLowerCase());
 }
 
-async function displayCarStats(carName, rowIndex) {
+async function displayCarStats(carName, rowIndex, skipAnimations = false) {
     // Fetch car details
     const response = await fetch(`/car/${encodeURIComponent(carName)}`);
     const carData = await response.json();
@@ -99,34 +167,42 @@ async function displayCarStats(carName, rowIndex) {
         });
     }
     
-    // Then fade out all cells in the row and remove hint text/emojis
-    cells.forEach(cell => {
-        cell.classList.remove('hint-text', 'hint-available');
-        cell.style.cursor = 'default';
-        delete cell.dataset.hintCol;
-        cell.classList.add('fade-out');
-    });
-    
-    // Wait for fade-out to complete
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    // Set and fade in guess number first
-    cells[0].textContent = rowIndex + 1;
-    cells[0].classList.remove('fade-out');
-    cells[0].classList.add('fade-in');
-    
-    // Wait for guess number to finish fading in
-    await new Promise(resolve => setTimeout(resolve, 400));
-    
-    // Then set and fade in car name
-    const make = carData.make;
-    const model = carData.model;
-    cells[1].innerHTML = `${make}<br><span class="model-text">(${model})</span>`;
-    cells[1].classList.remove('fade-out');
-    cells[1].classList.add('fade-in');
-    
-    // Wait a bit before starting the stats
-    await new Promise(resolve => setTimeout(resolve, 300));
+    if (skipAnimations) {
+        // No animations - set everything immediately
+        cells[0].textContent = rowIndex + 1;
+        const make = carData.make;
+        const model = carData.model;
+        cells[1].innerHTML = `${make}<br><span class="model-text">(${model})</span>`;
+    } else {
+        // Then fade out all cells in the row and remove hint text/emojis
+        cells.forEach(cell => {
+            cell.classList.remove('hint-text', 'hint-available');
+            cell.style.cursor = 'default';
+            delete cell.dataset.hintCol;
+            cell.classList.add('fade-out');
+        });
+        
+        // Wait for fade-out to complete
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        // Set and fade in guess number first
+        cells[0].textContent = rowIndex + 1;
+        cells[0].classList.remove('fade-out');
+        cells[0].classList.add('fade-in');
+        
+        // Wait for guess number to finish fading in
+        await new Promise(resolve => setTimeout(resolve, 400));
+        
+        // Then set and fade in car name
+        const make = carData.make;
+        const model = carData.model;
+        cells[1].innerHTML = `${make}<br><span class="model-text">(${model})</span>`;
+        cells[1].classList.remove('fade-out');
+        cells[1].classList.add('fade-in');
+        
+        // Wait a bit before starting the stats
+        await new Promise(resolve => setTimeout(resolve, 300));
+    }
     
     const stats = [
         { value: carData.year, correct: correctCar.year, type: 'number' },
@@ -137,21 +213,30 @@ async function displayCarStats(carName, rowIndex) {
         { value: carData.country, correct: correctCar.country, type: 'string' }
     ];
     
-    // Fade in each stat cell with delays
-    stats.forEach((stat, index) => {
-        setTimeout(() => {
+    if (skipAnimations) {
+        // No animations - set stats immediately
+        stats.forEach((stat, index) => {
             const cell = cells[index + 2];
             cell.textContent = stat.value;
-            cell.classList.remove('fade-out');
-            cell.classList.add('fade-in');
-        }, index * 300);
-    });
-    
-    // Wait for all cells to fade in
-    await new Promise(resolve => setTimeout(resolve, (stats.length * 300) + 300));
+        });
+    } else {
+        // Fade in each stat cell with delays
+        stats.forEach((stat, index) => {
+            setTimeout(() => {
+                const cell = cells[index + 2];
+                cell.textContent = stat.value;
+                cell.classList.remove('fade-out');
+                cell.classList.add('fade-in');
+            }, index * 300);
+        });
+        
+        // Wait for all cells to fade in
+        await new Promise(resolve => setTimeout(resolve, (stats.length * 300) + 300));
+    }
     
     // Now apply all colors at once
     // Car make color
+    const make = carData.make;
     if (make.toLowerCase() === correctCar.make.toLowerCase()) {
         cells[1].classList.add('correct');
     } else {
@@ -315,6 +400,10 @@ enterBtn.addEventListener('click', async function() {
         input.disabled = true;
         
         const guessedCar = input.value;
+        
+        // Save the guess to game state
+        gameState.guesses.push(guessedCar);
+        
         await displayCarStats(guessedCar, currentRow);
         currentRow++;
         
@@ -335,11 +424,19 @@ enterBtn.addEventListener('click', async function() {
         
         if (isCorrect) {
             // Won the game - keep disabled
+            gameState.gameOver = true;
+            gameState.won = true;
+            saveGameState();
             setTimeout(() => showGameOverModal(true), 1000);
         } else if (currentRow >= maxGuesses) {
             // Lost the game - keep disabled
+            gameState.gameOver = true;
+            gameState.won = false;
+            saveGameState();
             setTimeout(() => showGameOverModal(false), 1000);
         } else {
+            // Save state after each guess
+            saveGameState();
             // Re-enable input for next guess
             input.disabled = false;
             // Button stays disabled until valid input
@@ -437,6 +534,9 @@ function revealColumn(columnName) {
             });
         }
     }
+    
+    // Save state after revealing hint
+    saveGameState();
 }
 
 // Add click handlers to cells with hints

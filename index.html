@@ -8,21 +8,25 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="title">Supercardle</h1>
-        <div class="day-info">
-            <div id="day-number">Day #1</div>
-            <div id="countdown-timer">00:00:00</div>
-        </div>
-        <div class="clue-image">
-            <img id="clue" src="/clue.png" alt="Car clue image">
-        </div>
-        <div class="input-container">
-            <div class="input-wrapper">
-                <input type="text" id="car-input" placeholder="Enter car make and model..." autocomplete="off">
-                <button id="enter-btn" disabled>Enter</button>
+        <div class="left-panel">
+            <h1 class="title">Supercardle</h1>
+            <div class="day-info">
+                <div id="day-number">Day #1</div>
+                <div id="countdown-timer">00:00:00</div>
             </div>
-            <div id="suggestions" class="suggestions"></div>
+            <div class="clue-image">
+                <img id="clue" src="/clue.png" alt="Car clue image">
+            </div>
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <input type="text" id="car-input" placeholder="Enter car..." autocomplete="off">
+                    <button id="enter-btn" disabled>Enter</button>
+                </div>
+                <div id="suggestions" class="suggestions"></div>
+            </div>
         </div>
+        
+        <div class="right-panel">
         
         <div id="hint-message" class="hint-message" style="display: none;">
             <p>💡 Hint available! Click on any 💡 in the next row to reveal the correct value for that column.</p>
@@ -115,6 +119,7 @@
                     <div class="grid-cell"></div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
     
