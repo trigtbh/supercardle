@@ -1,0 +1,1008 @@
+Car Make,Car Model,Year,Engine Size (L),Horsepower,Torque (lb-ft),0-60 MPH Time (seconds),Price (in USD),Country
+Porsche,911,2022,3,379,331,4,"101,200",Germany
+Lamborghini,Huracan,2021,5.2,630,443,2.8,"274,390",Italy
+Ferrari,488 GTB,2022,3.9,661,561,3,"333,750",Italy
+Audi,R8,2022,5.2,562,406,3.2,"142,700",Germany
+McLaren,720S,2021,4,710,568,2.7,"298,000",United Kingdom
+BMW,M8,2022,4.4,617,553,3.1,"130,000",Germany
+Mercedes-Benz,AMG GT,2021,4,523,494,3.8,"118,500",Germany
+Chevrolet,Corvette,2021,6.2,490,465,2.8,"59,900",United States
+Ford,Mustang Shelby GT500,2022,5.2,760,625,3.5,"81,000",United States
+Nissan,GT-R Nismo,2021,3.8,600,481,2.5,"212,000",Japan
+Aston Martin,DB11,2021,5.2,630,516,3.5,"201,495",United Kingdom
+Bugatti,Chiron,2021,8,1500,1180,2.4,"3,000,000",France
+Dodge,Challenger SRT Hellcat,2022,6.2,717,656,3.5,"61,000",United States
+Jaguar,F-Type,2022,3,296,295,5.4,"70,100",United Kingdom
+Koenigsegg,Jesko,2021,5,1280,1015,2.5,"2,800,000",Sweden
+Lexus,LC 500,2021,5,471,398,4.4,"92,950",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"104,450",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.8,"150,000",Italy
+Porsche,Boxster,2021,2,300,280,4.7,"62,000",Germany
+Alfa Romeo,Giulia Quadrifoglio,2022,2.9,505,443,3.8,"78,000",Italy
+Ariel,Atom,2021,2,320,243,2.8,"75,000",United Kingdom
+Bentley,Continental GT,2021,6,626,664,3.6,"225,000",United Kingdom
+McLaren,Artura,2022,3,671,531,3,"225,000",United Kingdom
+Mercedes-AMG,SLS AMG,2021,6.2,622,468,3.5,"248,000",Germany
+Pagani,Huayra,2021,6,720,737,2.8,"2,800,000",Italy
+Polestar,1,2021,2,600,738,4.1,"155,000",Sweden
+Rimac,Nevera,2022,Electric,1914,1696,1.85,"2,400,000",Croatia
+Porsche,Cayman GT4,2022,4,414,309,3.8,"100,200",Germany
+Lamborghini,Aventador SVJ,2021,6.5,759,531,2.8,"517,770",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS7,2022,4,591,590,3.5,"117,000",Germany
+McLaren,Artura,2021,3,671,531,3,"225,000",United Kingdom
+BMW,M4,2022,3,503,479,3.8,"72,800",Germany
+Mercedes-Benz,SLS AMG,2015,6.2,622,468,3.2,"222,000",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,695",United States
+Ford,GT,2022,3.5,660,550,3,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,4.5,"45,690",Japan
+Porsche,Taycan 4S,2022,Electric Motor,562,479,3.8,"104,000",Germany
+Lamborghini,Urus,2021,4,641,626,3.5,"218,000",Italy
+Ferrari,Roma,2021,3.9,611,561,3.3,"222,000",Italy
+Audi,RS3,2022,2.5,394,369,3.9,"57,000",Germany
+McLaren,GT,2021,4,612,465,3.1,"210,000",United Kingdom
+BMW,i8,2020,1.5 + Electric,369,420,4.2,"148,500",Germany
+Mercedes-Benz,CLS63 AMG,2019,4,603,627,3.4,"132,000",Germany
+Porsche,Cayman,2021,2,300,280,5.1,"58,900",Germany
+Lamborghini,Aventador SVJ,2021,6.5,759,531,2.8,"518,000",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS3,2022,2.5,394,369,3.9,"56,200",Germany
+McLaren,570S,2021,3.8,562,443,2.8,"192,500",United Kingdom
+BMW,M4,2022,3,503,479,3.8,"71,800",Germany
+Mercedes-Benz,AMG C63,2021,4,503,516,3.8,"68,000",Germany
+Chevrolet,Camaro SS,2021,6.2,455,455,4.1,"42,500",United States
+Ford,Mustang GT,2022,5,460,420,4.3,"39,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,4.8,"46,100",Japan
+Aston Martin,Vantage,2021,4,503,505,3.5,"142,100",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"105,000",United Kingdom
+Porsche,Panamera,2021,2.9,325,331,5.1,"87,200",Germany
+Lamborghini,Urus,2021,4,641,627,3.2,"218,000",Italy
+Ferrari,Roma,2021,3.9,612,560,3.4,"222,000",Italy
+Audi,S5,2022,3,349,369,4.4,"52,500",Germany
+McLaren,600LT,2021,3.8,592,457,2.8,"241,000",United Kingdom
+BMW,M5,2022,4.4,600,553,3.2,"103,500",Germany
+Aston Martin,Vantage,2022,4,503,505,3.5,"146,000",United Kingdom
+Audi,RS5,2021,2.9,444,443,3.6,"75,400",Germany
+BMW,M2,2022,3,405,406,4,"58,900",Germany
+Chevrolet,Camaro SS,2021,6.2,455,455,4,"42,900",United States
+Dodge,Challenger SRT Hellcat Redeye,2022,6.2,797,707,3.4,"78,595",United States
+Ford,GT,2021,3.5,660,550,3,"500,000",United States
+Jaguar,F-Type,2022,2,296,295,5.4,"62,750",United Kingdom
+Lamborghini,Aventador,2021,6.5,770,531,2.9,"417,826",Italy
+Maserati,GranTurismo,2021,4.7,454,384,4.7,"150,980",Italy
+McLaren,Artura,2022,3,671,531,3,"225,000",United Kingdom
+Mercedes-Benz,C63 AMG,2021,4,503,516,3.8,"70,100",Germany
+Nissan,370Z,2021,3.7,332,270,5,"30,090",Japan
+Porsche,Panamera,2022,2.9,325,331,5.3,"88,700",Germany
+Audi,TT RS,2021,2.5,394,354,3.6,"67,600",Germany
+BMW,M4,2022,3,473,406,4.1,"72,800",Germany
+Chevrolet,Corvette Stingray,2021,6.2,490,465,2.8,"59,900",United States
+Ferrari,F8 Tributo,2021,3.9,710,568,2.8,"274,280",Italy
+Ford,Mustang Mach 1,2021,5,480,420,4.3,"52,915",United States
+Lamborghini,Urus,2021,4,641,627,3.6,"218,009",Italy
+Porsche,718 Cayman,2022,2,300,280,4.5,"61,000",Germany
+Acura,NSX,2022,3.5,573,476,2.9,"159,495",United States
+Aston Martin,Vantage,2022,4,503,505,3.5,"142,086",United Kingdom
+Bentley,Continental GT,2021,6,626,664,3.3,"219,800",United Kingdom
+Bugatti,Chiron,2022,8,1500,1180,2.4,"3,000,000",France
+Dodge,Challenger SRT Hellcat Redeye,2022,6.2,797,707,3.4,"74,290",United States
+Jaguar,F-Type,2022,3,380,339,4.9,"71,900",United Kingdom
+Koenigsegg,Jesko,2022,5,1600,1106,2.5,"3,000,000",Sweden
+Lexus,LC 500,2022,5,471,398,4.4,"92,950",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"105,000",United Kingdom
+Maserati,GranTurismo,2022,4.7,454,384,4.7,"134,300",Italy
+Mazda,MX-5 Miata,2021,2,181,151,6.5,"26,830",Japan
+McLaren,GT,2022,4,620,465,3.1,"213,195",United Kingdom
+Mercedes-Benz,SLS AMG,2015,6.2,622,468,3.7,"221,580",Germany
+Pagani,Huayra,2022,6,764,738,2.8,"2,800,000",Italy
+Porsche,718 Cayman GT4,2022,4,414,309,4.2,"100,550",Germany
+Rimac,Nevera,2022,Electric,1914,1696,1.95,"2,400,000",Croatia
+Rolls-Royce,Wraith,2021,6.8,624,605,4.4,"330,000",United Kingdom
+Tesla,Roadster,2022,Electric,1000+,737,1.9,"200,000",United States
+Toyota,Supra,2022,3,382,368,3.9,"43,090",Japan
+W Motors,Fenyr Supersport,2022,3.8,800,723,2.7,"1,700,000",United Arab Emirates
+Porsche,718 Cayman,2022,2,300,280,4.7,"60,500",Germany
+Lamborghini,Aventador,2021,6.5,770,531,2.9,"522,000",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,TT RS,2022,2.5,394,354,3.4,"67,000",Germany
+McLaren,GT,2021,4,612,465,3.1,"212,500",United Kingdom
+BMW,M4,2022,3,503,479,3.8,"75,000",Germany
+Mercedes-Benz,SL 63 AMG,2021,4,603,664,3.5,"155,000",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,000",United States
+Ford,GT,2022,3.5,660,550,2.8,"500,000",United States
+Nissan,370Z,2021,3.7,332,270,4.7,"31,015",Japan
+Aston Martin,DBS Superleggera,2021,5.2,715,664,3.4,"304,995",United Kingdom
+Bugatti,Chiron,2021,8,1500,1180,2.4,"3,000,000",France
+Lotus,Evora GT,2021,3.5,416,317,3.8,"105,000",United Kingdom
+McLaren,570S,2021,3.8,562,443,3.2,"192,500",United Kingdom
+Porsche,Panamera Turbo S E-Hybrid,2021,4,690,642,3.2,"190,000",Germany
+Lamborghini,Urus,2021,4,641,627,3.6,"222,000",Italy
+Ferrari,Roma,2021,3.9,611,561,3.3,"222,000",Italy
+Audi,RS7,2021,4,591,590,3.5,"115,000",Germany
+BMW,M2,2022,3,405,406,4.2,"59,000",Germany
+Porsche,Cayman GT4,2022,4,414,309,4.2,"102,100",Germany
+Lamborghini,Aventador,2021,6.5,730,509,2.9,"417,826",Italy
+Aston Martin,DBS Superleggera,2021,5.2,715,664,3.2,"304,995",United Kingdom
+Bentley,Continental GT,2021,6,626,664,3.6,"220,300",United Kingdom
+Audi,RS7,2022,4,591,590,3.5,"114,000",Germany
+Mercedes-Benz,SLS AMG,2021,6.2,622,468,3.7,"239,100",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"192,500",United Kingdom
+BMW,M2,2022,3,405,406,4,"58,900",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"62,500",United States
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"65,290",United States
+Ferrari,Portofino,2021,3.9,592,560,3.5,"219,750",Italy
+Porsche,Panamera Turbo S,2022,4,620,604,2.9,"187,700",Germany
+Lamborghini,Urus,2021,4,641,627,3.6,"222,004",Italy
+Mercedes-Benz,AMG C63,2021,4,469,479,3.8,"71,350",Germany
+Aston Martin,Vantage,2021,4,503,505,3.6,"146,000",United Kingdom
+Audi,S5,2022,3,349,369,4.4,"52,500",Germany
+Porsche,Cayman,2022,2.5,365,309,4.5,"68,900",Germany
+Lamborghini,Aventador,2021,6.5,730,507,2.8,"517,770",Italy
+Ferrari,F8 Tributo,2022,3.9,710,568,2.9,"276,550",Italy
+Audi,TT RS,2021,2.5,394,354,3.6,"67,600",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"192,500",United Kingdom
+BMW,Z4 M40i,2022,3,382,369,3.9,"63,700",Germany
+Mercedes-Benz,SLS AMG,2015,6.2,622,468,3.7,"221,580",Germany
+Chevrolet,Camaro SS,2022,6.2,455,455,4.1,"44,000",United States
+Ford,Mustang Mach 1,2021,5,480,420,4,"51,720",United States
+Nissan,370Z Nismo,2021,3.7,350,276,4.9,"45,790",Japan
+Porsche,Panamera,2022,2.9,325,331,5.4,"88,550",Germany
+Lamborghini,Urus,2021,4,641,627,3.5,"218,009",Italy
+Ferrari,Roma,2021,3.9,612,561,3.3,"222,620",Italy
+Audi,RS 3,2022,2.5,401,369,3.6,"56,200",Germany
+McLaren,GT,2021,4,612,465,3.2,"200,000",United Kingdom
+BMW,M2 CS,2022,3,444,406,3.8,"84,595",Germany
+Mercedes-Benz,AMG C63,2021,4,503,516,3.8,"77,500",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"62,500",United States
+Acura,NSX,2021,3.5,573,476,2.7,"157,500",United States
+Aston Martin,DB11,2022,4,503,513,3.7,"204,100",United Kingdom
+Bentley,Continental GT,2021,6,626,664,3.4,"220,300",United Kingdom
+Bugatti,Chiron,2021,8,1500,1180,2.4,"3,000,000",France
+Dodge,Viper,2017,8.4,645,600,3.3,"120,000",United States
+Jaguar,F-Type,2022,3,380,339,4.9,"69,900",United Kingdom
+Koenigsegg,Jesko,2022,5,1600,1106,2.5,"3,000,000",Sweden
+Lexus,LC 500,2022,5,471,398,4.4,"92,950",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"105,950",United Kingdom
+Maserati,GranTurismo,2020,4.7,454,384,4.8,"150,000",Italy
+McLaren,570S,2020,3.8,562,443,3.1,"204,550",United Kingdom
+Pagani,Huayra,2020,6,720,738,3,"2,700,000",Italy
+Porsche,Cayman GT4,2022,4,414,309,4.2,"102,900",Germany
+Rimac,C_Two,2022,nan,1914,1696,1.9,"2,400,000",Croatia
+Rolls-Royce,Wraith,2021,6.6,624,605,4.3,"330,000",United Kingdom
+Shelby,Cobra,1965,7,435,440,4.2,"1,000,000",United States
+Tesla,Model S Plaid,2021,nan,1020,1050,1.98,"131,190",United States
+Toyota,GR Supra,2022,3,382,368,3.9,"43,090",Japan
+TVR,Griffith,2022,5,500,479,3.8,"123,500",United Kingdom
+W Motors,Lykan Hypersport,2015,3.7,780,708,2.8,"3,400,000",United Arab Emirates
+Porsche,718 Cayman,2021,2,300,280,4.5,"61,500",Germany
+Lamborghini,Aventador SVJ,2021,6.5,770,531,2.8,"518,000",Italy
+Ferrari,SF90 Stradale,2022,4,986,590,2.5,"507,000",Italy
+Audi,RS 6,2021,4,591,590,3.5,"109,000",Germany
+McLaren,GT,2021,4,612,465,3.1,"210,000",United Kingdom
+BMW,M2 CS,2022,3,444,406,3.8,"84,595",Germany
+Mercedes-Benz,SLS AMG,2015,6.2,622,468,3.6,"228,000",Germany
+Chevrolet,Camaro SS,2021,6.2,455,455,4,"42,000",United States
+Ford,GT,2022,3.5,660,550,2.8,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,5,"45,000",Japan
+Porsche,Taycan,2021,Electric,750,774,2.6,"185,000",Germany
+Lamborghini,Urus,2021,4,641,627,3.6,"222,004",Italy
+Ferrari,F8 Tributo,2021,3.9,710,568,2.9,"276,550",Italy
+Audi,RS 3,2022,2.5,401,354,3.5,"56,000",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"191,000",United Kingdom
+BMW,M5,2022,4.4,600,553,3.2,"104,000",Germany
+Mercedes-Benz,AMG C 63,2021,4,469,479,3.9,"69,900",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,000",United States
+Porsche,Taycan,2022,2,402,254,5.1,"81,250",Germany
+Lamborghini,Aventador,2021,6.5,730,509,2.9,"517,700",Italy
+Aston Martin,DBS Superleggera,2022,5.2,715,663,3.4,"330,000",United Kingdom
+Audi,RS 6 Avant,2021,4,591,590,3.5,"109,000",Germany
+McLaren,600LT,2021,3.8,592,457,2.8,"242,500",United Kingdom
+Mercedes-AMG,C 63 S Coupe,2022,4,503,516,3.7,"77,000",Germany
+BMW,M4,2022,3,473,406,4.1,"72,800",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"62,000",United States
+Dodge,Challenger SRT Hellcat Redeye,2022,6.2,797,707,3.5,"76,000",United States
+Ford,GT,2022,3.5,660,550,2.9,"500,000",United States
+Nissan,370Z,2021,3.7,332,270,4.9,"30,090",Japan
+Porsche,Panamera,2022,2.9,325,332,5.3,"87,200",Germany
+Lamborghini,Urus,2021,4,641,626,3.5,"218,000",Italy
+Bugatti,Chiron,2021,8,1500,1180,2.3,"3,000,000",France
+Ferrari,F8 Tributo,2021,3.9,710,568,2.9,"274,280",Italy
+Audi,RS 7,2021,4,591,590,3.5,"114,000",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"191,000",United Kingdom
+Aston Martin,Vantage,2022,4,503,505,3.5,"142,086",United Kingdom
+Jaguar,F-Type,2022,5,575,516,3.5,"103,200",United Kingdom
+Porsche,Panamera Turbo S,2021,4,620,604,2.9,"177,700",Germany
+Lamborghini,Aventador S,2021,6.5,729,509,2.9,"417,650",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS7,2022,4,591,590,3.5,"115,045",Germany
+McLaren,600LT,2021,3.8,592,457,2.9,"256,500",United Kingdom
+BMW,M2 Competition,2022,3,405,406,4,"59,895",Germany
+Mercedes-Benz,S63 AMG,2021,4,603,664,3.4,"152,500",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,695",United States
+Dodge,Challenger SRT Hellcat,2022,6.2,717,656,3.5,"69,995",United States
+Ford,GT,2022,3.5,660,550,2.9,"500,000",United States
+Porsche,Taycan Turbo S,2021,nan,750,774,2.6,"185,000",Germany
+Lamborghini,Urus,2021,4,641,627,3.2,"218,009",Italy
+Ferrari,812 Superfast,2021,6.5,789,530,2.9,"363,730",Italy
+Audi,R8 Spyder,2022,5.2,562,406,3.5,"183,300",Germany
+McLaren,GT,2021,4,612,465,3.1,"210,000",United Kingdom
+BMW,M4,2022,3,473,406,4.1,"73,795",Germany
+Mercedes-Benz,AMG GT R,2021,4,577,516,3.5,"183,000",Germany
+Chevrolet,Corvette Stingray,2021,6.2,495,470,2.9,"60,995",United States
+Aston Martin,DB11,2022,5.2,630,516,3.5,"207,000",United Kingdom
+Bentley,Continental GT,2022,6,626,664,3.5,"203,825",United Kingdom
+Jaguar,F-Type R,2021,5,575,516,3.5,"103,200",United Kingdom
+Acura,NSX,2022,3.5,573,476,2.7,"157,500",United States
+Lotus,Evora GT,2021,3.5,416,317,3.7,"99,800",United Kingdom
+Porsche,Cayman GT4,2021,4,414,309,4.2,"100,200",Germany
+Alfa Romeo,4C,2020,1.7,237,258,4.1,"67,150",Italy
+Audi,RS5,2022,2.9,444,443,3.7,"77,250",Germany
+BMW,M2 Competition,2021,3,405,406,4,"58,900",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,695",United States
+Dodge,Charger SRT Hellcat,2022,6.2,717,650,3.6,"71,490",United States
+Ford,GT,2022,3.5,660,550,2.8,"500,000",United States
+Lexus,LC 500,2022,5,471,398,4.4,"92,950",Japan
+Maserati,GranTurismo,2020,4.7,454,384,4.8,"150,400",Italy
+Nissan,370Z Nismo,2021,3.7,350,276,4.6,"47,820",Japan
+Rolls-Royce,Wraith,2022,6.8,624,605,4.4,"330,000",United Kingdom
+Subaru,WRX STI,2021,2.5,310,290,4.6,"38,170",Japan
+Tesla,Model S Plaid,2022,nan,1020,1050,1.9,"131,190",United States
+Porsche,Cayman GT4,2021,4,414,309,4.2,"102,000",Germany
+Lamborghini,Aventador,2021,6.5,729,507,2.9,"393,695",Italy
+Ferrari,Portofino,2022,3.9,591,413,3.3,"218,750",Italy
+Audi,RS7,2021,4,591,590,3.5,"114,000",Germany
+McLaren,600LT,2021,3.8,592,457,2.8,"256,500",United Kingdom
+BMW,M2,2022,3,405,406,4,"58,900",Germany
+Mercedes-Benz,AMG GT,2021,4,523,494,3.8,"118,500",Germany
+Chevrolet,Camaro SS,2021,6.2,455,455,4.1,"40,590",United States
+Ford,Mustang Mach 1,2021,5,480,420,4,"52,720",United States
+Nissan,370Z Nismo,2021,3.7,350,276,4.6,"45,000",Japan
+Porsche,Panamera Turbo,2022,4,620,604,3.1,"174,300",Germany
+Lamborghini,Urus,2021,4,641,627,3.2,"222,004",Italy
+Ferrari,SF90 Stradale,2022,4,986,590,2.5,"625,000",Italy
+Audi,TT RS,2022,2.5,394,354,3.4,"67,895",Germany
+McLaren,GT,2021,4,612,465,3.1,"210,000",United Kingdom
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"62,290",United States
+Aston Martin,DBS Superleggera,2021,5.2,715,663,3.2,"304,995",United Kingdom
+Jaguar,F-Type R,2021,5,575,516,3.5,"103,200",United Kingdom
+Lexus,LC 500,2022,5,471,398,4.4,"93,050",Japan
+Porsche,Cayman GT4,2022,4,414,309,4.2,"101,200",Germany
+BMW,M2 Competition,2022,3,405,406,4,"59,895",Germany
+Audi,RS 5 Coupe,2021,2.9,444,443,3.7,"75,100",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,195",United States
+Lotus,Evora GT,2022,3.5,416,317,3.8,"105,000",United Kingdom
+McLaren,GT,2021,4,612,465,3.1,"211,000",United Kingdom
+Mercedes-Benz,SLS AMG Black Series,2014,6.2,622,468,3.5,"275,000",Germany
+Bugatti,Chiron,2021,8,1500,1180,2.4,"2,998,000",France
+Koenigsegg,Jesko,2021,5,1280,1015,2.5,"3,000,000",Sweden
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Lamborghini,Aventador SVJ,2020,6.5,770,531,2.8,"573,966",Italy
+Rimac,C_Two,2022,Electric,1914,1732,1.85,"2,400,000",Croatia
+Pagani,Huayra Roadster BC,2021,6,791,774,2.5,"3,500,000",Italy
+Pininfarina,Battista,2022,Electric,1874,1696,1.9,"2,500,000",Italy
+Acura,NSX,2022,3.5,573,476,2.9,"157,500",United States
+Aston Martin,Vantage,2021,4,503,505,3.5,"146,000",United Kingdom
+Bentley,Continental GT,2022,4,542,568,3.9,"219,800",United Kingdom
+Dodge,Challenger SRT Hellcat,2022,6.2,717,656,3.5,"70,000",United States
+Jaguar,F-Type,2022,2,296,295,5.4,"61,600",United Kingdom
+Kia,Stinger,2022,3.3,368,376,4.7,"52,200",South Korea
+Lotus,Evora GT,2021,3.5,416,317,3.8,"100,450",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.8,"134,300",Italy
+Porsche,718 Cayman GT4,2022,4,414,309,4.2,"102,550",Germany
+Alfa Romeo,Giulia Quadrifoglio,2021,2.9,505,443,3.8,"76,400",Italy
+Audi,RS7,2021,4,591,590,3.5,"114,000",Germany
+BMW,M5,2022,4.4,600,553,3.2,"103,500",Germany
+Chevrolet,Camaro ZL1,2022,6.2,650,650,3.5,"69,000",United States
+Ford,GT,2022,3.5,660,550,3,"500,000",United States
+Lamborghini,Aventador,2021,6.5,770,531,2.8,"417,826",Italy
+McLaren,Artura,2021,3,671,531,3,"225,000",United Kingdom
+Mercedes-Benz,SLS AMG,2021,4,577,516,3.6,"247,500",Germany
+Nissan,370Z Nismo,2021,3.7,350,276,4.8,"45,790",Japan
+Porsche,Taycan,2022,Electric,616,774,2.6,"79,900",Germany
+Tesla,Model S,2022,Electric,1020,1050,1.98,"119,000",United States
+Aston Martin,DBS Superleggera,2022,5.2,715,664,3.2,"307,820",United Kingdom
+Bentley,Continental GT,2022,4,542,568,3.4,"207,825",United Kingdom
+Bugatti,Chiron,2021,8,1479,1180,2.3,"2,998,000",France
+McLaren,570S,2021,3.8,562,443,3.1,"202,500",United Kingdom
+Porsche,Taycan Turbo S,2021,Electric,750,774,2.6,"185,000",Germany
+Lamborghini,Aventador S,2021,6.5,730,509,2.9,"417,826",Italy
+Ferrari,F8 Tributo,2022,3.9,710,568,2.8,"276,550",Italy
+Audi,RS 7,2022,4,591,590,3.5,"114,000",Germany
+BMW,M2 CS,2022,3,444,406,4,"84,595",Germany
+Mercedes-Benz,SLS AMG,2021,6.2,622,468,3.2,"275,000",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"63,000",United States
+Ford,GT,2022,3.5,660,550,3,"500,000",United States
+Jaguar,F-Type,2021,5,575,516,3.5,"103,200",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"96,950",United Kingdom
+Maserati,GranTurismo,2022,4.7,454,384,4.8,"134,300",Italy
+McLaren,765LT,2021,4,755,590,2.8,"358,000",United Kingdom
+Nissan,370Z,2021,3.7,332,270,5,"30,000",Japan
+Pagani,Huayra,2021,6,730,738,3,"2,600,000",Italy
+Porsche,Panamera Turbo S,2021,4,620,604,2.9,"180,000",Germany
+Tesla,Model S Plaid,2021,Electric,1020,1050,1.9,"131,100",United States
+Aston Martin,DB11,2021,4,503,513,4,"201,495",United Kingdom
+Dodge,Challenger Hellcat Redeye,2022,6.2,797,707,3.4,"82,190",United States
+Lotus,Evora,2021,3.5,416,317,3.8,"96,950",United Kingdom
+Acura,NSX,2021,3.5,573,476,2.7,"159,495",United States
+Alfa Romeo,Giulia Quadrifoglio,2021,2.9,505,443,3.8,"76,950",Italy
+Bentley,Continental GT,2021,6,626,664,3.3,"202,500",United Kingdom
+Jaguar,F-Type,2022,3,380,339,4.9,"70,100",United Kingdom
+Koenigsegg,Jesko,2022,5,1280,1015,2.5,"3,000,000",Sweden
+Lexus,LC 500,2021,5,471,398,4.4,"92,950",Japan
+Maserati,GranTurismo,2022,4.7,454,384,4.8,"132,795",Italy
+McLaren,GT,2022,4,612,465,3.1,"215,500",United Kingdom
+Mercedes-AMG,C 63 S Coupe,2022,4,503,516,3.7,"80,900",Germany
+Porsche,718 Cayman,2021,2,300,280,4.9,"59,900",Germany
+Rolls-Royce,Wraith,2021,6.8,624,605,4.3,"330,000",United Kingdom
+Tesla,Roadster,2022,-,1000+,-,1.9,"200,000",United States
+Chevrolet,Camaro SS,2021,6.2,455,455,4,"40,000",United States
+Ford,GT,2022,3.5,660,550,3,"500,000",United States
+Acura,NSX,2022,3.5,573,476,2.7,"157,500",United States
+Aston Martin,DB11,2021,5.2,630,516,3.7,"209,000",United Kingdom
+Bentley,Continental GT,2022,4,542,568,3.9,"202,500",United Kingdom
+Bugatti,Chiron,2021,8,1500,1180,2.4,"3,000,000",France
+Dodge,Challenger Hellcat,2022,6.2,717,656,3.5,"67,500",United States
+Jaguar,F-Type,2021,5,575,516,3.5,"103,200",United Kingdom
+Koenigsegg,Jesko,2022,5,1280,1106,2.5,"2,800,000",Sweden
+Lexus,LC,2021,5,471,398,4.4,"92,950",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"104,200",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.7,"133,050",Italy
+McLaren,570S,2021,3.8,562,443,3.1,"196,350",United Kingdom
+Mercedes-Benz,AMG C63,2022,4,503,516,3.8,"69,900",Germany
+Pagani,Huayra BC,2021,6,791,774,2.7,"2,600,000",Italy
+Porsche,Cayman GT4,2022,4,414,309,4.2,"102,900",Germany
+Rimac,Nevera,2022,Electric,1914,1696,1.85,"2,400,000",Croatia
+Rolls-Royce,Wraith,2021,6.7,624,605,4.4,"338,000",United Kingdom
+Tesla,Roadster,2022,Electric,1000+,"10,000+",1.9,"200,000",United States
+Acura,NSX,2022,3.5,573,476,2.7,"157,500",United States
+Aston Martin,Vantage,2021,4,503,505,3.5,"150,000",United Kingdom
+Bentley,Continental GT,2021,6,626,664,3.6,"218,400",United Kingdom
+Dodge,Challenger SRT Hellcat Redeye,2021,6.2,797,707,3.5,"73,000",United States
+Jaguar,F-Type R,2022,5,575,516,3.5,"103,200",United Kingdom
+Lexus,LC 500,2021,5,471,398,4.4,"92,950",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"104,970",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.8,"132,400",Italy
+Porsche,Cayman GT4,2021,4,414,309,4.2,"101,200",Germany
+Tesla,Roadster,2023,Electric,"1,000+",737,< 1.9,"200,000",United States
+Alpine,A110,2021,1.8,288,236,4.4,"71,500",France
+Audi,RS7,2021,4,591,590,3.5,"114,000",Germany
+BMW,M4,2021,3,473,406,4.1,"71,800",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,195",United States
+Dodge,Viper,2017,8.4,645,600,3.3,"118,795",United States
+Ferrari,Portofino,2021,3.9,591,560,3.5,"218,750",Italy
+Jaguar,F-Type,2022,3,296,295,5.4,"61,600",United Kingdom
+Lamborghini,Aventador SVJ,2021,6.5,770,531,2.8,"517,700",Italy
+McLaren,600LT,2021,3.8,592,457,2.8,"240,000",United Kingdom
+Aston Martin,DB11,2021,5.2,630,516,3.5,"221,400",United Kingdom
+Bentley,Continental GT,2021,6,626,664,3.6,"202,500",United Kingdom
+Bugatti,Chiron,2022,8,1500,1180,2.4,"3,000,000",France
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"64,100",United States
+Jaguar,F-Type R,2022,5,575,516,3.5,"103,200",United Kingdom
+Koenigsegg,Jesko,2022,5,1280,1015,2.5,"2,800,000",Sweden
+Lexus,LC 500,2021,5,471,398,4.4,"92,950",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"100,450",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.8,"150,980",Italy
+McLaren,Artura,2022,3,671,531,3,"225,000",United Kingdom
+Mercedes-AMG,C 63 S,2022,4,503,516,3.7,"81,550",Germany
+Pagani,Huayra,2021,6,764,738,2.8,"3,500,000",Italy
+Porsche,Cayman GT4,2021,4,414,309,4.2,"102,550",Germany
+Rimac,C_Two,2022,nan,1888,1696,1.8,"2,400,000",Croatia
+Rolls-Royce,Wraith,2021,6.6,624,642,4.4,"330,000",United Kingdom
+Tesla,Roadster,2022,nan,10000+,0,1.9,"200,000",United States
+Toyota,Supra,2022,3,382,368,3.9,"43,090",Japan
+Acura,NSX,2021,3.5,573,476,2.7,"157,500",United States
+Aston Martin,Vantage,2021,4,503,505,3.5,"146,000",United Kingdom
+Bentley,Continental GT,2022,4,542,568,3.9,"207,825",United Kingdom
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"64,195",United States
+Jaguar,F-Type,2022,3,380,339,4.8,"62,250",United Kingdom
+Lexus,LC 500,2022,5,471,398,4.4,"92,000",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"105,000",United Kingdom
+Maserati,GranTurismo,2022,4.7,454,384,4.7,"134,300",Italy
+McLaren,570S,2022,3.8,562,443,2.9,"204,550",United Kingdom
+Porsche,Cayman GT4,2021,4,414,309,4.2,"102,000",Germany
+Tesla,Model S Plaid,2021,Electric (tri-motor),1020,1050,1.9,"141,190",United States
+Audi,RS 5,2021,2.9,444,443,3.5,"75,100",Germany
+BMW,M2 Competition,2022,3,405,406,4,"59,895",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,995",United States
+Dodge,Viper ACR,2017,8.4,645,600,3.3,"126,190",United States
+Ford,GT,2021,3.5,660,550,2.9,"500,000",United States
+Porsche,Taycan 4S,2022,2.5,482,472,3.8,"102,900",Germany
+Lamborghini,Aventador S,2021,6.5,730,509,2.9,"417,650",Italy
+Aston Martin,DB11,2021,5.2,630,516,3.5,"205,000",United Kingdom
+Alfa Romeo,Giulia Quadrifoglio,2022,2.9,505,443,3.8,"81,250",Italy
+Audi,RS7 Sportback,2022,4,591,590,3.5,"115,045",Germany
+BMW,M4 Competition,2021,3,503,479,3.9,"75,695",Germany
+Chevrolet,Camaro SS,2022,6.2,455,455,4.1,"42,000",United States
+Dodge,Charger Hellcat,2021,6.2,717,650,3.6,"71,490",United States
+Ferrari,F8 Tributo,2021,3.9,710,568,2.9,"274,280",Italy
+Ford,GT,2021,3.5,660,550,2.8,"500,000",United States
+Jaguar,F-Type R,2021,5,575,516,3.5,"103,200",United Kingdom
+Koenigsegg,Jesko Absolut,2022,5,1600,1106,2.1,"2,800,000",Sweden
+Lexus,LC 500,2021,5,471,398,4.4,"93,050",Japan
+Lotus,Evija,2022,Electric,1973,1254,2.5,"2,750,000",United Kingdom
+McLaren,GT,2022,4,612,465,3.2,"210,000",United Kingdom
+Mercedes-Benz,AMG GT Black Series,2021,4,720,590,3.2,"326,050",Germany
+Porsche,Cayman GT4,2021,4,414,309,4.2,"102,500",Germany
+Lamborghini,Aventador,2021,6.5,770,531,2.8,"417,650",Italy
+Ferrari,Portofino,2021,3.9,591,560,3.3,"218,750",Italy
+Audi,TT RS,2022,2.5,394,354,3.6,"69,000",Germany
+McLaren,600LT Spider,2021,3.8,592,457,2.8,"256,500",United Kingdom
+BMW,M4,2022,3,473,406,4.1,"72,800",Germany
+Mercedes-Benz,AMG C 63,2022,4,503,516,3.8,"70,000",Germany
+Chevrolet,Camaro SS 1LE,2021,6.2,455,455,4,"44,500",United States
+Ford,Mustang Mach 1,2021,5,480,420,4,"51,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,5.2,"45,000",Japan
+Aston Martin,Vantage,2021,4,503,505,3.5,"146,000",United Kingdom
+Bugatti,Chiron,2022,8,1500,1180,2.4,"3,000,000",France
+Koenigsegg,Jesko,2021,5,1262,1106,2.5,"3,000,000",Sweden
+Pagani,Huayra,2021,6,764,738,2.6,"2,600,000",Italy
+McLaren,Speedtail,2021,4,1035,848,2.5,"2,300,000",United Kingdom
+Lamborghini,Sián,2021,6.5,819,531,2.8,"3,600,000",Italy
+Rimac,C_Two,2021,Electric,1914,1732,1.8,"2,400,000",Croatia
+Porsche,Cayman,2022,2,300,280,4.9,"59,900",Germany
+Lamborghini,Aventador,2021,6.5,770,531,2.8,"393,695",Italy
+Ferrari,Portofino,2021,3.9,591,413,3.5,"215,000",Italy
+Audi,RS 5,2022,2.9,444,443,3.7,"75,100",Germany
+McLaren,GT,2021,4,620,465,3.1,"210,000",United Kingdom
+BMW,Z4 M40i,2022,3,382,369,4.3,"63,700",Germany
+Mercedes-Benz,SLC 43,2020,3,385,384,4.6,"62,000",Germany
+Chevrolet,Camaro SS,2022,6.2,455,455,4.3,"42,500",United States
+Ford,Mustang GT,2022,5,460,420,4.3,"36,120",United States
+Nissan,370Z Nismo,2020,3.7,350,276,4.6,"45,790",Japan
+Aston Martin,Vantage,2022,4,503,505,3.6,"146,000",United Kingdom
+Bentley,Continental GT,2021,4,626,664,3.3,"220,000",United Kingdom
+Porsche,718 Boxster,2022,2,300,280,4.9,"62,000",Germany
+Lamborghini,Urus,2021,4,641,627,3.6,"222,004",Italy
+Ferrari,F8 Spider,2021,3.9,710,568,2.9,"280,000",Italy
+Audi,TT RS,2022,2.5,394,354,3.6,"69,900",Germany
+McLaren,570S,2021,3.8,562,443,2.9,"208,800",United Kingdom
+BMW,M4,2022,3,473,406,4,"72,800",Germany
+Porsche,718 Cayman,2022,2,300,280,4.9,"60,500",Germany
+Lamborghini,Aventador,2021,6.5,730,509,2.9,"393,695",Italy
+Ferrari,SF90 Stradale,2022,4,986,590,2.5,"625,000",Italy
+Audi,RS5,2022,2.9,444,443,3.7,"75,100",Germany
+McLaren,GT,2021,4,612,465,3.2,"208,800",United Kingdom
+BMW,M2,2022,3,405,406,4,"58,900",Germany
+Mercedes-Benz,SLS AMG,2015,6.2,622,468,3.6,"229,000",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"62,000",United States
+Ford,GT,2022,3.5,660,550,3,"500,000",United States
+Nissan,370Z Nismo,2020,3.7,350,276,5.2,"46,200",Japan
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.6,"71,000",United States
+Aston Martin,DBS Superleggera,2021,5.2,715,663,3.2,"308,000",United Kingdom
+Alfa Romeo,Giulia Quadrifoglio,2022,2.9,505,443,3.8,"80,500",Italy
+Jaguar,F-Type R,2021,5,575,516,3.5,"105,900",United Kingdom
+Lotus,Evora GT,2020,3.5,416,317,3.8,"96,950",United Kingdom
+Maserati,GranTurismo,2019,4.7,454,384,4.7,"150,980",Italy
+Porsche,Panamera Turbo S,2022,4,630,604,2.9,"180,800",Germany
+Lamborghini,Urus,2021,4,641,627,3.2,"218,000",Italy
+Aston Martin,Vantage,2021,4,503,505,3.5,"146,000",United Kingdom
+Lotus,Evora,2021,3.5,416,317,3.8,"94,000",United Kingdom
+Alfa Romeo,4C Spider,2020,1.7,237,258,4.1,"67,150",Italy
+Jaguar,F-Type,2022,3,380,339,4.9,"70,900",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.7,"134,300",Italy
+Porsche,Cayman GT4,2021,4,414,309,4.2,"100,200",Germany
+Audi,RS5 Coupe,2022,2.9,444,443,3.7,"76,450",Germany
+BMW,M2 Competition,2021,3,405,406,4,"58,900",Germany
+Chevrolet,Camaro ZL1,2022,6.2,650,650,3.5,"64,000",United States
+Dodge,Challenger SRT Hellcat,2022,6.2,717,656,3.5,"61,500",United States
+Ford,GT,2021,3.5,647,550,2.8,"500,000",United States
+Lexus,LC 500,2022,5,471,398,4.4,"92,950",Japan
+McLaren,570S,2022,3.8,562,443,3.1,"198,950",United Kingdom
+Mercedes-AMG,C63 S Coupe,2021,4,503,516,3.7,"77,950",Germany
+Nissan,370Z Nismo,2021,3.7,350,276,4.9,"45,790",Japan
+Porsche,718 Boxster,2021,2,300,280,4.9,"62,000",Germany
+Lamborghini,Aventador S,2021,6.5,729,507,2.9,"417,826",Italy
+Ferrari,F8 Tributo,2021,3.9,710,568,2.9,"274,280",Italy
+Audi,TT RS Coupe,2021,2.5,394,354,3.6,"67,600",Germany
+BMW,M4 Coupe,2021,3,473,406,3.8,"71,800",Germany
+Acura,NSX,2021,3.5,573,476,2.7,"159,495",United States
+Aston Martin,DBS Superleggera,2022,5.2,715,664,3.4,"314,500",United Kingdom
+Bentley,Continental GT,2022,6,626,664,3.3,"214,425",United Kingdom
+Bugatti,Chiron,2022,8,1500,1180,2.3,"3,000,000",France
+Dodge,Challenger SRT Hellcat,2022,6.2,717,656,3.5,"71,490",United States
+Jaguar,F-Type,2021,5,575,516,3.5,"105,900",United Kingdom
+Koenigsegg,Jesko,2021,5,1280,1106,2.5,"2,800,000",Sweden
+Lexus,LC 500,2021,5,471,398,4.4,"92,950",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"104,400",United Kingdom
+Maserati,GranTurismo,2022,4.7,454,384,4.7,"150,980",Italy
+McLaren,Artura,2022,3,671,531,3,"225,000",United Kingdom
+Pagani,Huayra,2021,6,764,738,2.6,"2,600,000",Italy
+Porsche,Cayman GT4,2022,4,414,309,4.2,"102,000",Germany
+Rimac,C_Two,2021,Electric,1914,1696,1.9,"2,400,000",Croatia
+Rolls-Royce,Wraith,2021,6.8,624,605,4.4,"335,550",United Kingdom
+Tesla,Model S Plaid,2021,Electric,1020,1050,1.9,"141,990",United States
+Toyota,GR Supra,2022,3,382,368,3.9,"43,090",Japan
+TVR,Griffith,2021,5,500,420,3.9,"157,500",United Kingdom
+Ultima,RS,2021,6.2,1200,1300,2.3,"220,000",United Kingdom
+W Motors,Fenyr SuperSport,2022,3.8,800,723,2.7,"1,550,000",United Arab Emirates
+Acura,NSX,2021,3.5,573,476,2.9,"157,500",United States
+Aston Martin,DBS Superleggera,2022,5.2,715,663,3.2,"308,000",United Kingdom
+Bentley,Continental GT,2021,6,626,664,3.6,"202,500",United Kingdom
+Bugatti,Chiron,2021,8,1500,1180,2.3,"3,000,000",France
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"65,000",United States
+Jaguar,F-Type,2021,3,380,339,4.9,"63,100",United Kingdom
+Lexus,LC 500,2021,5,471,398,4.4,"92,950",Japan
+Lotus,Evija,2022,Electric,1973,1254,2.5,"2,600,000",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.8,"134,300",Italy
+Porsche,Taycan,2021,Electric,616,774,2.6,"185,000",Germany
+Rimac,C_Two,2022,Electric,1914,1696,1.9,"2,400,000",Croatia
+Tesla,Model S Plaid,2022,Electric,1020,1050,1.98,"140,000",United States
+McLaren,Artura,2022,3,671,531,3,"225,000",United Kingdom
+Mercedes-Benz,AMG GT Black Series,2021,4,720,590,3.1,"325,000",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"63,000",United States
+Ford,GT,2021,3.5,647,550,3,"500,000",United States
+Aston Martin,DBS Superleggera,2021,5.2,715,664,3.4,"307,820",United Kingdom
+Jaguar,F-Type,2022,5,575,516,3.5,"103,200",United Kingdom
+Dodge,Challenger SRT Hellcat Redeye,2021,6.2,797,707,3.5,"80,190",United States
+Lotus,Evora GT,2022,3.5,416,317,3.8,"105,000",United Kingdom
+Alfa Romeo,4C Spider,2020,1.8,237,258,4.1,"68,745",Italy
+Subaru,WRX STI,2022,2.5,310,290,5.2,"38,170",Japan
+Acura,NSX,2022,3.5,573,476,2.7,"157,500",United States
+Koenigsegg,Jesko,2021,5,1280,1015,2.5,"2,800,000",Sweden
+Tesla,Model S Plaid,2022,Electric,1020,1050,1.98,"139,990",United States
+Bugatti,Chiron Super Sport 300+,2022,8,1578,1180,2.3,"5,200,000",France
+McLaren,Senna,2020,4,789,590,2.7,"1,500,000",United Kingdom
+Porsche,Taycan Turbo S,2022,Electric,750,774,2.6,"185,000",Germany
+Mercedes-Benz,SLS AMG Black Series,2014,6.2,622,468,3.5,"275,000",Germany
+Lexus,LC 500,2022,5,471,398,4.4,"93,050",Japan
+Chevrolet,Camaro ZL1,2022,6.2,650,650,3.5,"65,000",United States
+Audi,RS 7 Sportback,2022,4,591,590,3.5,"114,000",Germany
+Ford,GT,2022,3.5,660,550,3,"500,000",United States
+BMW,M2 CS,2022,3,444,406,3.8,"84,595",Germany
+Porsche,Cayman GT4,2022,4,414,309,4.2,"102,550",Germany
+Lamborghini,Aventador,2022,6.5,770,531,2.8,"393,695",Italy
+Aston Martin,Vantage,2021,4,503,505,3.6,"146,000",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"96,950",United Kingdom
+Porsche,Panamera Turbo S,2021,4,620,604,2.9,"180,000",Germany
+Lamborghini,Aventador S,2022,6.5,729,507,2.9,"460,247",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS 6 Avant,2022,4,591,590,3.1,"110,045",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"192,500",United Kingdom
+BMW,M5,2022,4.4,600,553,3.2,"103,500",Germany
+Mercedes-Benz,AMG C 63 S,2021,4,503,516,3.7,"77,400",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,695",United States
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"64,195",United States
+Ford,GT,2021,3.5,660,550,3,"500,000",United States
+Nissan,370Z Nismo,2020,3.7,350,276,5,"46,815",Japan
+Porsche,Cayman GT4,2021,4,414,309,4.2,"102,550",Germany
+Audi,TT RS,2021,2.5,394,354,3.6,"67,895",Germany
+Chevrolet,Corvette Z06,2023,5.5,625,650,2.6,"85,000",United States
+Lamborghini,Urus,2022,4,641,626,3.2,"218,009",Italy
+Mercedes-Benz,AMG GT 63 S,2021,4,630,664,3.1,"162,900",Germany
+Ferrari,Portofino M,2022,3.9,612,560,3.5,"245,000",Italy
+Bugatti,Chiron,2021,8,1479,1180,2.5,"3,000,000",France
+Aston Martin,DBS Superleggera,2021,5.2,715,664,3.4,"304,995",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"100,450",United Kingdom
+Porsche,Cayman GT4,2022,4,414,309,4.2,"100,200",Germany
+Acura,NSX,2021,3.5,573,476,2.7,"157,500",United States
+Lexus,LC,2021,5,471,398,4.4,"92,950",Japan
+Alfa Romeo,Giulia Quadrifoglio,2021,2.9,505,443,3.8,"74,750",Italy
+Audi,RS7,2021,4,591,590,3.5,"114,000",Germany
+Bentley,Continental GT,2021,6,626,664,3.3,"218,400",United Kingdom
+BMW,M5,2021,4.4,600,553,3.2,"103,500",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,695",United States
+Dodge,Challenger Hellcat,2021,6.2,717,656,3.5,"70,595",United States
+Ford,GT,2022,3.5,647,550,3,"500,000",United States
+Jaguar,F-Type R,2021,5,575,516,3.5,"103,200",United Kingdom
+Lamborghini,Aventador,2021,6.5,730,509,2.9,"393,695",Italy
+McLaren,570S,2021,3.8,562,443,3.1,"203,500",United Kingdom
+Mercedes-Benz,SLS AMG,2015,6.2,583,479,3.6,"221,580",Germany
+Nissan,370Z Nismo,2020,3.7,350,276,4.7,"47,190",Japan
+Porsche,Boxster,2021,2,300,280,4.9,"62,000",Germany
+Porsche,718 Cayman,2022,2,300,280,4.9,"61,500",Germany
+Lamborghini,Aventador,2021,6.5,759,531,2.9,"393,695",Italy
+Ferrari,Roma,2021,3.9,612,561,3.3,"222,630",Italy
+Audi,RS 5,2022,2.9,444,442,3.5,"75,400",Germany
+McLaren,570S,2020,3.8,562,443,3.1,"208,000",United Kingdom
+BMW,M2,2022,3,405,406,4.2,"58,900",Germany
+Mercedes-Benz,SL,2022,3,429,384,4.9,"96,250",Germany
+Chevrolet,Camaro,2021,6.2,455,455,4,"25,000",United States
+Ford,GT,2022,3.5,660,550,3,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,5,"45,000",Japan
+Aston Martin,DBS Superleggera,2021,5.2,715,664,3.4,"307,820",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"100,450",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.7,"134,300",Italy
+Porsche,Panamera,2022,2.9,325,331,5.2,"88,550",Germany
+Lamborghini,Urus,2021,4,641,627,3.6,"218,009",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS 6,2022,4,591,590,3.5,"109,000",Germany
+McLaren,Artura,2022,3,671,531,3,"225,000",United Kingdom
+Porsche,Taycan 4S,2021,Electric (93 kWh),429,472,3.8,"103,800",Germany
+Lamborghini,Aventador S,2021,6.5,730,509,2.9,"417,650",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS 7,2022,4,591,590,3.5,"117,000",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"192,500",United Kingdom
+BMW,M4,2021,3,473,406,4,"72,800",Germany
+Mercedes-Benz,SLS AMG,2015,6.2,622,468,3.5,"228,000",Germany
+Chevrolet,Camaro SS,2021,6.2,455,455,4,"42,000",United States
+Ford,GT,2021,3.5,660,550,3,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,5,"48,000",Japan
+Aston Martin,DBS Superleggera,2021,5.2,715,664,3.2,"307,820",United Kingdom
+Lexus,LC 500,2021,5,471,398,4.4,"93,000",Japan
+Bentley,Continental GT,2021,4,626,664,3.3,"202,500",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.7,"150,980",Italy
+Tesla,Model S Plaid,2022,Electric (100 kWh),1020,1050,1.98,"131,190",United States
+Rolls-Royce,Dawn,2021,6.6,563,605,4.3,"346,300",United Kingdom
+Bugatti,Chiron Pur Sport,2021,8,1500,1180,2.3,"3,599,000",France
+McLaren,Senna,2019,4,789,590,2.7,"1,050,000",United Kingdom
+Porsche,Panamera Turbo S E-Hybrid,2021,Hybrid (4.0),690,641,3,"186,350",Germany
+Acura,NSX,2021,3.5,573,476,2.7,"157,500",United States
+Aston Martin,DB11,2021,4,503,498,3.7,"205,600",United Kingdom
+Audi,RS7,2021,4,591,590,3.5,"114,000",Germany
+Bentley,Continental GT,2021,6,626,664,3.6,"201,000",United Kingdom
+Bugatti,Chiron,2021,8,1500,1180,2.5,"3,000,000",France
+Chevrolet,Camaro ZL1,2022,6.2,650,650,3.5,"67,000",United States
+Dodge,Challenger Hellcat,2021,6.2,717,656,3.5,"64,000",United States
+Ferrari,812 Superfast,2021,6.5,789,530,2.8,"340,000",Italy
+Lamborghini,Aventador SVJ,2021,6.5,770,531,2.8,"517,770",Italy
+McLaren,600LT Spider,2021,3.8,592,457,2.8,"256,500",United Kingdom
+Mercedes-AMG,GT Black Series,2021,4,720,590,3.1,"325,000",Germany
+Nissan,400Z,2023,3,400,350,4,"40,000",Japan
+Porsche,Cayman GT4,2021,4,414,309,4.2,"101,000",Germany
+Rimac,Nevera,2021,Electric,1914,1696,1.9,"2,400,000",Croatia
+Rolls-Royce,Wraith,2021,6.8,624,605,4.4,"330,000",United Kingdom
+Tesla,Model S Plaid,2021,Electric,1020,nan,1.9,"139,990",United States
+Toyota,Supra,2021,3,382,368,3.9,"43,000",Japan
+Porsche,718 Boxster,2021,2,300,280,4.9,"62,000",Germany
+Porsche,718 Boxster,2022,2,300,280,4.9,"62,000",Germany
+Lamborghini,Aventador S,2021,6.5,730,509,2.9,"417,826",Italy
+Ferrari,SF90 Stradale,2022,4,986,590,2.5,"625,000",Italy
+Audi,RS 7,2022,4,591,590,3.5,"114,000",Germany
+McLaren,Artura,2021,3,671,531,3,"225,000",United Kingdom
+BMW,M2,2022,3,405,406,4.1,"58,900",Germany
+Mercedes-Benz,SLS AMG,2015,6.2,583,479,3.6,"221,580",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,695",United States
+Ford,GT,2022,3.5,647,550,3,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,4.8,"45,000",Japan
+Dodge,Charger Hellcat,2021,6.2,707,650,3.6,"69,995",United States
+Aston Martin,DBS Superleggera,2021,5.2,715,663,3.2,"305,000",United Kingdom
+Alfa Romeo,Giulia Quadrifoglio,2021,2.9,505,443,3.8,"75,000",Italy
+Audi,TT RS,2021,2.5,394,354,3.6,"68,000",Germany
+Bentley,Continental GT,2021,6,626,664,3.6,"203,825",United Kingdom
+BMW,M5,2022,4.4,600,553,3.2,"103,500",Germany
+Chevrolet,Corvette Stingray,2021,6.2,495,470,2.9,"58,900",United States
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"63,000",United States
+Ford,Mustang GT,2022,5,460,420,4,"45,000",United States
+Porsche,Cayman,2022,2,300,280,4.9,"59,900",Germany
+Lamborghini,Aventador,2021,6.5,770,531,2.8,"417,826",Italy
+Ferrari,Roma,2022,3.9,612,560,3.3,"222,630",Italy
+Audi,RS7,2022,4,591,590,3.5,"114,000",Germany
+McLaren,570S,2021,3.8,562,443,2.7,"204,995",United Kingdom
+BMW,M4,2022,3,473,406,4.1,"71,800",Germany
+Mercedes-Benz,SLS AMG,2021,6.2,622,468,3.5,"243,600",Germany
+Chevrolet,Camaro SS,2021,6.2,455,455,4,"42,000",United States
+Ford,GT,2022,3.5,660,550,2.8,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,5,"47,190",Japan
+Porsche,Panamera,2022,2.9,325,331,5.4,"88,550",Germany
+Lamborghini,Urus,2021,4,641,627,3.2,"218,000",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS6,2022,4,591,590,3.5,"113,000",Germany
+McLaren,Artura,2021,3,671,531,3,"225,000",United Kingdom
+BMW,M2,2022,3,405,406,4,"58,900",Germany
+Mercedes-Benz,GT 63,2021,4,577,590,3.3,"161,200",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"63,000",United States
+Aston Martin,DBS Superleggera,2021,5.2,715,663,3.2,"310,000",United Kingdom
+Bugatti,Chiron,2022,8,1500,1180,2.4,"3,000,000",France
+Koenigsegg,Jesko,2021,5,1280,1106,2.5,"2,800,000",Sweden
+Pagani,Huayra,2021,6,764,737,3,"2,600,000",Italy
+Rimac,C_Two,2022,nan,1914,1696,1.85,"2,400,000",Croatia
+McLaren,Senna,2021,4,789,590,2.7,"1,000,000",United Kingdom
+Porsche,918 Spyder,2015,4.6,887,944,2.2,"1,800,000",Germany
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Lamborghini,Aventador SVJ,2020,6.5,759,531,2.8,"517,000",Italy
+Audi,RS 6 Avant,2021,4,591,590,3.5,"110,000",Germany
+Bentley,Continental GT Speed,2022,6,650,664,3.5,"300,000",United Kingdom
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"68,000",United States
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"65,000",United States
+Ford,GT,2021,3.5,660,550,2.9,"500,000",United States
+Lexus,LC 500,2022,5,471,398,4.4,"92,000",Japan
+Lotus,Evija,2022,nan,1972,1254,2.5,"2,700,000",United Kingdom
+Mercedes-AMG,GT Black Series,2021,4,720,590,3.1,"330,000",Germany
+Aston Martin,DB11,2021,4,503,513,3.9,"205,000",United Kingdom
+Bentley,Continental GT,2022,4,542,568,3.9,"229,000",United Kingdom
+Jaguar,F-Type,2022,2,296,295,5.4,"62,750",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"100,000",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.7,"135,000",Italy
+Porsche,Boxster,2022,2,300,280,4.9,"63,000",Germany
+Alfa Romeo,4C,2020,1.8,237,258,4.2,"67,150",Italy
+Chevrolet,Camaro,2022,6.2,455,455,4,"62,195",United States
+Dodge,Challenger,2022,3.6,305,268,6.4,"28,000",United States
+Ford,GT,2022,3.5,660,550,2.9,"500,000",United States
+Audi,RS7,2022,4,591,590,3.5,"115,045",Germany
+BMW,M4,2022,3,473,406,4.1,"71,800",Germany
+Lamborghini,Aventador,2021,6.5,729,507,2.9,"393,695",Italy
+Mercedes-Benz,AMG C 63,2021,4,469,479,3.8,"69,900",Germany
+Nissan,370Z,2021,3.7,350,276,5.3,"30,090",Japan
+Porsche,Cayman,2022,2,300,280,4.9,"68,000",Germany
+BMW,i8,2022,1.5,369,184,4.2,"147,500",Germany
+Chevrolet,Corvette Stingray,2021,6.2,495,470,2.9,"58,900",United States
+Porsche,Taycan Turbo S,2022,Electric,750,774,2.6,"185,000",Germany
+Lamborghini,Aventador S,2021,6.5,729,507,2.9,"417,650",Italy
+Ferrari,SF90 Stradale,2022,4,986,590,2.5,"625,000",Italy
+Audi,RS7,2022,4,591,590,3.5,"115,000",Germany
+McLaren,GT,2022,4,620,465,3.1,"208,000",United Kingdom
+BMW,M5,2022,4.4,600,553,3.2,"103,500",Germany
+Mercedes-Benz,SLS AMG,2021,4,730,590,2.9,"250,000",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"63,000",United States
+Ford,GT,2022,3.5,660,550,2.8,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,5,"46,100",Japan
+Porsche,Panamera Turbo S,2022,4,630,604,3.1,"180,000",Germany
+Lamborghini,Urus,2021,4,641,627,3.2,"218,000",Italy
+Ferrari,Portofino,2022,3.9,591,561,3.4,"250,000",Italy
+Audi,TT RS,2022,2.5,394,354,3.6,"70,000",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"200,000",United Kingdom
+BMW,i8,2022,Hybrid,369,184,4.2,"148,500",Germany
+Porsche,718 Cayman,2022,2,300,280,4.9,"61,500",Germany
+Lamborghini,Aventador,2021,6.5,770,531,2.8,"417,826",Italy
+Ferrari,Portofino,2022,3.9,612,561,3.3,"245,000",Italy
+Audi,TT RS,2022,2.5,394,354,3.6,"67,800",Germany
+McLaren,GT,2022,4,620,465,3.1,"211,300",United Kingdom
+BMW,M4,2022,3,473,406,4.1,"71,800",Germany
+Mercedes-Benz,SLS AMG,2015,6.2,622,468,3.5,"222,500",Germany
+Chevrolet,Camaro SS,2022,6.2,455,455,4,"43,995",United States
+Ford,GT,2022,3.5,660,550,2.9,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,4.8,"45,790",Japan
+Porsche,911 Turbo S,2022,3.8,640,590,2.6,"208,000",Germany
+McLaren,765LT,2021,4,755,590,2.8,"358,000",United Kingdom
+Lamborghini,Urus,2021,4,641,627,3.6,"218,009",Italy
+Mercedes-AMG,GT Black Series,2021,4,720,590,3.1,"325,000",Germany
+BMW,M5 Competition,2022,4.4,617,553,3.1,"103,500",Germany
+Audi,RS7,2022,4,591,590,3.5,"115,000",Germany
+Aston Martin,Vantage,2022,4,503,505,3.5,"152,995",United Kingdom
+Ferrari,F8 Spider,2021,3.9,710,568,2.9,"274,280",Italy
+Lexus,LC 500,2022,5,471,398,4.4,"102,550",Japan
+Porsche,Taycan,2022,nan,469,479,3.8,"79,900",Germany
+Lamborghini,Aventador SVJ,2021,6.5,759,531,2.8,"517,770",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS6 Avant,2021,4,591,590,3.5,"109,000",Germany
+McLaren,600LT Spider,2021,3.8,592,457,2.8,"256,500",United Kingdom
+BMW,M4,2022,3,473,406,3.8,"71,800",Germany
+Mercedes-Benz,AMG GT R,2021,4,577,516,3.5,"180,000",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,695",United States
+Ford,GT,2022,3.5,660,550,3,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,5,"48,000",Japan
+Porsche,Panamera Turbo S E-Hybrid,2021,4,690,642,3,"190,000",Germany
+Lamborghini,Urus,2021,4,641,627,3.5,"218,000",Italy
+Ferrari,Portofino M,2021,3.9,612,561,3.4,"235,000",Italy
+Audi,TT RS,2022,2.5,394,354,3.6,"67,600",Germany
+McLaren,Artura,2022,3,671,531,3,"225,000",United Kingdom
+BMW,M2 CS,2022,3,444,406,3.8,"84,595",Germany
+Mercedes-Benz,SLS AMG Black Series,2021,6.2,622,468,3.5,"335,000",Germany
+Chevrolet,Camaro SS,2021,6.2,455,455,4,"42,000",United States
+Porsche,718 Boxster,2022,2,300,280,4.9,"63,000",Germany
+Lamborghini,Aventador SVJ,2020,6.5,759,531,2.8,"573,966",Italy
+Ferrari,SF90 Stradale,2022,4,986,590,2.5,"625,000",Italy
+Audi,TT RS Coupe,2022,2.5,394,354,3.5,"68,000",Germany
+McLaren,GT,2020,4,612,465,3.1,"210,000",United Kingdom
+BMW,Z4 Roadster,2022,2,255,295,5.2,"50,000",Germany
+Mercedes-Benz,SLS AMG,2015,6.2,622,468,3.6,"200,000",Germany
+Chevrolet,Camaro SS Convertible,2022,6.2,455,455,4,"49,000",United States
+Ford,GT,2021,3.5,660,550,2.9,"500,000",United States
+Nissan,370Z Coupe,2020,3.7,332,270,5,"30,090",Japan
+Aston Martin,Vantage,2021,4,503,505,3.6,"142,086",United Kingdom
+Bentley,Continental GT,2022,6,626,664,3.3,"225,000",United Kingdom
+Bugatti,Chiron,2021,8,1479,1180,2.4,"3,000,000",France
+Dodge,Challenger SRT Hellcat,2022,6.2,717,656,3.5,"68,000",United States
+Jaguar,F-Type,2022,2,296,295,5.4,"63,700",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"100,000",United Kingdom
+Maserati,GranTurismo,2022,4.7,454,384,4.7,"150,980",Italy
+Aston Martin,DBS Superleggera,2021,5.2,715,664,3.2,"304,995",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"98,395",United Kingdom
+Porsche,Panamera Turbo S E-Hybrid,2021,4,689,642,3,"190,000",Germany
+Lamborghini,Aventador SVJ,2021,6.5,759,531,2.8,"517,000",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS7,2022,4,591,590,3.5,"117,000",Germany
+Mercedes-Benz,S63 AMG,2021,4,603,664,3.4,"168,000",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"64,500",United States
+Ford,GT,2021,3.5,660,550,2.8,"500,000",United States
+Nissan,370Z Nismo,2021,3.7,350,276,4.7,"46,000",Japan
+Porsche,718 Cayman GT4,2022,4,414,309,4.2,"102,000",Germany
+Mercedes-AMG,C63 S Coupe,2021,4,503,516,3.7,"77,500",Germany
+Aston Martin,Vantage,2021,4,503,505,3.5,"147,000",United Kingdom
+McLaren,570S,2021,3.8,562,443,3.1,"193,000",United Kingdom
+BMW,M5,2022,4.4,600,553,3.2,"103,500",Germany
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"64,000",United States
+Lexus,LC 500,2021,5,471,398,4.4,"92,950",Japan
+Mercedes-AMG,GT 63 S,2021,4,630,664,3.1,"162,000",Germany
+Audi,TT RS,2021,2.5,394,354,3.6,"67,600",Germany
+Acura,NSX,2021,3.5,573,476,2.9,"157,500",United States
+Porsche,Cayman GT4,2021,4,414,309,4.2,"102,000",Germany
+Lamborghini,Aventador S,2021,6.5,730,509,2.9,"417,826",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS 5,2022,2.9,444,443,3.5,"76,700",Germany
+McLaren,570S Spider,2020,3.8,562,443,3.1,"208,800",United Kingdom
+BMW,M2 Competition,2022,3,405,406,4.2,"58,900",Germany
+Mercedes-Benz,C 63 AMG,2022,4,469,479,3.9,"69,000",Germany
+Chevrolet,Camaro SS,2021,6.2,455,455,4,"42,000",United States
+Ford,Mustang GT,2022,5,460,420,4.5,"43,000",United States
+Dodge,Challenger R/T,2021,5.7,372,400,5.1,"35,000",United States
+Aston Martin,Vantage,2021,4,503,505,3.6,"151,000",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"105,000",United Kingdom
+Alfa Romeo,4C Spider,2020,1.7,237,258,4.1,"69,000",Italy
+Jaguar,F-Type,2022,2,296,295,5.4,"62,500",United Kingdom
+Tesla,Roadster,2022,Electric,1000,737,1.9,"200,000",United States
+Koenigsegg,Jesko,2022,5,1600,1106,2.5,"3,000,000",Sweden
+Bugatti,Chiron Super Sport 300+,2021,8,1578,1180,2.4,"5,200,000",France
+Rimac,Nevera,2021,Electric,1914,1696,1.85,"2,400,000",Croatia
+Porsche,Cayman GT4,2022,4,414,309,4.2,"102,100",Germany
+Chevrolet,Camaro ZL1,2022,6.2,650,650,3.5,"63,000",United States
+Aston Martin,Vantage,2021,4,503,505,3.5,"142,086",United Kingdom
+Alfa Romeo,Giulia Quadrifoglio,2022,2.9,505,443,3.8,"83,250",Italy
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"65,000",United States
+Lexus,LC 500,2022,5,471,398,4.4,"93,050",Japan
+Audi,RS 7 Sportback,2021,4,591,590,3.5,"114,000",Germany
+BMW,M4 Competition,2022,3,503,479,3.8,"74,700",Germany
+Mercedes-Benz,C63 S AMG,2022,4,503,516,3.9,"77,600",Germany
+Ford,GT,2022,3.5,660,550,2.9,"500,000",United States
+McLaren,GT,2021,4,620,465,3.1,"210,000",United Kingdom
+Porsche,Panamera Turbo S,2022,4,630,604,2.9,"181,100",Germany
+Lamborghini,Aventador S,2021,6.5,730,507,2.9,"417,826",Italy
+Aston Martin,DBS Superleggera,2022,5.2,715,664,3.2,"329,100",United Kingdom
+Audi,TT RS,2022,2.5,394,354,3.6,"67,600",Germany
+Mercedes-Benz,AMG C43 Coupe,2021,3,385,384,4.5,"59,900",Germany
+BMW,i8,2022,1.5,369,184,4.2,"147,500",Germany
+Chevrolet,Corvette Stingray,2021,6.2,490,465,2.9,"59,900",United States
+Porsche,Taycan,2022,2.0 (Electric),469,263,3.8,"81,250",Germany
+Lamborghini,Aventador,2021,6.5,730,509,2.9,"517,000",Italy
+Ferrari,Roma,2021,3.9,611,560,3.3,"222,620",Italy
+Audi,RS7,2022,4,591,590,3.5,"115,000",Germany
+McLaren,GT,2021,4,612,465,3.1,"210,000",United Kingdom
+BMW,M2,2022,3,405,406,4.2,"58,900",Germany
+Mercedes-Benz,C63 AMG,2021,4,469,479,3.9,"77,000",Germany
+Chevrolet,Camaro SS,2021,6.2,455,455,4.1,"43,995",United States
+Ford,Mustang Mach 1,2021,5,480,420,4.1,"51,720",United States
+Nissan,370Z Nismo,2021,3.7,350,276,4.8,"46,610",Japan
+Porsche,Panamera,2022,2.9,325,331,5.3,"88,550",Germany
+Lamborghini,Urus,2021,4,641,627,3.6,"218,009",Italy
+Ferrari,SF90 Stradale,2021,4.0 (Hybrid),986,590,2.5,"625,000",Italy
+Audi,RS6,2022,4,591,590,3.5,"120,000",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"192,500",United Kingdom
+BMW,M4,2022,3,503,479,3.8,"74,000",Germany
+Mercedes-Benz,AMG A45,2021,2,382,354,4,"50,000",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"63,995",United States
+Acura,NSX,2021,3.5,573,476,2.7,"157,500",United States
+Aston Martin,Vantage,2021,4,503,505,3.5,"142,086",United Kingdom
+Bentley,Continental GT,2021,4,542,568,3.3,"202,500",United Kingdom
+Bugatti,Chiron,2022,8,1479,1180,2.4,"2,900,000",France
+Ferrari,F8 Tributo,2022,3.9,710,568,2.8,"275,000",Italy
+Lamborghini,Aventador,2021,6.5,730,509,2.9,"517,000",Italy
+McLaren,GT,2021,4,612,465,3.1,"201,500",United Kingdom
+Mercedes-Benz,AMG GT R,2021,4,577,516,3.5,"183,000",Germany
+Porsche,Taycan Turbo S,2021,Electric,750,774,2.6,"185,000",Germany
+Audi,RS7,2021,4,591,590,3.5,"114,000",Germany
+BMW,M4,2021,3,473,406,4.1,"71,800",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"63,000",United States
+Dodge,Challenger SRT Hellcat Redeye,2022,6.2,797,707,3.5,"80,190",United States
+Ford,GT,2022,3.5,660,550,2.8,"500,000",United States
+Jaguar,F-Type,2021,3,380,339,4.4,"62,750",United Kingdom
+Lexus,LC 500,2021,5,471,398,4.4,"92,000",Japan
+Lotus,Evija,2021,Electric,2000,1254,2.8,"2,800,000",United Kingdom
+Maserati,GranTurismo,2021,Electric,550,nan,2.8,"200,000",Italy
+Nissan,370Z,2021,3.7,332,270,5,"30,090",Japan
+Rolls-Royce,Ghost,2021,6.8,563,627,4.6,"332,500",United Kingdom
+Porsche,Taycan,2021,2,402,254,5.1,"81,250",Germany
+Aston Martin,DB11,2021,4,630,516,3.7,"198,995",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"105,000",United Kingdom
+Acura,NSX,2022,3.5,573,476,2.7,"157,500",United States
+Tesla,Roadster,2022,0,"10,000","7,376",1.9,"200,000",United States
+Chevrolet,Camaro,2022,6.2,455,455,4,"25,000",United States
+Dodge,Charger,2021,6.2,797,707,3.3,"72,000",United States
+Jaguar,F-Type,2021,3,380,339,4.9,"62,750",United Kingdom
+Lexus,LC 500,2021,5,471,398,4.4,"93,000",Japan
+BMW,M4,2022,3,473,406,4.1,"71,800",Germany
+Ford,GT,2021,3.5,660,550,2.9,"500,000",United States
+Maserati,GranTurismo,2021,4.7,454,384,4.7,"150,980",Italy
+McLaren,600LT,2021,3.8,592,457,2.8,"256,500",United Kingdom
+Mercedes-Benz,SLS AMG,2021,6.2,622,468,3.6,"254,995",Germany
+Nissan,370Z,2021,3.7,332,270,5.2,"30,000",Japan
+Audi,RS 7,2021,4,591,590,3.4,"114,000",Germany
+Bentley,Continental GT,2021,4,542,568,3.9,"220,000",United Kingdom
+Bugatti,Chiron,2021,8,"1,500","1,180",2.4,"3,000,000",France
+Porsche,Cayman,2022,2,300,280,4.5,"59,900",Germany
+Aston Martin,Vantage,2021,4,503,505,3.5,"147,000",United Kingdom
+Alfa Romeo,4C Spider,2020,1.7,237,258,4.1,"67,150",Italy
+Audi,RS 5,2022,2.9,444,443,3.5,"75,100",Germany
+BMW,M2,2022,3,405,406,4,"58,900",Germany
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"60,695",United States
+Ferrari,F8 Spider,2022,3.9,710,568,2.9,"274,390",Italy
+Jaguar,F-Type,2021,3,296,295,5.4,"64,700",United Kingdom
+Lamborghini,Aventador,2021,6.5,759,531,2.9,"517,770",Italy
+Lexus,LC 500,2022,5,471,398,4.4,"92,950",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"99,990",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.7,"150,800",Italy
+McLaren,GT,2021,4,612,465,3.1,"210,000",United Kingdom
+Mercedes-Benz,AMG C 63,2021,4,469,479,3.8,"67,600",Germany
+Nissan,370Z Nismo,2021,3.7,350,276,4.5,"45,790",Japan
+Porsche,Panamera,2022,2.9,325,331,5.3,"88,800",Germany
+Subaru,WRX STI,2021,2.5,310,290,5.2,"38,170",Japan
+Tesla,Roadster,2022,nan,"10,000+",nan,1.9,"200,000",United States
+Porsche,718 Cayman,2022,2,300,280,4.9,"61,500",Germany
+Lamborghini,Aventador,2021,6.5,729,509,2.9,"393,695",Italy
+Ferrari,SF90 Stradale,2022,4,986,590,2.5,"625,000",Italy
+Audi,RS5 Coupe,2022,2.9,444,443,3.5,"76,350",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"202,000",United Kingdom
+BMW,M2,2022,3,405,406,4,"58,900",Germany
+Mercedes-Benz,SL,2022,3,429,384,4.4,"96,000",Germany
+Chevrolet,Camaro,2021,6.2,455,455,4,"25,000",United States
+Ford,GT,2022,3.5,660,550,2.8,"500,000",United States
+Nissan,370Z,2021,3.7,332,270,5.3,"33,000",Japan
+Alfa Romeo,Giulia Quadrifoglio,2021,2.9,505,443,3.8,"75,250",Italy
+Aston Martin,DB11,2022,4,630,516,3.7,"201,495",United Kingdom
+Bentley,Continental GT,2021,6,626,664,3.3,"201,000",United Kingdom
+Dodge,Challenger,2021,6.4,485,475,3.8,"62,000",United States
+Jaguar,F-Type R,2022,5,575,516,3.5,"103,200",United Kingdom
+Lexus,LC 500,2022,5,471,398,4.4,"92,950",Japan
+Lotus,Evora GT,2021,3.5,416,317,3.8,"99,000",United Kingdom
+Maserati,GranTurismo,2021,4.7,454,384,4.7,"150,000",Italy
+Porsche,Cayman GT4,2021,4,414,309,4.2,"102,500",Germany
+Aston Martin,Vantage,2022,4,503,505,3.5,"149,995",United Kingdom
+Dodge,Charger SRT Hellcat,2022,6.2,717,650,3.5,"78,595",United States
+Audi,RS 7,2021,4,591,590,3.5,"114,000",Germany
+Chevrolet,Camaro SS,2022,6.2,455,455,4.1,"37,500",United States
+Ford,Mustang GT,2022,5,460,420,4,"38,500",United States
+Jaguar,F-Type R,2022,5,575,516,3.5,"103,200",United Kingdom
+Lexus,LC 500,2022,5,471,398,4.4,"92,950",Japan
+McLaren,570S,2021,3.8,562,443,3.1,"208,800",United Kingdom
+Mercedes-Benz,AMG C63,2022,4,469,479,3.8,"71,450",Germany
+Nissan,370Z Nismo,2021,3.7,350,276,4.9,"47,820",Japan
+Porsche,Panamera GTS,2021,4,473,457,3.9,"134,150",Germany
+Audi,TT RS,2022,2.5,394,354,3.6,"67,600",Germany
+BMW,M4,2021,3,473,406,3.8,"71,800",Germany
+Ferrari,F8 Tributo,2021,3.9,710,568,2.8,"274,280",Italy
+Lamborghini,Aventador,2021,6.5,770,531,2.9,"393,695",Italy
+McLaren,GT,2021,4,612,465,3.1,"250,000",United Kingdom
+Mercedes-Benz,AMG GT 4-Door Coupe,2021,4,630,664,3.1,"171,200",Germany
+Aston Martin,DBS Superleggera,2022,5.2,715,663,3.4,"321,000",United Kingdom
+Lotus,Evora GT,2021,3.5,416,317,3.8,"100,500",United Kingdom
+Porsche,Taycan Turbo S,2021,Electric,750,774,2.6,"185,000",Germany
+McLaren,570S,2021,3.8,562,443,3.1,"195,000",United Kingdom
+Lamborghini,Aventador SVJ,2021,6.5,759,531,2.8,"517,770",Italy
+Ford,GT,2021,3.5,660,550,3,"500,000",United States
+Audi,RS7 Sportback,2022,4,591,590,3.5,"114,000",Germany
+BMW,M4,2022,3,473,406,4.1,"72,800",Germany
+Mercedes-AMG,C63 S,2022,4,503,516,3.7,"78,100",Germany
+Chevrolet,Camaro ZL1,2021,6.2,650,650,3.5,"63,000",United States
+Dodge,Charger Hellcat,2021,6.2,717,650,3.6,"70,000",United States
+Alfa Romeo,Giulia Quadrifoglio,2021,2.9,505,443,3.8,"78,450",Italy
+Tesla,Model S Plaid,2022,Electric,"1,020","1,050",1.9,"141,190",United States
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Porsche,Panamera Turbo S E-Hybrid,2021,Hybrid,689,642,3,"190,000",Germany
+McLaren,Artura,2022,3,671,531,3,"225,000",United Kingdom
+Lamborghini,Urus,2021,4,641,627,3.6,"222,000",Italy
+Ford,Mustang Mach 1,2021,5,480,420,4,"52,915",United States
+Porsche,911,2022,3,379,331,4,"101,200",Germany
+Lamborghini,Huracan,2021,5.2,630,443,2.8,"274,390",Italy
+Ferrari,488 GTB,2022,3.9,661,561,3,"333,750",Italy
+Audi,R8,2022,5.2,562,406,3.2,"142,700",Germany
+McLaren,720S,2021,4,710,568,2.7,"298,000",United Kingdom
+BMW,M8,2022,4.4,617,553,3.1,"130,000",Germany
+Mercedes-Benz,AMG GT,2021,4,523,494,3.8,"118,500",Germany
+Chevrolet,Corvette,2021,6.2,490,465,2.8,"59,900",United States
+Ford,Mustang Shelby GT500,2022,5.2,760,625,3.5,"81,000",United States
+Nissan,GT-R Nismo,2021,3.8,600,481,2.5,"212,000",Japan
+Dodge,Challenger SRT Hellcat,2021,6.2,717,656,3.5,"64,195",United States
+Aston Martin,Vantage,2021,4,503,505,3.6,"147,000",United Kingdom
+Bugatti,Chiron,2022,8,1500,1180,2.5,"3,900,000",France
+Koenigsegg,Jesko,2022,5,1280,1015,2.5,"3,000,000",Sweden
+Pagani,Huayra,2021,6,764,740,2.8,"2,600,000",Italy
+Rimac,Nevera,2022,Electric,1914,1696,1.85,"2,400,000",Croatia
+Lotus,Evija,2022,Electric,1973,1254,2.5,"2,000,000",United Kingdom
+Pininfarina,Battista,2021,Electric,1872,1696,1.9,"2,500,000",Italy
+Maserati,MC20,2021,3,621,538,2.9,"210,000",Italy
+Porsche,Cayman,2021,2,300,280,5.1,"59,900",Germany
+Lamborghini,Aventador,2021,6.5,730,509,2.9,"393,695",Italy
+Ferrari,SF90 Stradale,2021,4,986,590,2.5,"625,000",Italy
+Audi,RS 5,2021,2.9,444,443,3.5,"75,100",Germany
+McLaren,GT,2022,4,612,465,3.1,"210,000",United Kingdom
+BMW,M2,2021,3,405,406,4,"58,900",Germany
+Mercedes-Benz,SLS AMG,2021,6.3,622,468,3.6,"254,500",Germany
+Chevrolet,Camaro,2021,6.2,455,455,4,"25,000",United States
+Ford,Mustang,2021,2.3,310,350,5.3,"27,205",United States
+Nissan,370Z,2021,3.7,332,270,5.1,"30,090",Japan
+Aston Martin,Vantage,2021,4,503,505,3.6,"146,000",United Kingdom
+Bugatti,Chiron,2021,8,1479,1180,2.4,"3,000,000",France
+Koenigsegg,Jesko,2022,5,1280,1106,2.5,"3,000,000",Sweden
+Lotus,Evija,2021,Electric Motor,1972,1254,2,"2,000,000",United Kingdom
+McLaren,Senna,2021,4,789,590,2.7,"1,000,000",United Kingdom
+Pagani,Huayra,2021,6,764,738,3,"2,600,000",Italy
+Rimac,Nevera,2021,Electric Motor,1888,1696,1.85,"2,400,000",Croatia
