@@ -9,6 +9,10 @@
 <body>
     <div class="container">
         <h1 class="title">Supercardle</h1>
+        <div class="day-info">
+            <div id="day-number">Day #1</div>
+            <div id="countdown-timer">00:00:00</div>
+        </div>
         <div class="clue-image">
             <img id="clue" src="/clue.png" alt="Car clue image">
         </div>
@@ -105,6 +109,17 @@
             </div>
         </div>
     </div>
+    
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h2 id="modal-title">Game Over!</h2>
+            <img id="full-car-image" src="/full-image.png" alt="Full car image">
+            <p id="car-name-display"></p>
+        </div>
+    </div>
+    
     <script src="/script.js"></script>
 </body>
 </html>

@@ -1,5 +1,9 @@
 import pandas as pd
 import os
+from datetime import datetime, timezone, timedelta
+import pytz
+import json
+import pickle
 
 basepath = os.path.dirname(os.path.realpath(__file__))
 base = lambda p: os.path.join(basepath, p)
@@ -14,8 +18,52 @@ from PIL import Image
 import requests
 from io import BytesIO
 
-def chooseCar() -> dict:
+# Define EST timezone
+EST = pytz.timezone('America/New_York')
 
+EPOCH_START = datetime(2026, 1, 20, tzinfo=EST)
+
+def get_current_day_number():
+    """Get the current day number since epoch"""
+    now = datetime.now(EST)
+    delta = now - EPOCH_START
+    return delta.days + 1
+
+def get_time_until_next_day():
+    """Get seconds until next midnight EST"""
+    now = datetime.now(EST)
+    next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+    delta = next_midnight - now
+    return int(delta.total_seconds())
+
+def load_cached_car():
+    """Load cached car data if it exists and is for today"""
+    cache_file = base("car_cache.pkl")
+    if os.path.exists(cache_file):
+        try:
+            with open(cache_file, 'rb') as f:
+                cached_data = pickle.load(f)
+                if cached_data['day_number'] == get_current_day_number():
+                    return cached_data
+        except:
+            pass
+    return None
+
+def save_car_cache(car_data, img_data):
+    """Save car data to cache"""
+    cache_file = base("car_cache.pkl")
+    cache_data = {
+        'day_number': get_current_day_number(),
+        'car': car_data,
+        'img_data': img_data
+    }
+    with open(cache_file, 'wb') as f:
+        pickle.dump(cache_data, f)
+
+def chooseCar() -> dict:
+    day_number = get_current_day_number()
+    random.seed(day_number)
+    
     r = None
     car = None
 
@@ -37,16 +85,34 @@ def chooseCar() -> dict:
 
     return car
 
-car = chooseCar()
-response = requests.get(car["url"])
-img = Image.open(BytesIO(response.content))
+# Try to load from cache first
+cached = load_cached_car()
+if cached:
+    car = cached['car']
+    img = Image.open(BytesIO(cached['img_data']))
+else:
+    car = chooseCar()
+    response = requests.get(car["url"])
+    img_data = response.content
+    img = Image.open(BytesIO(img_data))
+    save_car_cache(car, img_data)
+
 greyscale = img.convert("L")
 width, height = greyscale.size
+
+day_number = get_current_day_number()
+random.seed(day_number + 1000)
 clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, FileResponse, StreamingResponse
 from io import BytesIO
+import math
+
+def safe_value(val):
+    if isinstance(val, float) and math.isnan(val):
+        return None
+    return val
 
 app = FastAPI()
 
@@ -68,6 +134,13 @@ async def get_cars():
     cars = [f"{doc['Car Make']} {doc['Car Model']}" for doc in documents]
     return cars
 
+@app.get("/day-info")
+async def get_day_info():
+    return {
+        "day_number": get_current_day_number(),
+        "seconds_until_next": get_time_until_next_day()
+    }
+
 @app.get("/car/{car_name}")
 async def get_car_details(car_name: str):
     # Find the car in documents
@@ -75,12 +148,12 @@ async def get_car_details(car_name: str):
         full_name = f"{doc['Car Make']} {doc['Car Model']}"
         if full_name.lower() == car_name.lower():
             return {
-                "year": doc["Year"],
-                "engine_size": doc["Engine Size (L)"],
-                "horsepower": doc["Horsepower"],
-                "torque": doc["Torque (lb-ft)"],
-                "price": doc["Price (in USD)"],
-                "country": doc["Country"]
+                "year": safe_value(doc["Year"]),
+                "engine_size": safe_value(doc["Engine Size (L)"]),
+                "horsepower": safe_value(doc["Horsepower"]),
+                "torque": safe_value(doc["Torque (lb-ft)"]),
+                "price": safe_value(doc["Price (in USD)"]),
+                "country": safe_value(doc["Country"])
             }
     return None
 
@@ -89,18 +162,25 @@ async def get_correct_car():
     return {
         "name": f"{car['Car Make']} {car['Car Model']}",
         "make": car["Car Make"],
-        "year": car["Year"],
-        "engine_size": car["Engine Size (L)"],
-        "horsepower": car["Horsepower"],
-        "torque": car["Torque (lb-ft)"],
-        "price": car["Price (in USD)"],
-        "country": car["Country"]
+        "year": safe_value(car["Year"]),
+        "engine_size": safe_value(car["Engine Size (L)"]),
+        "horsepower": safe_value(car["Horsepower"]),
+        "torque": safe_value(car["Torque (lb-ft)"]),
+        "price": safe_value(car["Price (in USD)"]),
+        "country": safe_value(car["Country"])
     }
 
 @app.get("/clue.png")
 async def get_clue():
     img_byte_arr = BytesIO()
     clue.save(img_byte_arr, format='PNG')
+    img_byte_arr.seek(0)
+    return StreamingResponse(img_byte_arr, media_type="image/png")
+
+@app.get("/full-image.png")
+async def get_full_image():
+    img_byte_arr = BytesIO()
+    img.save(img_byte_arr, format='PNG')
     img_byte_arr.seek(0)
     return StreamingResponse(img_byte_arr, media_type="image/png")
 

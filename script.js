@@ -2,6 +2,7 @@ let carList = [];
 let currentRow = 0;
 const maxGuesses = 7;
 let correctCar = null;
+let countdownInterval = null;
 
 // Fetch the car list from the server
 fetch('/cars')
@@ -16,6 +17,42 @@ fetch('/correct-car')
     .then(data => {
         correctCar = data;
     });
+
+// Fetch day info and start countdown
+fetch('/day-info')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('day-number').textContent = `Day #${data.day_number}`;
+        startCountdown(data.seconds_until_next);
+    });
+
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+function startCountdown(initialSeconds) {
+    let secondsLeft = initialSeconds;
+    const timerElement = document.getElementById('countdown-timer');
+    
+    function updateTimer() {
+        if (secondsLeft <= 0) {
+            clearInterval(countdownInterval);
+            timerElement.textContent = 'Refresh!';
+            timerElement.classList.add('expired');
+            timerElement.style.cursor = 'pointer';
+            timerElement.onclick = () => location.reload();
+        } else {
+            timerElement.textContent = formatTime(secondsLeft);
+            secondsLeft--;
+        }
+    }
+    
+    updateTimer();
+    countdownInterval = setInterval(updateTimer, 1000);
+}
 
 const input = document.getElementById('car-input');
 const suggestionsDiv = document.getElementById('suggestions');
@@ -199,16 +236,31 @@ document.addEventListener('click', function(e) {
 
 // Handle enter button click
 enterBtn.addEventListener('click', async function() {
-    if (isValidCar(input.value) && currentRow < maxGuesses) {
-        await displayCarStats(input.value, currentRow);
-        currentRow++;
-        input.value = '';
+    if (isValidCar(input.value) && currentRow < maxGuesses && !enterBtn.disabled) {
+        // Disable button immediately to prevent double-clicks
         enterBtn.disabled = true;
+        input.disabled = true;
+        
+        const guessedCar = input.value;
+        await displayCarStats(guessedCar, currentRow);
+        currentRow++;
+        
+        // Check if the guess was correct
+        const isCorrect = guessedCar.toLowerCase() === correctCar.name.toLowerCase();
+        
+        input.value = '';
         suggestionsDiv.classList.remove('active');
         
-        if (currentRow >= maxGuesses) {
-            input.disabled = true;
-            enterBtn.disabled = true;
+        if (isCorrect) {
+            // Won the game - keep disabled
+            setTimeout(() => showGameOverModal(true), 1000);
+        } else if (currentRow >= maxGuesses) {
+            // Lost the game - keep disabled
+            setTimeout(() => showGameOverModal(false), 1000);
+        } else {
+            // Re-enable input for next guess
+            input.disabled = false;
+            // Button stays disabled until valid input
         }
     }
 });
@@ -218,4 +270,25 @@ input.addEventListener('keypress', function(e) {
     if (e.key === 'Enter' && !enterBtn.disabled) {
         enterBtn.click();
     }
+});
+
+function showGameOverModal(won) {
+    const modal = document.getElementById('game-over-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const carNameDisplay = document.getElementById('car-name-display');
+    
+    if (won) {
+        modalTitle.textContent = 'You won! 🎉';
+    } else {
+        modalTitle.textContent = 'Game Over!';
+    }
+    
+    carNameDisplay.textContent = correctCar.name;
+    modal.classList.add('show');
+}
+
+// Close modal functionality
+document.getElementById('close-modal').addEventListener('click', function() {
+    const modal = document.getElementById('game-over-modal');
+    modal.classList.remove('show');
 });
