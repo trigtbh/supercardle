@@ -38,3 +38,38 @@ img = Image.open(BytesIO(response.content))
 greyscale = img.convert("L")
 width, height = greyscale.size
 clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
+
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse, FileResponse, StreamingResponse
+from io import BytesIO
+
+app = FastAPI()
+
+@app.get("/", response_class=HTMLResponse)
+async def get_index():
+    with open(base("index.html"), "r") as f:
+        return f.read()
+
+@app.get("/index.css")
+async def get_css():
+    return FileResponse(base("index.css"))
+
+@app.get("/script.js")
+async def get_script():
+    return FileResponse(base("script.js"))
+
+@app.get("/cars")
+async def get_cars():
+    cars = [f"{doc['Car Make']} {doc['Car Model']}" for doc in documents]
+    return cars
+
+@app.get("/clue.png")
+async def get_clue():
+    img_byte_arr = BytesIO()
+    clue.save(img_byte_arr, format='PNG')
+    img_byte_arr.seek(0)
+    return StreamingResponse(img_byte_arr, media_type="image/png")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

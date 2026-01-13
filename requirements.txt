@@ -2,3 +2,5 @@ pandas
 ddgs
 pillow
 requests
+fastapi 
+uvicorn
