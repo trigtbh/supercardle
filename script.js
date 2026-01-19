@@ -41,14 +41,14 @@ function saveGameState() {
 }
 
 // Fetch the car list from the server
-fetch('/cars')
+fetch('cars')
     .then(response => response.json())
     .then(data => {
         carList = data;
     });
 
 // Fetch day info and start countdown
-fetch('/day-info')
+fetch('day-info')
     .then(response => response.json())
     .then(data => {
         document.getElementById('day-number').textContent = `Day #${data.day_number}`;
@@ -130,7 +130,7 @@ function isValidCar(value) {
 
 async function displayCarStats(carName, rowIndex, skipAnimations = false) {
     // Check the guess with the server
-    const response = await fetch('/check-guess', {
+    const response = await fetch('check-guess', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -480,7 +480,7 @@ async function revealColumn(columnName) {
     if (hintsUsed >= hintsAvailable) return;
     
     // Fetch the correct value for this column from server
-    const response = await fetch('/reveal-hint', {
+    const response = await fetch('reveal-hint', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -567,7 +567,7 @@ function showGameOverModal(won) {
     
     // Fetch the correct answer from server if not already known
     if (!correctCarName) {
-        fetch('/reveal-answer', {
+        fetch('reveal-answer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
