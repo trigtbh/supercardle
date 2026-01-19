@@ -1,8 +1,9 @@
 let carList = [];
 let currentRow = 0;
 const maxGuesses = 7;
-let correctCar = null;
 let countdownInterval = null;
+let correctCarName = null; // Stores correct car name when game ends
+let revealedCorrectValues = {}; // Stores revealed correct values for hints
 let correctColumns = new Set(); // Track which columns are fully correct
 let hintsAvailable = 0;
 let hintsUsed = 0;
@@ -46,13 +47,6 @@ fetch('/cars')
         carList = data;
     });
 
-// Fetch the correct car data
-fetch('/correct-car')
-    .then(response => response.json())
-    .then(data => {
-        correctCar = data;
-    });
-
 // Fetch day info and start countdown
 fetch('/day-info')
     .then(response => response.json())
@@ -62,7 +56,7 @@ fetch('/day-info')
         
         // Load saved game state if it exists
         const saved = loadGameState(data.day_number);
-        if (saved && correctCar) {
+        if (saved) {
             restoreGameState(saved);
         }
     });
@@ -135,11 +129,17 @@ function isValidCar(value) {
 }
 
 async function displayCarStats(carName, rowIndex, skipAnimations = false) {
-    // Fetch car details
-    const response = await fetch(`/car/${encodeURIComponent(carName)}`);
-    const carData = await response.json();
+    // Check the guess with the server
+    const response = await fetch('/check-guess', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ car_name: carName })
+    });
+    const result = await response.json();
     
-    if (!carData) return;
+    if (result.error) return;
     
     const row = gridRows[rowIndex];
     const cells = row.querySelectorAll('.grid-cell');
@@ -170,8 +170,10 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
     if (skipAnimations) {
         // No animations - set everything immediately
         cells[0].textContent = rowIndex + 1;
-        const make = carData.make;
-        const model = carData.model;
+        // Split car name into make and model
+        const parts = carName.split(' ');
+        const make = result.make;
+        const model = parts.slice(1).join(' ');
         cells[1].innerHTML = `${make}<br><span class="model-text">(${model})</span>`;
     } else {
         // Then fade out all cells in the row and remove hint text/emojis
@@ -194,8 +196,9 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
         await new Promise(resolve => setTimeout(resolve, 400));
         
         // Then set and fade in car name
-        const make = carData.make;
-        const model = carData.model;
+        const parts = carName.split(' ');
+        const make = result.make;
+        const model = parts.slice(1).join(' ');
         cells[1].innerHTML = `${make}<br><span class="model-text">(${model})</span>`;
         cells[1].classList.remove('fade-out');
         cells[1].classList.add('fade-in');
@@ -205,12 +208,12 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
     }
     
     const stats = [
-        { value: carData.year, correct: correctCar.year, type: 'number' },
-        { value: carData.engine_size, correct: correctCar.engine_size, type: 'engine' },
-        { value: carData.horsepower, correct: correctCar.horsepower, type: 'number' },
-        { value: carData.torque, correct: correctCar.torque, type: 'number' },
-        { value: carData.price, correct: correctCar.price, type: 'number' },
-        { value: carData.country, correct: correctCar.country, type: 'string' }
+        { value: result.comparisons.year.value, status: result.comparisons.year.status, type: 'number' },
+        { value: result.comparisons.engine_size.value, status: result.comparisons.engine_size.status, type: 'engine' },
+        { value: result.comparisons.horsepower.value, status: result.comparisons.horsepower.status, type: 'number' },
+        { value: result.comparisons.torque.value, status: result.comparisons.torque.status, type: 'number' },
+        { value: result.comparisons.price.value, status: result.comparisons.price.status, type: 'number' },
+        { value: result.comparisons.country.value, status: result.comparisons.country.status, type: 'string' }
     ];
     
     if (skipAnimations) {
@@ -236,8 +239,7 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
     
     // Now apply all colors at once
     // Car make color
-    const make = carData.make;
-    if (make.toLowerCase() === correctCar.make.toLowerCase()) {
+    if (result.make_correct) {
         cells[1].classList.add('correct');
     } else {
         cells[1].classList.add('incorrect');
@@ -250,50 +252,37 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
         
         if (stat.type === 'engine') {
             const guessIsElectric = stat.value.toString().toLowerCase() === 'electric';
-            const correctIsElectric = stat.correct.toString().toLowerCase() === 'electric';
             
-            // Check if electric/gas mismatch (one is electric, other is gas)
-            if (guessIsElectric !== correctIsElectric) {
-                // Mismatch: mark as incorrect with strikethrough
-                cell.classList.add('incorrect');
-                cell.innerHTML = `<span style="text-decoration: line-through;">${stat.value}</span>`;
-            } else if (guessIsElectric && correctIsElectric) {
-                // Both are electric: correct match
+            if (stat.status === 'correct') {
                 cell.classList.add('correct');
                 isCorrect = true;
-            } else {
-                // Both are gas (numeric), compare values
-                const guessVal = parseNum(stat.value);
-                const correctVal = parseNum(stat.correct);
-                
-                if (guessVal === correctVal) {
-                    cell.classList.add('correct');
-                    isCorrect = true;
-                } else if (guessVal < correctVal) {
-                    cell.classList.add('too-low');
-                    cell.innerHTML = `${stat.value}<span class="arrow">↑</span>`;
-                } else {
-                    cell.classList.add('too-high');
-                    cell.innerHTML = `${stat.value}<span class="arrow">↓</span>`;
+            } else if (stat.status === 'incorrect') {
+                // For incorrect, show strikethrough if electric/gas mismatch
+                if (guessIsElectric) {
+                    cell.innerHTML = `<span style="text-decoration: line-through;">${stat.value}</span>`;
                 }
-            }
-        } else if (stat.type === 'number') {
-            const guessVal = parseNum(stat.value);
-            const correctVal = parseNum(stat.correct);
-            
-            if (guessVal === correctVal) {
-                cell.classList.add('correct');
-                isCorrect = true;
-            } else if (guessVal < correctVal) {
+                cell.classList.add('incorrect');
+            } else if (stat.status === 'lower') {
                 cell.classList.add('too-low');
                 cell.innerHTML = `${stat.value}<span class="arrow">↑</span>`;
-            } else {
+            } else if (stat.status === 'higher') {
+                cell.classList.add('too-high');
+                cell.innerHTML = `${stat.value}<span class="arrow">↓</span>`;
+            }
+        } else if (stat.type === 'number') {
+            if (stat.status === 'correct') {
+                cell.classList.add('correct');
+                isCorrect = true;
+            } else if (stat.status === 'lower') {
+                cell.classList.add('too-low');
+                cell.innerHTML = `${stat.value}<span class="arrow">↑</span>`;
+            } else if (stat.status === 'higher') {
                 cell.classList.add('too-high');
                 cell.innerHTML = `${stat.value}<span class="arrow">↓</span>`;
             }
         } else {
             // Country comparison (string)
-            if (stat.value.toLowerCase() === stat.correct.toLowerCase()) {
+            if (stat.status === 'correct') {
                 cell.classList.add('correct');
                 isCorrect = true;
             } else {
@@ -349,6 +338,9 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
             }
         });
     }
+    
+    // Return whether the guess was correct
+    return result.is_correct;
 }
 
 input.addEventListener('input', function() {
@@ -404,11 +396,14 @@ enterBtn.addEventListener('click', async function() {
         // Save the guess to game state
         gameState.guesses.push(guessedCar);
         
-        await displayCarStats(guessedCar, currentRow);
-        currentRow++;
+        const isCorrect = await displayCarStats(guessedCar, currentRow);
         
-        // Check if the guess was correct
-        const isCorrect = guessedCar.toLowerCase() === correctCar.name.toLowerCase();
+        // If correct, store the car name for later display
+        if (isCorrect) {
+            correctCarName = guessedCar;
+        }
+        
+        currentRow++;
         
         input.value = '';
         suggestionsDiv.classList.remove('active');
@@ -481,22 +476,26 @@ function showHintMessage() {
     }
 }
 
-function revealColumn(columnName) {
+async function revealColumn(columnName) {
     if (hintsUsed >= hintsAvailable) return;
+    
+    // Fetch the correct value for this column from server
+    const response = await fetch('/reveal-hint', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ column_name: columnName })
+    });
+    const result = await response.json();
+    
+    if (result.error) return;
     
     hintsUsed++;
     correctColumns.add(columnName);
+    revealedCorrectValues[columnName] = result.value;
     
-    const colMap = {
-        'year': correctCar.year,
-        'engine': correctCar.engine_size,
-        'hp': correctCar.horsepower,
-        'torque': correctCar.torque,
-        'price': correctCar.price,
-        'country': correctCar.country
-    };
-    
-    const value = colMap[columnName];
+    const value = result.value;
     
     // Add faint text to this column for current row and ALL subsequent rows
     const colIndexMap = {
@@ -553,6 +552,12 @@ function showGameOverModal(won) {
     const modal = document.getElementById('game-over-modal');
     const modalTitle = document.getElementById('modal-title');
     const carNameDisplay = document.getElementById('car-name-display');
+    const fullCarImage = document.getElementById('full-car-image');
+    
+    // Load the full image only when modal is shown
+    if (!fullCarImage.src) {
+        fullCarImage.src = '/full-image.png';
+    }
     
     if (won) {
         modalTitle.textContent = 'You won! 🎉';
@@ -560,7 +565,23 @@ function showGameOverModal(won) {
         modalTitle.textContent = 'Game Over!';
     }
     
-    carNameDisplay.textContent = correctCar.name;
+    // Fetch the correct answer from server if not already known
+    if (!correctCarName) {
+        fetch('/reveal-answer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            correctCarName = data.name;
+            carNameDisplay.textContent = correctCarName;
+        });
+    } else {
+        carNameDisplay.textContent = correctCarName;
+    }
+    
     modal.classList.add('show');
 }
 
