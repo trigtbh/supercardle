@@ -84,7 +84,7 @@ def save_car_cache(car_data, img_data):
 
 def chooseCar() -> dict:
     day_number = get_current_day_number()
-    random.seed(day_number)
+    random.seed(day_number + 8473594379587439874)
     
     r = None
     car = None
@@ -123,7 +123,7 @@ greyscale = img.convert("L")
 width, height = greyscale.size
 
 day_number = get_current_day_number()
-random.seed(day_number + 528492)
+random.seed(day_number + 58974398754398)
 clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
 
 # Maximum number of guesses (affects number of clue variants)
