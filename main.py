@@ -5,6 +5,8 @@ import pytz
 import json
 import pickle
 
+SEED = 149
+
 basepath = os.path.dirname(os.path.realpath(__file__))
 base = lambda p: os.path.join(basepath, p)
 
@@ -84,7 +86,7 @@ def save_car_cache(car_data, img_data):
 
 def chooseCar() -> dict:
     day_number = get_current_day_number()
-    random.seed(day_number + 8473594379587439874)
+    random.seed(day_number + SEED)
     
     r = None
     car = None
@@ -109,6 +111,7 @@ def chooseCar() -> dict:
     return car
 
 cached = load_cached_car()
+cache_loaded = cached is not None
 if cached:
     car = cached['car']
     img = Image.open(BytesIO(cached['img_data']))
@@ -123,7 +126,7 @@ greyscale = img.convert("L")
 width, height = greyscale.size
 
 day_number = get_current_day_number()
-random.seed(day_number + 58974398754398)
+random.seed(day_number + SEED)
 clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
 
 # Maximum number of guesses (affects number of clue variants)
@@ -234,7 +237,8 @@ async def get_cars():
 async def get_day_info():
     return {
         "day_number": get_current_day_number(),
-        "seconds_until_next": get_time_until_next_day()
+        "seconds_until_next": get_time_until_next_day(),
+        "cache_loaded": cache_loaded
     }
 
 @app.get("/car/{car_name}")

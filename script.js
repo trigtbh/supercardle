@@ -54,6 +54,11 @@ fetch('day-info')
         document.getElementById('day-number').textContent = `Day #${data.day_number}`;
         startCountdown(data.seconds_until_next);
         
+        // If car cache is missing, wipe browser cache
+        if (!data.cache_loaded) {
+            localStorage.removeItem('supercardle_state');
+        }
+        
         // Load saved game state if it exists
         const saved = loadGameState(data.day_number);
         if (saved) {
