@@ -556,7 +556,7 @@ function showGameOverModal(won) {
     
     // Load the full image only when modal is shown
     if (!fullCarImage.src) {
-        fullCarImage.src = '/full-image.png';
+        fullCarImage.src = 'full-image.png';
     }
     
     if (won) {
