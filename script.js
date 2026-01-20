@@ -129,6 +129,10 @@ function isValidCar(value) {
 }
 
 async function displayCarStats(carName, rowIndex, skipAnimations = false) {
+    // Update clue image to show more as we make more guesses
+    const clueImg = document.getElementById('clue');
+    clueImg.src = `clue.png?guess=${rowIndex}&t=${Date.now()}`;
+    
     // Check the guess with the server
     const response = await fetch('check-guess', {
         method: 'POST',

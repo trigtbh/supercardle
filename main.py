@@ -123,8 +123,82 @@ greyscale = img.convert("L")
 width, height = greyscale.size
 
 day_number = get_current_day_number()
-random.seed(day_number + 1000)
+random.seed(day_number + 528492)
 clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
+
+# Maximum number of guesses (affects number of clue variants)
+maxGuesses = 7
+
+# Generate clue variants with progressive zoom and color
+def create_clue_variants(original_img, clue_img, num_guesses=7):
+    """Create progressive clue variants with zoom out and color reveal"""
+    variants = []
+    
+    # Crop the original image to start at 50% visible area
+    orig_width, orig_height = original_img.size
+    crop_factor_orig = 0.5
+    crop_width_orig = int(orig_width * crop_factor_orig)
+    crop_height_orig = int(orig_height * crop_factor_orig)
+    left_orig = (orig_width - crop_width_orig) // 2
+    top_orig = (orig_height - crop_height_orig) // 2
+    cropped_original = original_img.crop((left_orig, top_orig, left_orig + crop_width_orig, top_orig + crop_height_orig))
+    
+    # For each guess number (0-indexed), create a variant
+    for guess_num in range(num_guesses):
+        # Calculate crop size: guess 0 shows small portion (zoomed in), guess 6 shows full cropped original
+        # Crop size factor from 0.5 (50% of cropped original) to 1.0 (full cropped original)
+        crop_factor = 0.5 + (guess_num / (num_guesses - 1)) * 0.5  # 0.5 to 1.0
+        
+        # Get cropped original dimensions
+        crop_orig_width, crop_orig_height = cropped_original.size
+        
+        # Calculate the crop area from the cropped original
+        crop_width = int(crop_orig_width * crop_factor)
+        crop_height = int(crop_orig_height * crop_factor)
+        
+        # Center the crop
+        left = (crop_orig_width - crop_width) // 2
+        top = (crop_orig_height - crop_height) // 2
+        
+        # Crop the image
+        cropped = cropped_original.crop((left, top, left + crop_width, top + crop_height))
+        
+        # Scale back to original cropped size for display
+        variant = cropped.resize((crop_orig_width, crop_orig_height), Image.Resampling.LANCZOS)
+        
+        # Apply color desaturation based on guess number
+        # Guess 0: grayscale, Guess 6: full color
+        color_intensity = guess_num / (num_guesses - 1)  # 0 to 1
+        
+        # Convert to RGB if needed
+        variant_rgb = variant.convert("RGB")
+        
+        # Blend grayscale with color
+        grayscale_variant = variant_rgb.convert("L")
+        
+        # Create color image by blending
+        result = Image.new("RGB", variant_rgb.size)
+        pixels_color = variant_rgb.load()
+        pixels_gray = grayscale_variant.load()
+        result_pixels = result.load()
+        
+        for y in range(variant_rgb.size[1]):
+            for x in range(variant_rgb.size[0]):
+                gray_val = pixels_gray[x, y]
+                color_val = pixels_color[x, y]
+                
+                # Blend: grayscale to color based on intensity
+                r = int(gray_val * (1 - color_intensity) + color_val[0] * color_intensity)
+                g = int(gray_val * (1 - color_intensity) + color_val[1] * color_intensity)
+                b = int(gray_val * (1 - color_intensity) + color_val[2] * color_intensity)
+                
+                result_pixels[x, y] = (r, g, b)
+        
+        variants.append(result)
+    
+    return variants
+
+clue_variants = create_clue_variants(img, clue, maxGuesses)
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, FileResponse, StreamingResponse
@@ -271,9 +345,13 @@ async def reveal_answer():
     }
 
 @app.get("/clue.png")
-async def get_clue():
+async def get_clue(guess: int = 0):
+    """Get clue image for a specific guess number (0-indexed)"""
+    # Clamp guess to valid range
+    guess = max(0, min(guess, len(clue_variants) - 1))
+    
     img_byte_arr = BytesIO()
-    clue.save(img_byte_arr, format='PNG')
+    clue_variants[guess].save(img_byte_arr, format='PNG')
     img_byte_arr.seek(0)
     return StreamingResponse(img_byte_arr, media_type="image/png")
 
