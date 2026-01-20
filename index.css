@@ -381,3 +381,168 @@ body {
     color: #9e4ae2;
     margin: 0;
 }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 10px;
+        gap: 20px;
+    }
+
+    .left-panel {
+        width: 100%;
+        max-width: 100%;
+        order: 1;
+    }
+
+    .right-panel {
+        width: 100%;
+        order: 2;
+    }
+
+    .title {
+        font-size: clamp(1.2rem, 5vw, 2rem);
+        margin: 20px 0 10px 0;
+    }
+
+    .day-info {
+        margin-bottom: 15px;
+    }
+
+    #clue {
+        max-width: 250px;
+        width: 100%;
+    }
+
+    .input-container {
+        max-width: 300px;
+        margin-top: 20px;
+    }
+
+    .input-wrapper {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    #car-input {
+        padding: 12px 14px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        width: 100%;
+    }
+
+    #enter-btn {
+        padding: 12px 20px;
+        font-size: 16px;
+        width: 100%;
+        max-width: 150px;
+        align-self: center;
+    }
+
+    .suggestions {
+        max-height: 150px;
+    }
+
+    .game-grid {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .grid-header,
+    .grid-row {
+        grid-template-columns: 120px repeat(6, minmax(55px, 1fr));
+        gap: 3px;
+        min-width: 490px; /* Ensure minimum width for scrolling */
+    }
+
+    .grid-cell {
+        padding: 8px 3px;
+        font-size: clamp(9px, 2vw, 11px);
+        height: 40px;
+        min-width: 55px;
+    }
+
+    .grid-cell.header {
+        font-size: clamp(8px, 1.8vw, 10px);
+    }
+
+    .grid-cell.guess-num {
+        display: none;
+    }
+
+    .grid-cell.car-name {
+        font-size: 10px;
+        min-width: 120px;
+    }
+
+    .model-text {
+        font-size: 8px;
+    }
+
+    .hint-message {
+        padding: 10px 15px;
+        margin: 15px auto;
+        max-width: 90%;
+    }
+
+    .modal-content {
+        padding: 30px 20px;
+        max-width: 90%;
+        margin: 20px;
+    }
+
+    #modal-title {
+        font-size: 1.5rem;
+    }
+
+    #full-car-image {
+        max-height: 300px;
+    }
+
+    #car-name-display {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 5px;
+        gap: 15px;
+    }
+
+    .grid-header,
+    .grid-row {
+        grid-template-columns: 100px repeat(6, minmax(45px, 1fr));
+        gap: 2px;
+        min-width: 400px;
+    }
+
+    .grid-cell {
+        padding: 6px 2px;
+        height: 35px;
+        min-width: 45px;
+        font-size: 9px;
+    }
+
+    .grid-cell.guess-num {
+        display: none;
+    }
+
+    .grid-cell.car-name {
+        min-width: 100px;
+        font-size: 9px;
+    }
+
+    .model-text {
+        font-size: 7px;
+    }
+
+    #clue {
+        max-width: 200px;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+}

@@ -5,7 +5,7 @@ import pytz
 import json
 import pickle
 
-SEED = 149
+SEED = 1890
 
 basepath = os.path.dirname(os.path.realpath(__file__))
 base = lambda p: os.path.join(basepath, p)
