@@ -4,31 +4,20 @@ from datetime import datetime, timezone, timedelta
 import pytz
 import json
 import pickle
+import re
 
 SEED = 1890
 
 basepath = os.path.dirname(os.path.realpath(__file__))
 base = lambda p: os.path.join(basepath, p)
 
-df = pd.read_csv(base("cars.csv"))
-df = df.drop_duplicates(subset=['Car Make', 'Car Model'], keep='first')
+df = pd.read_csv(base("car_data.csv"))
+df = df.drop_duplicates(subset=['Make', 'Model'], keep='first')
 documents = df.to_dict("records")
 
-# Filter out electric cars and cars with zeros in any column
+# Filter out cars with zeros in any numeric column
 def is_valid_car(car):
-    # Check if engine size is numeric (not electric)
-    engine_size = car.get("Engine Size (L)")
-    if engine_size is None:
-        return False
-    
-    try:
-        engine_val = float(engine_size)
-        if engine_val == 0:
-            return False
-    except (ValueError, TypeError):
-        return False
-    
-    numeric_columns = ["Year", "Horsepower", "Torque (lb-ft)"]
+    numeric_columns = ["Year", "Horsepower"]
     for col in numeric_columns:
         val = car.get(col)
         if val is not None:
@@ -41,6 +30,8 @@ def is_valid_car(car):
     return True
 
 selectable_documents = [car for car in documents if is_valid_car(car)]
+
+print(selectable_documents[0])
 
 import random
 from PIL import Image
@@ -94,7 +85,7 @@ def chooseCar() -> dict:
     while r is None or car is None:
         car = random.choice(selectable_documents)
         year = car.get("Year", "")
-        name = f'"{car["Car Make"]} {car["Car Model"]}" {year}'
+        name = f'"{car["Make"]} {car["Model"]}" {year}'
         from ddgs import DDGS
         with DDGS() as ddgs:
             results = ddgs.images(name, max_results=1)
@@ -230,7 +221,7 @@ async def get_script():
 
 @app.get("/cars")
 async def get_cars():
-    cars = [f"{doc['Car Make']} {doc['Car Model']}" for doc in selectable_documents]
+    cars = [f"{doc['Make']} {doc['Model']}" for doc in selectable_documents]
     return cars
 
 @app.get("/day-info")
@@ -245,16 +236,16 @@ async def get_day_info():
 async def get_car_details(car_name: str):
     # Find the car in documents
     for doc in documents:
-        full_name = f"{doc['Car Make']} {doc['Car Model']}"
+        full_name = f"{doc['Make']} {doc['Model']}"
         if full_name.lower() == car_name.lower():
             return {
-                "make": doc["Car Make"],
-                "model": doc["Car Model"],
+                "make": doc["Make"],
+                "model": doc["Model"],
                 "year": safe_value(doc["Year"]),
-                "engine_size": safe_value(doc["Engine Size (L)"]),
+                "cylinders": safe_value(doc["Cylinders"]),
                 "horsepower": safe_value(doc["Horsepower"]),
-                "torque": safe_value(doc["Torque (lb-ft)"]),
-                "price": safe_value(doc["Price (in USD)"]),
+                "fuel_capacity_gal": safe_value(doc["Fuel capacity (gal)"]),
+                "fuel_capacity_liters": safe_value(doc["Fuel capacity (L)"]),
                 "country": safe_value(doc["Country"])
             }
     return None
@@ -266,7 +257,7 @@ async def check_guess(guess: dict):
     # Find the guessed car in documents
     guessed_car = None
     for doc in documents:
-        full_name = f"{doc['Car Make']} {doc['Car Model']}"
+        full_name = f"{doc['Make']} {doc['Model']}"
         if full_name.lower() == guessed_car_name.lower():
             guessed_car = doc
             break
@@ -275,7 +266,7 @@ async def check_guess(guess: dict):
         return {"error": "Car not found"}
     
     # Compare with correct car and return comparison results
-    correct_name = f"{car['Car Make']} {car['Car Model']}"
+    correct_name = f"{car['Make']} {car['Model']}"
     is_correct = guessed_car_name.lower() == correct_name.lower()
     
     def compare_value(guessed, correct, value_type):
@@ -292,8 +283,18 @@ async def check_guess(guess: dict):
                 # Remove commas from strings before converting to float
                 g_str = str(guessed).replace(',', '')
                 c_str = str(correct).replace(',', '')
-                g_val = float(g_str)
-                c_val = float(c_str)
+                
+                # For cylinders, extract numeric value after first character if needed
+                if value_type == "cylinders":
+                    # Extract just the number from values like "V6", "4", "V8", etc.
+                    g_match = re.search(r'\d+', g_str)
+                    c_match = re.search(r'\d+', c_str)
+                    g_val = float(g_match.group(0)) if g_match else float(g_str)
+                    c_val = float(c_match.group(0)) if c_match else float(c_str)
+                else:
+                    g_val = float(g_str)
+                    c_val = float(c_str)
+                
                 if g_val == c_val:
                     status = "correct"
                 elif g_val < c_val:
@@ -304,16 +305,18 @@ async def check_guess(guess: dict):
             except (ValueError, TypeError):
                 return {"status": "unknown", "value": guessed}
     
+    print(selectable_documents)
+
     return {
         "is_correct": is_correct,
-        "make": guessed_car["Car Make"],
-        "make_correct": guessed_car["Car Make"].lower() == car["Car Make"].lower(),
+        "make": guessed_car["Make"],
+        "make_correct": guessed_car["Make"].lower() == car["Make"].lower(),
         "comparisons": {
             "year": compare_value(safe_value(guessed_car["Year"]), safe_value(car["Year"]), "number"),
-            "engine_size": compare_value(safe_value(guessed_car["Engine Size (L)"]), safe_value(car["Engine Size (L)"]), "number"),
+            "cylinders": compare_value(safe_value(guessed_car["Cylinders"]), safe_value(car["Cylinders"]), "cylinders"),
             "horsepower": compare_value(safe_value(guessed_car["Horsepower"]), safe_value(car["Horsepower"]), "number"),
-            "torque": compare_value(safe_value(guessed_car["Torque (lb-ft)"]), safe_value(car["Torque (lb-ft)"]), "number"),
-            "price": compare_value(safe_value(guessed_car["Price (in USD)"]), safe_value(car["Price (in USD)"]), "number"),
+            "fuel_capacity_gal": compare_value(safe_value(guessed_car["Fuel capacity (gal)"]), safe_value(car["Fuel capacity (gal)"]), "number"),
+            "fuel_capacity_liters": compare_value(safe_value(guessed_car["Fuel capacity (L)"]), safe_value(car["Fuel capacity (L)"]), "number"),
             "country": compare_value(safe_value(guessed_car["Country"]), safe_value(car["Country"]), "string")
         },
         "correct_name": correct_name if is_correct else None  # Only reveal name if guess is correct
@@ -326,10 +329,9 @@ async def reveal_hint(request: dict):
     
     column_map = {
         "year": safe_value(car["Year"]),
-        "engine": safe_value(car["Engine Size (L)"]),
+        "cylinders": safe_value(car["Cylinders"]),
         "hp": safe_value(car["Horsepower"]),
-        "torque": safe_value(car["Torque (lb-ft)"]),
-        "price": safe_value(car["Price (in USD)"]),
+        "fuel": f"{safe_value(car['Fuel capacity (gal)'])} / {safe_value(car['Fuel capacity (L)'])}",
         "country": safe_value(car["Country"])
     }
     
@@ -345,7 +347,7 @@ async def reveal_hint(request: dict):
 async def reveal_answer():
     """Reveal the correct car name (for game over)"""
     return {
-        "name": f"{car['Car Make']} {car['Car Model']}"
+        "name": f"{car['Make']} {car['Model']}"
     }
 
 @app.get("/clue.png")

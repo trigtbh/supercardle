@@ -204,7 +204,7 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
         // Wait for guess number to finish fading in
         await new Promise(resolve => setTimeout(resolve, 400));
         
-        // Then set and fade in car name
+        // Then set and fade in car name (make with model underneath)
         const parts = carName.split(' ');
         const make = result.make;
         const model = parts.slice(1).join(' ');
@@ -218,11 +218,16 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
     
     const stats = [
         { value: result.comparisons.year.value, status: result.comparisons.year.status, type: 'number' },
-        { value: result.comparisons.engine_size.value, status: result.comparisons.engine_size.status, type: 'engine' },
+        { value: result.comparisons.country.value, status: result.comparisons.country.status, type: 'string' },
+        { value: result.comparisons.cylinders.value, status: result.comparisons.cylinders.status, type: 'number' },
         { value: result.comparisons.horsepower.value, status: result.comparisons.horsepower.status, type: 'number' },
-        { value: result.comparisons.torque.value, status: result.comparisons.torque.status, type: 'number' },
-        { value: result.comparisons.price.value, status: result.comparisons.price.status, type: 'number' },
-        { value: result.comparisons.country.value, status: result.comparisons.country.status, type: 'string' }
+        { 
+            value: `${result.comparisons.fuel_capacity_gal.value} / ${result.comparisons.fuel_capacity_liters.value}`,
+            status: result.comparisons.fuel_capacity_gal.status === result.comparisons.fuel_capacity_liters.status ? result.comparisons.fuel_capacity_gal.status : 'partial',
+            type: 'number',
+            gal_status: result.comparisons.fuel_capacity_gal.status,
+            liters_status: result.comparisons.fuel_capacity_liters.status
+        }
     ];
     
     if (skipAnimations) {
@@ -282,6 +287,15 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
             if (stat.status === 'correct') {
                 cell.classList.add('correct');
                 isCorrect = true;
+            } else if (stat.status === 'partial') {
+                // Handle fuel capacity with mixed status (gal and liters have different statuses)
+                if (stat.gal_status === 'correct' || stat.liters_status === 'correct') {
+                    cell.classList.add('partial-correct');
+                    cell.innerHTML = stat.value;
+                } else {
+                    cell.innerHTML = stat.value;
+                    cell.classList.add('incorrect');
+                }
             } else if (stat.status === 'lower') {
                 cell.classList.add('too-low');
                 cell.innerHTML = `${stat.value}<span class="arrow">↑</span>`;
@@ -301,7 +315,7 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
         
         // Track correct columns
         if (isCorrect) {
-            const colNames = ['year', 'engine', 'hp', 'torque', 'price', 'country'];
+            const colNames = ['model', 'year', 'country', 'cylinders', 'hp', 'fuel'];
             correctColumns.add(colNames[index]);
         }
     });
@@ -327,12 +341,12 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false) {
         const nextCells = nextRow.querySelectorAll('.grid-cell');
         
         const colMap = [
-            { index: 2, col: 'year' },
-            { index: 3, col: 'engine' },
-            { index: 4, col: 'hp' },
-            { index: 5, col: 'torque' },
-            { index: 6, col: 'price' },
-            { index: 7, col: 'country' }
+            { index: 2, col: 'model' },
+            { index: 3, col: 'year' },
+            { index: 4, col: 'country' },
+            { index: 5, col: 'cylinders' },
+            { index: 6, col: 'hp' },
+            { index: 7, col: 'fuel' }
         ];
         
         colMap.forEach(({ index, col }) => {
@@ -462,19 +476,19 @@ function showHintMessage() {
         const cells = nextRow.querySelectorAll('.grid-cell');
         
         // Column indices for data columns (skip # and Car Make)
+        // Grid: #, Make, Year, Country, Cylinders, Horsepower, Fuel Capacity
         const colMap = [
             { index: 2, col: 'year' },
-            { index: 3, col: 'engine' },
-            { index: 4, col: 'hp' },
-            { index: 5, col: 'torque' },
-            { index: 6, col: 'price' },
-            { index: 7, col: 'country' }
+            { index: 3, col: 'country' },
+            { index: 4, col: 'cylinders' },
+            { index: 5, col: 'hp' },
+            { index: 6, col: 'fuel' }
         ];
         
         colMap.forEach(({ index, col }) => {
             if (!correctColumns.has(col)) {
                 const cell = cells[index];
-                if (!cell.classList.contains('hint-revealed')) {
+                if (cell && !cell.classList.contains('hint-revealed')) {
                     cell.textContent = '💡';
                     cell.classList.add('hint-available');
                     cell.dataset.hintCol = col;
@@ -509,11 +523,10 @@ async function revealColumn(columnName) {
     // Add faint text to this column for current row and ALL subsequent rows
     const colIndexMap = {
         'year': 2,
-        'engine': 3,
-        'hp': 4,
-        'torque': 5,
-        'price': 6,
-        'country': 7
+        'country': 3,
+        'cylinders': 4,
+        'hp': 5,
+        'fuel': 6
     };
     const colIndex = colIndexMap[columnName];
     
@@ -521,11 +534,13 @@ async function revealColumn(columnName) {
     for (let i = currentRow; i < maxGuesses; i++) {
         const row = gridRows[i];
         const cell = row.querySelectorAll('.grid-cell')[colIndex];
-        cell.textContent = value;
-        cell.classList.remove('hint-available');
-        cell.classList.add('hint-text');
-        cell.style.cursor = 'default';
-        delete cell.dataset.hintCol;
+        if (cell) {
+            cell.textContent = value;
+            cell.classList.remove('hint-available');
+            cell.classList.add('hint-text');
+            cell.style.cursor = 'default';
+            delete cell.dataset.hintCol;
+        }
     }
     
     // Hide hint message if all hints used
