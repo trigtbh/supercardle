@@ -4,3 +4,5 @@ pillow
 requests
 fastapi 
 uvicorn
+beautifulsoup4
+cloudscraper
