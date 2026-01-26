@@ -79,11 +79,10 @@ def chooseCar() -> dict:
     day_number = get_current_day_number()
     random.seed(day_number + SEED)
     
-    r = None
-    car = None
-
-    while r is None or car is None:
-        car = random.choice(selectable_documents)
+    shuffled = selectable_documents.copy()
+    random.shuffle(shuffled)
+    
+    for car in shuffled:
         year = car.get("Year", "")
         name = f'"{car["Make"]} {car["Model"]}" {year}'
         from ddgs import DDGS
@@ -95,11 +94,10 @@ def chooseCar() -> dict:
                     Image.open(BytesIO(requests.get(r).content))
                 except:
                     r = None
-        if r:
-            car["url"] = r
-            break
-
-    return car
+                if r:
+                    car["url"] = r
+                    return car
+    return None
 
 cached = load_cached_car()
 cache_loaded = cached is not None
