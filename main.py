@@ -5,6 +5,9 @@ import pytz
 import json
 import pickle
 import re
+import schedule
+import threading
+import time
 
 SEED = 1890
 
@@ -45,7 +48,7 @@ EPOCH_START = datetime(2026, 1, 20, tzinfo=EST)
 def get_current_day_number():
     now = datetime.now(EST)
     delta = now - EPOCH_START
-    return delta.days + 1
+    return delta.days + 2
 
 def get_time_until_next_day():
     now = datetime.now(EST)
@@ -191,6 +194,26 @@ def create_clue_variants(original_img, clue_img, num_guesses=7):
     return variants
 
 clue_variants = create_clue_variants(img, clue, maxGuesses)
+
+# Function to delete the cache file
+def delete_cache():
+    cache_file = base("car_cache.pkl")
+    if os.path.exists(cache_file):
+        os.remove(cache_file)
+        print(f"Cache file deleted at {datetime.now(EST)}")
+
+# Schedule the deletion at 9 PM Eastern every day
+schedule.every().day.at("21:00").do(delete_cache)
+
+# Function to run the scheduler in a separate thread
+def run_scheduler():
+    while True:
+        schedule.run_pending()
+        time.sleep(60)  # Check every minute
+
+# Start the scheduler thread
+scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
+scheduler_thread.start()
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, FileResponse, StreamingResponse

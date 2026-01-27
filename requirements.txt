@@ -6,3 +6,5 @@ fastapi
 uvicorn
 beautifulsoup4
 cloudscraper
+schedule
+pytz
