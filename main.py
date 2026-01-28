@@ -1,15 +1,13 @@
 import pandas as pd
 import os
 from datetime import datetime, timezone, timedelta
+from datetime import time as dt_time
 import pytz
 import json
 import pickle
 import re
-import schedule
-import threading
-import time
 
-SEED = 1890
+SEED = 12345
 
 basepath = os.path.dirname(os.path.realpath(__file__))
 base = lambda p: os.path.join(basepath, p)
@@ -34,8 +32,6 @@ def is_valid_car(car):
 
 selectable_documents = [car for car in documents if is_valid_car(car)]
 
-print(selectable_documents[0])
-
 import random
 from PIL import Image
 import requests
@@ -43,18 +39,37 @@ from io import BytesIO
 
 EST = pytz.timezone('America/New_York')
 
+# Reset time for the "car of the day" (hour, minute) in EST
+# Change this single value to control when the daily car rotates.
+RESET_TIME = dt_time(0, 0)
+
 EPOCH_START = datetime(2026, 1, 20, tzinfo=EST)
 
 def get_current_day_number():
     now = datetime.now(EST)
-    delta = now - EPOCH_START
-    return delta.days + 2
+    
+    # Epoch's first reset at the configured reset time
+    epoch_reset = EPOCH_START.replace(hour=RESET_TIME.hour, minute=RESET_TIME.minute, second=0, microsecond=0)
+    
+    # Calculate complete reset periods since epoch
+    delta = now - epoch_reset
+    days = delta.days
+    
+    # If we haven't reached today's reset time yet, we're still in yesterday's period
+    today_reset = now.replace(hour=RESET_TIME.hour, minute=RESET_TIME.minute, second=0, microsecond=0)
+    if now < today_reset:
+        days -= 1
+    
+    return days + 2
 
 def get_time_until_next_day():
     now = datetime.now(EST)
-    next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
-    delta = next_midnight - now
+    next_reset = now.replace(hour=RESET_TIME.hour, minute=RESET_TIME.minute, second=0, microsecond=0)
+    if next_reset <= now:
+        next_reset += timedelta(days=1)
+    delta = next_reset - now
     return int(delta.total_seconds())
+
 
 def load_cached_car():
     cache_file = base("car_cache.pkl")
@@ -202,18 +217,63 @@ def delete_cache():
         os.remove(cache_file)
         print(f"Cache file deleted at {datetime.now(EST)}")
 
-# Schedule the deletion at 9 PM Eastern every day
-schedule.every().day.at("21:00").do(delete_cache)
 
-# Function to run the scheduler in a separate thread
-def run_scheduler():
-    while True:
-        schedule.run_pending()
-        time.sleep(60)  # Check every minute
 
-# Start the scheduler thread
-scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
-scheduler_thread.start()
+
+# Ensure the cache on-demand: if the cached day doesn't match current day, remove and regenerate
+def ensure_car_cache_current():
+    global cached, cache_loaded, car, img, greyscale, width, height, clue, clue_variants, day_number
+    cache_file = base("car_cache.pkl")
+    # If cache exists but for a different day, delete it
+    if os.path.exists(cache_file):
+        try:
+            with open(cache_file, 'rb') as f:
+                cached_data = pickle.load(f)
+            if cached_data.get('day_number') != get_current_day_number():
+                try:
+                    os.remove(cache_file)
+                    print(f"Stale cache removed at {datetime.now(EST)}")
+                except Exception as e0:
+                    print(e0)
+                    pass
+                cached = None
+                cache_loaded = False
+            else:
+                # Load into globals if not already
+                cached = cached_data
+                cache_loaded = True
+                car = cached['car']
+                img = Image.open(BytesIO(cached['img_data']))
+        except Exception as e1:
+            print(e1)
+            # Corrupt cache - delete it
+            try:
+                os.remove(cache_file)
+            except Exception as e2:
+                print(e2)
+                pass
+            cached = None
+            cache_loaded = False
+
+    # If no current cache, pick a car and save
+    if not cache_loaded:
+        car = chooseCar()
+        response = requests.get(car["url"])
+        img_data = response.content
+        img = Image.open(BytesIO(img_data))
+        try:
+            save_car_cache(car, img_data)
+        except Exception:
+            pass
+
+    # Recompute derived image/clue data
+    greyscale = img.convert("L")
+    width, height = greyscale.size
+    day_number = get_current_day_number()
+    random.seed(day_number + SEED)
+    clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
+    clue_variants = create_clue_variants(img, clue, maxGuesses)
+
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, FileResponse, StreamingResponse
@@ -229,6 +289,8 @@ app = FastAPI()
 
 @app.get("/", response_class=HTMLResponse)
 async def get_index():
+    # Ensure cache is current for this request (deletes stale cache)
+    ensure_car_cache_current()
     with open(base("index.html"), "r") as f:
         return f.read()
 
@@ -326,8 +388,6 @@ async def check_guess(guess: dict):
             except (ValueError, TypeError):
                 return {"status": "unknown", "value": guessed}
     
-    print(selectable_documents)
-
     return {
         "is_correct": is_correct,
         "make": guessed_car["Make"],
