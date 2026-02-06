@@ -76,7 +76,7 @@ async function restoreGameState(saved) {
     
     // Replay all previous guesses WITHOUT animations
     for (let i = 0; i < saved.guesses.length; i++) {
-        await displayCarStats(saved.guesses[i], i, true);
+        await displayCarStats(saved.guesses[i].carName, i, true, saved.guesses[i].result);
     }
     
     // Show hints if available
@@ -133,20 +133,23 @@ function isValidCar(value) {
     return carList.some(car => car.toLowerCase() === value.toLowerCase());
 }
 
-async function displayCarStats(carName, rowIndex, skipAnimations = false) {
+async function displayCarStats(carName, rowIndex, skipAnimations = false, resultData = null) {
     // Update clue image to show more as we make more guesses
     const clueImg = document.getElementById('clue');
     clueImg.src = `clue.png?guess=${rowIndex}&t=${Date.now()}`;
     
-    // Check the guess with the server
-    const response = await fetch('check-guess', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ car_name: carName })
-    });
-    const result = await response.json();
+    let result = resultData;
+    // If resultData is not provided (e.g., first time call), fetch it
+    if (!result) {
+        const response = await fetch('check-guess', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ car_name: carName })
+        });
+        result = await response.json();
+    }
     
     if (result.error) return;
     
@@ -416,10 +419,19 @@ enterBtn.addEventListener('click', async function() {
         
         const guessedCar = input.value;
         
-        // Save the guess to game state
-        gameState.guesses.push(guessedCar);
+        const response = await fetch('check-guess', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ car_name: guessedCar })
+        });
+        const result = await response.json();
+
+        // Save the full guess result to game state
+        gameState.guesses.push({ carName: guessedCar, result: result });
         
-        const isCorrect = await displayCarStats(guessedCar, currentRow);
+        const isCorrect = await displayCarStats(guessedCar, currentRow, false, result);
         
         // If correct, store the car name for later display
         if (isCorrect) {
@@ -572,6 +584,74 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// Function to generate the shareable text
+function generateShareText(won) {
+    const dayNumber = gameState.dayNumber;
+    const guessesTaken = won ? currentRow : 'X';
+    
+    let shareText = `Supercardle Day #${dayNumber}\n`;
+    shareText += `Guess ${guessesTaken}/${maxGuesses}\n\n`;
+    
+    gameState.guesses.forEach(guess => {
+        const result = guess.result;
+        let lineEmojis = '';
+
+        // Make comparison
+        lineEmojis += result.make_correct ? '🟩' : '⬜'; // White square for incorrect make
+        
+        // Year comparison
+        if (result.comparisons.year.status === 'correct') {
+            lineEmojis += '🟩';
+        } else if (result.comparisons.year.status === 'higher') {
+            lineEmojis += '⬇️'; // Guessed higher than correct
+        } else if (result.comparisons.year.status === 'lower') {
+            lineEmojis += '⬆️'; // Guessed lower than correct
+        } else {
+            lineEmojis += '⬜';
+        }
+
+        // Country comparison
+        lineEmojis += result.comparisons.country.status === 'correct' ? '🟩' : '🟥';
+        
+        // Cylinders comparison
+        if (result.comparisons.cylinders.status === 'correct') {
+            lineEmojis += '🟩';
+        } else if (result.comparisons.cylinders.status === 'higher') {
+            lineEmojis += '⬇️';
+        } else if (result.comparisons.cylinders.status === 'lower') {
+            lineEmojis += '⬆️';
+        } else {
+            lineEmojis += '⬜';
+        }
+
+        // Horsepower comparison
+        if (result.comparisons.horsepower.status === 'correct') {
+            lineEmojis += '🟩';
+        } else if (result.comparisons.horsepower.status === 'higher') {
+            lineEmojis += '⬇️';
+        } else if (result.comparisons.horsepower.status === 'lower') {
+            lineEmojis += '⬆️';
+        } else {
+            lineEmojis += '⬜';
+        }
+        
+        // Fuel Capacity comparison (using gal status, which determines the overall status)
+        if (result.comparisons.fuel_capacity_gal.status === 'correct' && result.comparisons.fuel_capacity_liters.status === 'correct') {
+            lineEmojis += '🟩';
+        } else if (result.comparisons.fuel_capacity_gal.status === 'higher') {
+            lineEmojis += '⬇️';
+        } else if (result.comparisons.fuel_capacity_gal.status === 'lower') {
+            lineEmojis += '⬆️';
+        } else {
+            lineEmojis += '⬜'; // Use white for partial or incorrect fuel capacity
+        }
+        
+        shareText += lineEmojis + '\n';
+    });
+    shareText += `\nhttps://trigtbh.dev/supercardle`;
+    return shareText;
+}
+
 function showGameOverModal(won) {
     const modal = document.getElementById('game-over-modal');
     const modalTitle = document.getElementById('modal-title');
@@ -613,4 +693,21 @@ function showGameOverModal(won) {
 document.getElementById('close-modal').addEventListener('click', function() {
     const modal = document.getElementById('game-over-modal');
     modal.classList.remove('show');
+    document.getElementById('share-feedback').classList.remove('show'); // Hide feedback on close
+});
+
+// Share button functionality
+document.getElementById('share-btn').addEventListener('click', async function() {
+    const shareText = generateShareText(gameState.won);
+    try {
+        await navigator.clipboard.writeText(shareText);
+        const shareFeedback = document.getElementById('share-feedback');
+        shareFeedback.classList.add('show');
+        setTimeout(() => {
+            shareFeedback.classList.remove('show');
+        }, 3000); // Hide feedback after 3 seconds
+    } catch (err) {
+        console.error('Failed to copy: ', err);
+        // Optionally, provide visual feedback for failure to copy
+    }
 });

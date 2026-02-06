@@ -382,6 +382,33 @@ body {
     margin: 0;
 }
 
+.share-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 12px 24px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.share-button:hover {
+    background-color: #45a049;
+}
+
+.share-feedback {
+    margin-top: 10px;
+    color: #4CAF50;
+    font-weight: 600;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.share-feedback.show {
+    opacity: 1;
+}
 /* Mobile responsiveness */
 @media (max-width: 768px) {
     .container {
