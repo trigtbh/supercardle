@@ -7,6 +7,11 @@ let revealedCorrectValues = {}; // Stores revealed correct values for hints
 let correctColumns = new Set(); // Track which columns are fully correct
 let hintsAvailable = 0;
 let hintsUsed = 0;
+let isHistoryMode = false; // Track if we're playing a historical day
+let historyDayNumber = null; // The day number when in history mode
+let actualCurrentDay = null; // The actual current day (always tracks real day, not historical)
+let historyPage = 0; // Current page in history modal (0-indexed)
+const DAYS_PER_PAGE = 10; // Number of days to show per page
 let gameState = {
     dayNumber: null,
     guesses: [],
@@ -93,14 +98,32 @@ function computeStats() {
     });
 
     // Win streak: count consecutive winning days from latest recorded day
+    // Streak breaks if: 1) a day is lost, 2) there's a gap of more than 1 day
     let streak = 0;
     if (arr.length) {
-        const winsSet = new Set(arr.filter(e => e.won).map(e => e.dayNumber));
-        const latest = Math.max(...arr.map(e => e.dayNumber));
-        let d = latest;
-        while (winsSet.has(d)) {
+        // Sort by day number descending
+        const sorted = arr.slice().sort((a, b) => b.dayNumber - a.dayNumber);
+        const latest = sorted[0].dayNumber;
+        
+        let expectedDay = latest;
+        for (let i = 0; i < sorted.length; i++) {
+            const entry = sorted[i];
+            
+            // Check if this is the expected day
+            if (entry.dayNumber !== expectedDay) {
+                // Gap detected - streak ends
+                break;
+            }
+            
+            // Check if won
+            if (!entry.won) {
+                // Loss detected - streak ends
+                break;
+            }
+            
+            // This day contributes to streak
             streak += 1;
-            d -= 1;
+            expectedDay -= 1;
         }
     }
 
@@ -130,6 +153,12 @@ function renderStatsModal() {
 }
 
 function recordGameResult(won) {
+    // Don't record results when in history mode
+    if (isHistoryMode) {
+        console.log('History mode: Not recording result');
+        return;
+    }
+    
     try {
         const dayNumber = parseInt(document.getElementById('day-number').textContent.replace('Day #',''));
         const guesses = gameState.guesses ? gameState.guesses.length : currentRow;
@@ -156,6 +185,7 @@ fetch('cars')
 fetch('day-info')
     .then(response => response.json())
     .then(data => {
+        actualCurrentDay = data.day_number; // Store the actual current day
         document.getElementById('day-number').textContent = `Day #${data.day_number}`;
         startCountdown(data.seconds_until_next);
         
@@ -241,17 +271,25 @@ function isValidCar(value) {
 async function displayCarStats(carName, rowIndex, skipAnimations = false, resultData = null) {
     // Update clue image to show more as we make more guesses
     const clueImg = document.getElementById('clue');
-    clueImg.src = `clue.png?guess=${rowIndex}&t=${Date.now()}`;
+    if (isHistoryMode && historyDayNumber) {
+        clueImg.src = `history-clue.png?day=${historyDayNumber}&guess=${rowIndex}&t=${Date.now()}`;
+    } else {
+        clueImg.src = `clue.png?guess=${rowIndex}&t=${Date.now()}`;
+    }
     
     let result = resultData;
     // If resultData is not provided (e.g., first time call), fetch it
     if (!result) {
+        const requestBody = { car_name: carName };
+        if (isHistoryMode && historyDayNumber) {
+            requestBody.day_number = historyDayNumber;
+        }
         const response = await fetch('check-guess', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ car_name: carName })
+            body: JSON.stringify(requestBody)
         });
         result = await response.json();
     }
@@ -524,12 +562,16 @@ enterBtn.addEventListener('click', async function() {
         
         const guessedCar = input.value;
         
+        const requestBody = { car_name: guessedCar };
+        if (isHistoryMode && historyDayNumber) {
+            requestBody.day_number = historyDayNumber;
+        }
         const response = await fetch('check-guess', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ car_name: guessedCar })
+            body: JSON.stringify(requestBody)
         });
         const result = await response.json();
 
@@ -624,12 +666,16 @@ async function revealColumn(columnName) {
     if (hintsUsed >= hintsAvailable) return;
     
     // Fetch the correct value for this column from server
+    const requestBody = { column_name: columnName };
+    if (isHistoryMode && historyDayNumber) {
+        requestBody.day_number = historyDayNumber;
+    }
     const response = await fetch('reveal-hint', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ column_name: columnName })
+        body: JSON.stringify(requestBody)
     });
     const result = await response.json();
     
@@ -780,11 +826,16 @@ function showGameOverModal(won) {
     
     // Fetch the correct answer from server if not already known
     if (!correctCarName) {
+        const requestBody = {};
+        if (isHistoryMode && historyDayNumber) {
+            requestBody.day_number = historyDayNumber;
+        }
         fetch('reveal-answer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify(requestBody)
         })
         .then(response => response.json())
         .then(data => {
@@ -825,6 +876,185 @@ document.getElementById('share-btn').addEventListener('click', async function() 
     }
 });
 
+// History functions
+function renderHistoryModal(page = null) {
+    const daysList = document.getElementById('history-days-list');
+    daysList.innerHTML = '';
+    
+    // Get current day and stats - use actualCurrentDay to always show full range
+    const currentDay = actualCurrentDay || parseInt(document.getElementById('day-number').textContent.replace('Day #', '').replace(' (History)', ''));
+    const stats = loadStats();
+    const statsMap = {};
+    stats.forEach(s => {
+        statsMap[s.dayNumber] = s;
+    });
+    
+    // Calculate pagination
+    const totalDays = currentDay;
+    const totalPages = Math.ceil(totalDays / DAYS_PER_PAGE);
+    
+    // If page not specified, calculate based on currently displayed day
+    if (page === null) {
+        const displayedDay = isHistoryMode ? historyDayNumber : actualCurrentDay;
+        page = Math.floor((displayedDay - 1) / DAYS_PER_PAGE);
+    }
+    
+    historyPage = Math.max(0, Math.min(page, totalPages - 1));
+    
+    // Calculate day range for current page (showing oldest first: 1-10, 11-20, etc)
+    const startDay = (historyPage * DAYS_PER_PAGE) + 1;
+    const endDay = Math.min(totalDays, startDay + DAYS_PER_PAGE - 1);
+    
+    // Show days for current page (ascending order)
+    for (let day = startDay; day <= endDay; day++) {
+        const btn = document.createElement('button');
+        btn.className = 'history-day-btn';
+        btn.textContent = `Day ${day}`;
+        
+        // Mark if already played
+        if (statsMap[day]) {
+            if (statsMap[day].won) {
+                btn.classList.add('won');
+                btn.title = `Won in ${statsMap[day].guesses} guesses`;
+            } else {
+                btn.classList.add('lost');
+                btn.title = 'Lost';
+            }
+        }
+        
+        // Highlight the actual current day
+        if (day === actualCurrentDay) {
+            btn.classList.add('current');
+        }
+        
+        btn.addEventListener('click', () => loadHistoricalDay(day));
+        daysList.appendChild(btn);
+    }
+    
+    // Add pagination controls
+    const paginationDiv = document.createElement('div');
+    paginationDiv.className = 'history-pagination';
+    
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'history-nav-btn';
+    prevBtn.textContent = '← Older';
+    prevBtn.disabled = historyPage === 0;
+    prevBtn.addEventListener('click', () => renderHistoryModal(historyPage - 1));
+    
+    const pageInfo = document.createElement('span');
+    pageInfo.className = 'history-page-info';
+    pageInfo.textContent = `Page ${historyPage + 1} of ${totalPages}`;
+    
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'history-nav-btn';
+    nextBtn.textContent = 'Newer →';
+    nextBtn.disabled = historyPage === totalPages - 1;
+    nextBtn.addEventListener('click', () => renderHistoryModal(historyPage + 1));
+    
+    paginationDiv.appendChild(prevBtn);
+    paginationDiv.appendChild(pageInfo);
+    paginationDiv.appendChild(nextBtn);
+    
+    daysList.appendChild(paginationDiv);
+}
+
+async function loadHistoricalDay(dayNumber) {
+    // Use the stored actualCurrentDay
+    if (dayNumber === actualCurrentDay && !isHistoryMode) {
+        // Already on current day, just close modal
+        document.getElementById('history-modal').classList.remove('show');
+        document.body.classList.remove('modal-open');
+        return;
+    }
+    
+    if (dayNumber === actualCurrentDay && isHistoryMode) {
+        // Return to current day - reload page
+        location.reload();
+        return;
+    }
+    
+    // Close modal
+    document.getElementById('history-modal').classList.remove('show');
+    document.body.classList.remove('modal-open');
+    
+    // Hide clue image temporarily and show loading state
+    const clueImg = document.getElementById('clue');
+    if (clueImg) {
+        clueImg.style.opacity = '0.3';
+        clueImg.alt = 'Loading...';
+    }
+    
+    // Set history mode
+    isHistoryMode = true;
+    historyDayNumber = dayNumber;
+    
+    // Update day display
+    document.getElementById('day-number').textContent = `Day #${dayNumber} (History)`;
+    
+    // Clear game state
+    currentRow = 0;
+    hintsAvailable = 0;
+    hintsUsed = 0;
+    correctColumns.clear();
+    correctCarName = null;
+    gameState = {
+        dayNumber: dayNumber,
+        guesses: [],
+        currentRow: 0,
+        hintsUsed: 0,
+        hintsAvailable: 0,
+        correctColumns: [],
+        gameOver: false,
+        won: false
+    };
+    
+    // Clear grid
+    const gridRows = document.querySelectorAll('.grid-row');
+    gridRows.forEach(row => {
+        const cells = row.querySelectorAll('.grid-cell');
+        cells.forEach((cell, idx) => {
+            if (idx > 0) { // Skip guess number cell
+                cell.textContent = '';
+                cell.className = 'grid-cell';
+                if (idx === 1) cell.classList.add('car-name');
+            }
+        });
+    });
+    
+    // Reset input
+    document.getElementById('car-input').value = '';
+    document.getElementById('car-input').disabled = false;
+    document.getElementById('enter-btn').disabled = true;
+    
+    // Show clue image for historical day
+    const clueContainer = document.querySelector('.clue-image');
+    if (clueContainer) {
+        clueContainer.style.display = 'block';
+    }
+    
+    // Load the initial clue image for this historical day
+    if (clueImg) {
+        clueImg.src = `history-clue.png?day=${dayNumber}&guess=0&t=${Date.now()}`;
+        // Restore opacity when image loads
+        clueImg.onload = () => {
+            clueImg.style.opacity = '1';
+        };
+    }
+    
+    // Fetch historical car info (to get the correct answer for checking)
+    try {
+        const response = await fetch(`/history-day/${dayNumber}`);
+        const data = await response.json();
+        if (data.error) {
+            alert('Could not load historical day');
+            location.reload();
+        }
+    } catch (e) {
+        console.error('Error loading historical day:', e);
+        alert('Could not load historical day');
+    }
+}
+
 // Stats modal open/close handlers
 const statsBtn = document.getElementById('stats-btn');
 const statsModal = document.getElementById('stats-modal');
@@ -850,6 +1080,36 @@ if (statsModal) {
     statsModal.addEventListener('click', function(e) {
         if (e.target === statsModal) {
             statsModal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+        }
+    });
+}
+
+// History modal open/close handlers
+const historyBtn = document.getElementById('history-btn');
+const historyModal = document.getElementById('history-modal');
+const closeHistoryBtn = document.getElementById('close-history-modal');
+
+if (historyBtn) {
+    historyBtn.addEventListener('click', function() {
+        renderHistoryModal();
+        historyModal.classList.add('show');
+        document.body.classList.add('modal-open');
+    });
+}
+
+if (closeHistoryBtn) {
+    closeHistoryBtn.addEventListener('click', function() {
+        historyModal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+    });
+}
+
+// Close history modal when clicking outside content
+if (historyModal) {
+    historyModal.addEventListener('click', function(e) {
+        if (e.target === historyModal) {
+            historyModal.classList.remove('show');
             document.body.classList.remove('modal-open');
         }
     });

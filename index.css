@@ -104,6 +104,7 @@ body {
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease-in-out;
 }
 
 .input-container {
@@ -388,8 +389,35 @@ body {
     transform: translateY(-2px);
 }
 
-/* When a modal is open, visually de-emphasize and disable the stats button */
-body.modal-open #stats-btn {
+/* History button (below stats button) */
+#history-btn {
+    position: fixed;
+    top: 92px;
+    right: 16px;
+    z-index: 1100;
+    width: 64px;
+    height: 64px;
+    background-color: #ffffff;
+    border: 1px solid #9e4ae2;
+    color: #9e4ae2;
+    border-radius: 50%;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+#history-btn:hover {
+    background-color: #f7f0ff;
+    transform: translateY(-2px);
+}
+
+/* When a modal is open, visually de-emphasize and disable buttons */
+body.modal-open #stats-btn,
+body.modal-open #history-btn {
     pointer-events: none;
     opacity: 0.45;
 }
@@ -408,6 +436,96 @@ body.modal-open #stats-btn {
 
 .stats-list strong {
     color: #333;
+}
+
+/* History modal specifics */
+#history-modal .modal-content {
+    max-width: 480px;
+    padding: 28px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.history-days-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.history-day-btn {
+    padding: 12px;
+    background-color: #f0f0f0;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.history-day-btn:hover {
+    background-color: #e0e0e0;
+    border-color: #9e4ae2;
+}
+
+.history-day-btn.won {
+    background-color: #d4edda;
+    border-color: #6aaa64;
+}
+
+.history-day-btn.lost {
+    background-color: #f8d7da;
+    border-color: #d73a49;
+}
+
+.history-day-btn.current {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    font-weight: 700;
+}
+
+/* History pagination */
+.history-pagination {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #ddd;
+}
+
+.history-nav-btn {
+    padding: 10px 20px;
+    background-color: #9e4ae2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.history-nav-btn:hover:not(:disabled) {
+    background-color: #8a3ac9;
+    transform: translateY(-2px);
+}
+
+.history-nav-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.history-page-info {
+    font-size: 0.95rem;
+    color: #666;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
 }
 
 #modal-title {

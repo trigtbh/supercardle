@@ -419,7 +419,7 @@ async def get_index():
     ensure_car_cache_current()
     print("LOG: ensure_car_cache_current() completed")
     print("LOG: Opening index.html")
-    with open(base("index.html"), "r") as f:
+    with open(base("index.html"), "r", encoding="utf-8") as f:
         content = f.read()
     print("LOG: Read index.html content")
     print("LOG: Returning HTML response")
@@ -446,6 +446,43 @@ async def get_day_info():
         "cache_loaded": cache_loaded
     }
 
+@app.get("/history-day/{day_number}")
+async def get_history_day(day_number: int):
+    """Get the car for a specific historical day"""
+    print(f"LOG: Loading historical day {day_number}")
+    
+    # Use the same logic as chooseCar but for a specific day
+    random.seed(day_number + SEED)
+    shuffled = selectable_documents.copy()
+    random.shuffle(shuffled)
+    
+    for car in shuffled:
+        year = car.get("Year", "")
+        name = f'"{car["Make"]} {car["Model"]}" {year}'
+        from ddgs import DDGS
+        try:
+            with DDGS() as ddgs:
+                results = ddgs.images(name, max_results=1)
+                for result in results:
+                    r = result["image"]
+                    try:
+                        Image.open(BytesIO(requests.get(r).content))
+                    except:
+                        r = None
+                    if r:
+                        car["url"] = r
+                        # Return car info without modifying global state
+                        return {
+                            "day_number": day_number,
+                            "car_name": f"{car['Make']} {car['Model']}",
+                            "make": car["Make"],
+                            "model": car["Model"]
+                        }
+        except:
+            continue
+    
+    return {"error": "No car found for this day"}
+
 @app.get("/car/{car_name}")
 async def get_car_details(car_name: str):
     # Find the car in documents
@@ -464,9 +501,19 @@ async def get_car_details(car_name: str):
             }
     return None
 
+def get_car_for_day(day_number: int):
+    """Get the correct car for a specific day number"""
+    random.seed(day_number + SEED)
+    shuffled = selectable_documents.copy()
+    random.shuffle(shuffled)
+    
+    # Return the first car (matching the logic in chooseCar)
+    return shuffled[0] if shuffled else None
+
 @app.post("/check-guess")
 async def check_guess(guess: dict):
     guessed_car_name = guess.get("car_name", "").strip()
+    history_day = guess.get("day_number", None)  # Optional historical day parameter
     
     # Find the guessed car in documents
     guessed_car = None
@@ -479,8 +526,16 @@ async def check_guess(guess: dict):
     if not guessed_car:
         return {"error": "Car not found"}
     
+    # Get the correct car (either current day or historical)
+    if history_day is not None:
+        correct_car = get_car_for_day(history_day)
+        if not correct_car:
+            return {"error": "Could not determine correct car for that day"}
+    else:
+        correct_car = car
+    
     # Compare with correct car and return comparison results
-    correct_name = f"{car['Make']} {car['Model']}"
+    correct_name = f"{correct_car['Make']} {correct_car['Model']}"
     is_correct = guessed_car_name.lower() == correct_name.lower()
     
     def compare_value(guessed, correct, value_type):
@@ -522,14 +577,14 @@ async def check_guess(guess: dict):
     return {
         "is_correct": is_correct,
         "make": guessed_car["Make"],
-        "make_correct": guessed_car["Make"].lower() == car["Make"].lower(),
+        "make_correct": guessed_car["Make"].lower() == correct_car["Make"].lower(),
         "comparisons": {
-            "year": compare_value(safe_value(guessed_car["Year"]), safe_value(car["Year"]), "number"),
-            "cylinders": compare_value(safe_value(guessed_car["Cylinders"]), safe_value(car["Cylinders"]), "cylinders"),
-            "horsepower": compare_value(safe_value(guessed_car["Horsepower"]), safe_value(car["Horsepower"]), "number"),
-            "fuel_capacity_gal": compare_value(safe_value(guessed_car["Fuel capacity (gal)"]), safe_value(car["Fuel capacity (gal)"]), "number"),
-            "fuel_capacity_liters": compare_value(safe_value(guessed_car["Fuel capacity (L)"]), safe_value(car["Fuel capacity (L)"]), "number"),
-            "country": compare_value(safe_value(guessed_car["Country"]), safe_value(car["Country"]), "string")
+            "year": compare_value(safe_value(guessed_car["Year"]), safe_value(correct_car["Year"]), "number"),
+            "cylinders": compare_value(safe_value(guessed_car["Cylinders"]), safe_value(correct_car["Cylinders"]), "cylinders"),
+            "horsepower": compare_value(safe_value(guessed_car["Horsepower"]), safe_value(correct_car["Horsepower"]), "number"),
+            "fuel_capacity_gal": compare_value(safe_value(guessed_car["Fuel capacity (gal)"]), safe_value(correct_car["Fuel capacity (gal)"]), "number"),
+            "fuel_capacity_liters": compare_value(safe_value(guessed_car["Fuel capacity (L)"]), safe_value(correct_car["Fuel capacity (L)"]), "number"),
+            "country": compare_value(safe_value(guessed_car["Country"]), safe_value(correct_car["Country"]), "string")
         },
         "correct_name": correct_name if is_correct else None  # Only reveal name if guess is correct
     }
@@ -538,13 +593,22 @@ async def check_guess(guess: dict):
 async def reveal_hint(request: dict):
     """Reveal a specific column value as a hint"""
     column_name = request.get("column_name", "").strip().lower()
+    history_day = request.get("day_number", None)
+    
+    # Get the correct car
+    if history_day is not None:
+        correct_car = get_car_for_day(history_day)
+        if not correct_car:
+            return {"error": "Could not determine correct car for that day"}
+    else:
+        correct_car = car
     
     column_map = {
-        "year": safe_value(car["Year"]),
-        "cylinders": safe_value(car["Cylinders"]),
-        "hp": safe_value(car["Horsepower"]),
-        "fuel": f"{safe_value(car['Fuel capacity (gal)'])} / {safe_value(car['Fuel capacity (L)'])}",
-        "country": safe_value(car["Country"])
+        "year": safe_value(correct_car["Year"]),
+        "cylinders": safe_value(correct_car["Cylinders"]),
+        "hp": safe_value(correct_car["Horsepower"]),
+        "fuel": f"{safe_value(correct_car['Fuel capacity (gal)'])} / {safe_value(correct_car['Fuel capacity (L)'])}",
+        "country": safe_value(correct_car["Country"])
     }
     
     if column_name not in column_map:
@@ -556,10 +620,20 @@ async def reveal_hint(request: dict):
     }
 
 @app.post("/reveal-answer")
-async def reveal_answer():
+async def reveal_answer(request: dict = None):
     """Reveal the correct car name (for game over)"""
+    history_day = request.get("day_number", None) if request else None
+    
+    # Get the correct car
+    if history_day is not None:
+        correct_car = get_car_for_day(history_day)
+        if not correct_car:
+            return {"error": "Could not determine correct car for that day"}
+    else:
+        correct_car = car
+    
     return {
-        "name": f"{car['Make']} {car['Model']}"
+        "name": f"{correct_car['Make']} {correct_car['Model']}"
     }
 
 @app.get("/clue.png")
@@ -570,6 +644,72 @@ async def get_clue(guess: int = 0):
     
     img_byte_arr = BytesIO()
     clue_variants[guess].save(img_byte_arr, format='PNG')
+    img_byte_arr.seek(0)
+    return StreamingResponse(img_byte_arr, media_type="image/png")
+
+@app.get("/history-clue.png")
+async def get_history_clue(day: int, guess: int = 0):
+    """Get clue image for a specific historical day and guess number"""
+    print(f"LOG: Loading history clue for day {day}, guess {guess}")
+    
+    # Get the car for this historical day
+    random.seed(day + SEED)
+    shuffled = selectable_documents.copy()
+    random.shuffle(shuffled)
+    
+    historical_car = None
+    historical_img = None
+    
+    for car in shuffled:
+        year = car.get("Year", "")
+        name = f'"{car["Make"]} {car["Model"]}" {year}'
+        from ddgs import DDGS
+        try:
+            with DDGS() as ddgs:
+                results = ddgs.images(name, max_results=1)
+                for result in results:
+                    r = result["image"]
+                    try:
+                        img_response = requests.get(r)
+                        historical_img = Image.open(BytesIO(img_response.content))
+                        # Resize to max 800x600 to match current day logic
+                        max_size = (800, 600)
+                        historical_img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                        historical_car = car
+                        break
+                    except:
+                        continue
+                if historical_car:
+                    break
+        except:
+            continue
+    
+    if not historical_img:
+        # Return a blank/error image if no car found
+        blank_img = Image.new('RGB', (400, 300), color='gray')
+        img_byte_arr = BytesIO()
+        blank_img.save(img_byte_arr, format='PNG')
+        img_byte_arr.seek(0)
+        return StreamingResponse(img_byte_arr, media_type="image/png")
+    
+    # Create clue variants for this historical image
+    greyscale_hist = historical_img.convert("L")
+    width_hist, height_hist = greyscale_hist.size
+    random.seed(day + SEED)
+    clue_hist = greyscale_hist.crop((
+        random.randint(0, int(width_hist*0.4)),
+        random.randint(0, int(height_hist*0.4)),
+        int(width_hist*0.6),
+        int(height_hist*0.6)
+    ))
+    
+    historical_clue_variants = create_clue_variants(historical_img, clue_hist, maxGuesses)
+    
+    # Clamp guess to valid range
+    guess = max(0, min(guess, len(historical_clue_variants) - 1))
+    
+    img_byte_arr = BytesIO()
+    historical_clue_variants[guess].save(img_byte_arr, format='PNG')
     img_byte_arr.seek(0)
     return StreamingResponse(img_byte_arr, media_type="image/png")
 

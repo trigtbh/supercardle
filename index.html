@@ -115,8 +115,8 @@
         </div>
     </div>
     <!-- Top-right stats button -->
-    <button id="stats-btn" title="View stats">🏅</button>
-    
+    <button id="stats-btn" title="View stats">🏅</button>    <!-- History button -->
+    <button id="history-btn" title="Play previous days">📅</button>    
     <!-- Game Over Modal -->
     <div id="game-over-modal" class="modal">
         <div class="modal-content">
@@ -137,6 +137,16 @@
                 <p><strong>Average guesses to win:</strong> <span id="stat-avg-guesses">—</span></p>
                 <p><strong>Brand with best average guesses:</strong> <span id="stat-best-brand">—</span></p>
                 <p><strong>Win streak:</strong> <span id="stat-win-streak">—</span></p>
+            </div>
+        </div>
+    </div>
+    <!-- History Modal -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-history-modal">&times;</span>
+            <h2 id="history-modal-title">Play Previous Days</h2>
+            <div id="history-days-list" class="history-days-list">
+                <!-- Days will be populated by JavaScript -->
             </div>
         </div>
     </div>
