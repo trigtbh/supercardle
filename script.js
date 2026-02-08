@@ -1046,12 +1046,12 @@ async function loadHistoricalDay(dayNumber) {
         const response = await fetch(`/history-day/${dayNumber}`);
         const data = await response.json();
         if (data.error) {
-            alert('Could not load historical day');
+            // alert('Could not load historical day');
             location.reload();
         }
     } catch (e) {
         console.error('Error loading historical day:', e);
-        alert('Could not load historical day');
+        // alert('Could not load historical day');
     }
 }
 
