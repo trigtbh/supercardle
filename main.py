@@ -9,6 +9,9 @@ import re
 
 SEED = 12345
 
+# Maximum number of guesses (affects number of clue variants)
+maxGuesses = 7
+
 basepath = os.path.dirname(os.path.realpath(__file__))
 base = lambda p: os.path.join(basepath, p)
 
@@ -83,12 +86,13 @@ def load_cached_car():
             pass
     return None
 
-def save_car_cache(car_data, img_data):
+def save_car_cache(car_data, img_data, clue_variants_data):
     cache_file = base("car_cache.pkl")
     cache_data = {
         'day_number': get_current_day_number(),
         'car': car_data,
-        'img_data': img_data
+        'img_data': img_data,
+        'clue_variants': clue_variants_data
     }
     with open(cache_file, 'wb') as f:
         pickle.dump(cache_data, f)
@@ -116,28 +120,6 @@ def chooseCar() -> dict:
                     car["url"] = r
                     return car
     return None
-
-cached = load_cached_car()
-cache_loaded = cached is not None
-if cached:
-    car = cached['car']
-    img = Image.open(BytesIO(cached['img_data']))
-else:
-    car = chooseCar()
-    response = requests.get(car["url"])
-    img_data = response.content
-    img = Image.open(BytesIO(img_data))
-    save_car_cache(car, img_data)
-
-greyscale = img.convert("L")
-width, height = greyscale.size
-
-day_number = get_current_day_number()
-random.seed(day_number + SEED)
-clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
-
-# Maximum number of guesses (affects number of clue variants)
-maxGuesses = 7
 
 # Generate clue variants with progressive zoom and color
 def create_clue_variants(original_img, clue_img, num_guesses=7):
@@ -208,7 +190,33 @@ def create_clue_variants(original_img, clue_img, num_guesses=7):
     
     return variants
 
-clue_variants = create_clue_variants(img, clue, maxGuesses)
+# Global variables for caching
+cached = None
+cache_loaded = False
+clue_variants_loaded = False
+car = None
+img = None
+greyscale = None
+width = None
+height = None
+clue = None
+clue_variants = None
+day_number = None
+
+# Load cache on startup if available
+cached = load_cached_car()
+if cached:
+    cache_loaded = True
+    car = cached['car']
+    img = Image.open(BytesIO(cached['img_data']))
+    if 'clue_variants' in cached:
+        clue_variants = cached['clue_variants']
+        clue_variants_loaded = True
+    else:
+        clue_variants_loaded = False
+else:
+    cache_loaded = False
+    clue_variants_loaded = False
 
 # Function to delete the cache file
 def delete_cache():
@@ -222,7 +230,7 @@ def delete_cache():
 
 # Ensure the cache on-demand: if the cached day doesn't match current day, remove and regenerate
 def ensure_car_cache_current():
-    global cached, cache_loaded, car, img, greyscale, width, height, clue, clue_variants, day_number
+    global cached, cache_loaded, car, img, greyscale, width, height, clue, clue_variants, day_number, clue_variants_loaded
     cache_file = base("car_cache.pkl")
     # If cache exists but for a different day, delete it
     if os.path.exists(cache_file):
@@ -238,12 +246,23 @@ def ensure_car_cache_current():
                     pass
                 cached = None
                 cache_loaded = False
+                clue_variants_loaded = False
             else:
                 # Load into globals if not already
                 cached = cached_data
                 cache_loaded = True
-                car = cached['car']
-                img = Image.open(BytesIO(cached['img_data']))
+                car_data = cached_data['car']
+                if isinstance(car_data, tuple):
+                    car, img_data = car_data
+                    img = Image.open(BytesIO(img_data))
+                else:
+                    car = car_data
+                    img = Image.open(BytesIO(cached_data['img_data']))
+                if 'clue_variants' in cached_data:
+                    clue_variants = cached_data['clue_variants']
+                    clue_variants_loaded = True
+                else:
+                    clue_variants_loaded = False
         except Exception as e1:
             print(e1)
             # Corrupt cache - delete it
@@ -254,25 +273,53 @@ def ensure_car_cache_current():
                 pass
             cached = None
             cache_loaded = False
+            clue_variants_loaded = False
 
     # If no current cache, pick a car and save
     if not cache_loaded:
         car = chooseCar()
-        response = requests.get(car["url"])
-        img_data = response.content
-        img = Image.open(BytesIO(img_data))
+        if car is not None:
+            response = requests.get(car["url"])
+            img_data = response.content
+            img = Image.open(BytesIO(img_data))
+            # Resize to max 800x600 to speed up processing
+            max_size = (800, 600)
+            img.thumbnail(max_size, Image.Resampling.LANCZOS)
+            # Re-encode to bytes after resize
+            img_byte_arr = BytesIO()
+            img.save(img_byte_arr, format='PNG')
+            img_data = img_byte_arr.getvalue()
+            img = Image.open(BytesIO(img_data))
+            cache_loaded = True
+            try:
+                # Compute clue_variants first
+                greyscale = img.convert("L")
+                width, height = greyscale.size
+                day_number = get_current_day_number()
+                random.seed(day_number + SEED)
+                clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
+                clue_variants = create_clue_variants(img, clue, maxGuesses)
+                clue_variants_loaded = True
+                save_car_cache(car, img_data, clue_variants)
+            except Exception:
+                pass
+
+    # If cache loaded but clue_variants not, compute them
+    if cache_loaded and not clue_variants_loaded:
+        greyscale = img.convert("L")
+        width, height = greyscale.size
+        day_number = get_current_day_number()
+        random.seed(day_number + SEED)
+        clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
+        clue_variants = create_clue_variants(img, clue, maxGuesses)
+        clue_variants_loaded = True
+        # Resave cache with clue_variants
         try:
-            save_car_cache(car, img_data)
+            img_data = cached['img_data'] if cached else None
+            if img_data:
+                save_car_cache(car, img_data, clue_variants)
         except Exception:
             pass
-
-    # Recompute derived image/clue data
-    greyscale = img.convert("L")
-    width, height = greyscale.size
-    day_number = get_current_day_number()
-    random.seed(day_number + SEED)
-    clue = greyscale.crop((random.randint(0, int(width*0.4)), random.randint(0, int(height*0.4)), int(width*0.6), int(height*0.6)))
-    clue_variants = create_clue_variants(img, clue, maxGuesses)
 
 
 from fastapi import FastAPI
