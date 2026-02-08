@@ -114,6 +114,8 @@
         </div>
         </div>
     </div>
+    <!-- Top-right stats button -->
+    <button id="stats-btn" title="View stats">🏅</button>
     
     <!-- Game Over Modal -->
     <div id="game-over-modal" class="modal">
@@ -124,6 +126,18 @@
             <p id="car-name-display"></p>
             <button id="share-btn" class="share-button">Share Results</button>
             <div id="share-feedback" class="share-feedback">Copied to clipboard!</div>
+        </div>
+    </div>
+    <!-- Stats Modal -->
+    <div id="stats-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-stats-modal">&times;</span>
+            <h2 id="stats-modal-title">Statistics</h2>
+            <div class="stats-list">
+                <p><strong>Average guesses to win:</strong> <span id="stat-avg-guesses">—</span></p>
+                <p><strong>Brand with best average guesses:</strong> <span id="stat-best-brand">—</span></p>
+                <p><strong>Win streak:</strong> <span id="stat-win-streak">—</span></p>
+            </div>
         </div>
     </div>
     

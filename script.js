@@ -40,6 +40,111 @@ function saveGameState() {
     localStorage.setItem('supercardle_state', JSON.stringify(gameState));
 }
 
+// --- Stats storage and computation (localStorage key: 'supercardle_stats') ---
+function loadStats() {
+    const raw = localStorage.getItem('supercardle_stats');
+    if (!raw) return [];
+    try {
+        return JSON.parse(raw);
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveStatsArray(arr) {
+    localStorage.setItem('supercardle_stats', JSON.stringify(arr));
+}
+
+function saveStatsEntry(entry) {
+    // entry: { dayNumber, won: bool, guesses: number, make: string | null }
+    const arr = loadStats();
+    const idx = arr.findIndex(e => e.dayNumber === entry.dayNumber);
+    if (idx !== -1) {
+        arr[idx] = entry; // replace
+    } else {
+        arr.push(entry);
+    }
+    saveStatsArray(arr);
+}
+
+function computeStats() {
+    const arr = loadStats();
+    // Average guesses to win (only won games)
+    const wins = arr.filter(e => e.won && typeof e.guesses === 'number');
+    const avgGuesses = wins.length ? (wins.reduce((s, x) => s + x.guesses, 0) / wins.length) : null;
+
+    // Brand with best average guess number (among wins grouped by make)
+    const byBrand = {};
+    wins.forEach(w => {
+        if (!w.make) return;
+        if (!byBrand[w.make]) byBrand[w.make] = { sum: 0, count: 0 };
+        byBrand[w.make].sum += w.guesses;
+        byBrand[w.make].count += 1;
+    });
+    let bestBrand = null;
+    let bestAvg = null;
+    Object.keys(byBrand).forEach(brand => {
+        const obj = byBrand[brand];
+        const avg = obj.sum / obj.count;
+        if (bestAvg === null || avg < bestAvg) {
+            bestAvg = avg;
+            bestBrand = brand;
+        }
+    });
+
+    // Win streak: count consecutive winning days from latest recorded day
+    let streak = 0;
+    if (arr.length) {
+        const winsSet = new Set(arr.filter(e => e.won).map(e => e.dayNumber));
+        const latest = Math.max(...arr.map(e => e.dayNumber));
+        let d = latest;
+        while (winsSet.has(d)) {
+            streak += 1;
+            d -= 1;
+        }
+    }
+
+    return {
+        avgGuesses: avgGuesses,
+        bestBrand: bestBrand,
+        bestBrandAvg: bestAvg,
+        winStreak: streak,
+        totalGames: arr.length,
+        totalWins: wins.length
+    };
+}
+
+function renderStatsModal() {
+    const s = computeStats();
+    const avgEl = document.getElementById('stat-avg-guesses');
+    const bestEl = document.getElementById('stat-best-brand');
+    const streakEl = document.getElementById('stat-win-streak');
+
+    avgEl.textContent = s.avgGuesses !== null ? (s.avgGuesses.toFixed(2)) : 'N/A';
+    if (s.bestBrand) {
+        bestEl.textContent = `${s.bestBrand} (avg. ${s.bestBrandAvg.toFixed(2)} guesses)`;
+    } else {
+        bestEl.textContent = 'N/A';
+    }
+    streakEl.textContent = s.winStreak;
+}
+
+function recordGameResult(won) {
+    try {
+        const dayNumber = parseInt(document.getElementById('day-number').textContent.replace('Day #',''));
+        const guesses = gameState.guesses ? gameState.guesses.length : currentRow;
+        let make = null;
+        if (won && gameState.guesses && gameState.guesses.length) {
+            const last = gameState.guesses[gameState.guesses.length - 1];
+            if (last && last.result && last.result.make) make = last.result.make;
+        }
+        const entry = { dayNumber: dayNumber, won: !!won, guesses: guesses, make: make };
+        saveStatsEntry(entry);
+    } catch (e) {
+        console.error('Error recording game result', e);
+    }
+}
+
 // Fetch the car list from the server
 fetch('cars')
     .then(response => response.json())
@@ -456,12 +561,16 @@ enterBtn.addEventListener('click', async function() {
             // Won the game - keep disabled
             gameState.gameOver = true;
             gameState.won = true;
+            // Record stats and save
+            recordGameResult(true);
             saveGameState();
             setTimeout(() => showGameOverModal(true), 1000);
         } else if (currentRow >= maxGuesses) {
             // Lost the game - keep disabled
             gameState.gameOver = true;
             gameState.won = false;
+            // Record loss (may not have make info)
+            recordGameResult(false);
             saveGameState();
             setTimeout(() => showGameOverModal(false), 1000);
         } else {
@@ -687,6 +796,8 @@ function showGameOverModal(won) {
     }
     
     modal.classList.add('show');
+    // Prevent background controls while modal is open
+    document.body.classList.add('modal-open');
 }
 
 // Close modal functionality
@@ -694,6 +805,8 @@ document.getElementById('close-modal').addEventListener('click', function() {
     const modal = document.getElementById('game-over-modal');
     modal.classList.remove('show');
     document.getElementById('share-feedback').classList.remove('show'); // Hide feedback on close
+    // Re-enable background controls
+    document.body.classList.remove('modal-open');
 });
 
 // Share button functionality
@@ -711,3 +824,33 @@ document.getElementById('share-btn').addEventListener('click', async function() 
         // Optionally, provide visual feedback for failure to copy
     }
 });
+
+// Stats modal open/close handlers
+const statsBtn = document.getElementById('stats-btn');
+const statsModal = document.getElementById('stats-modal');
+const closeStatsBtn = document.getElementById('close-stats-modal');
+
+if (statsBtn) {
+    statsBtn.addEventListener('click', function() {
+        renderStatsModal();
+        statsModal.classList.add('show');
+        document.body.classList.add('modal-open');
+    });
+}
+
+if (closeStatsBtn) {
+    closeStatsBtn.addEventListener('click', function() {
+        statsModal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+    });
+}
+
+// Close stats modal when clicking outside content
+if (statsModal) {
+    statsModal.addEventListener('click', function(e) {
+        if (e.target === statsModal) {
+            statsModal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+        }
+    });
+}

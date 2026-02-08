@@ -333,6 +333,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1300;
 }
 
 .modal-content {
@@ -358,6 +359,54 @@ body {
 }
 
 .close-btn:hover {
+    color: #333;
+}
+
+/* Stats button (top-right) */
+#stats-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1100;
+    width: 64px;
+    height: 64px;
+    background-color: #ffffff;
+    border: 1px solid #9e4ae2;
+    color: #9e4ae2;
+    border-radius: 50%;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+#stats-btn:hover {
+    background-color: #f7f0ff;
+    transform: translateY(-2px);
+}
+
+/* When a modal is open, visually de-emphasize and disable the stats button */
+body.modal-open #stats-btn {
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+/* Stats modal specifics */
+#stats-modal .modal-content {
+    max-width: 420px;
+    padding: 28px;
+}
+
+.stats-list p {
+    margin: 10px 0;
+    font-size: 1.05rem;
+    text-align: left;
+}
+
+.stats-list strong {
     color: #333;
 }
 
