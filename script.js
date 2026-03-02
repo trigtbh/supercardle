@@ -19,6 +19,7 @@ let gameState = {
     hintsUsed: 0,
     hintsAvailable: 0,
     correctColumns: [],
+    revealedCorrectValues: {},
     gameOver: false,
     won: false
 };
@@ -42,6 +43,7 @@ function saveGameState() {
     gameState.hintsUsed = hintsUsed;
     gameState.hintsAvailable = hintsAvailable;
     gameState.correctColumns = Array.from(correctColumns);
+    gameState.revealedCorrectValues = revealedCorrectValues;
     localStorage.setItem('supercardle_state', JSON.stringify(gameState));
 }
 
@@ -207,12 +209,41 @@ async function restoreGameState(saved) {
     hintsUsed = saved.hintsUsed;
     hintsAvailable = saved.hintsAvailable;
     correctColumns = new Set(saved.correctColumns);
+    revealedCorrectValues = saved.revealedCorrectValues || {};
     gameState = saved;
     
     // Replay all previous guesses WITHOUT animations
     for (let i = 0; i < saved.guesses.length; i++) {
         await displayCarStats(saved.guesses[i].carName, i, true, saved.guesses[i].result);
     }
+    
+    // Restore revealed hints to all future rows
+    const colIndexMap = {
+        'make': 1,
+        'year': 2,
+        'country': 3,
+        'cylinders': 4,
+        'hp': 5,
+        'fuel': 6
+    };
+    
+    Object.keys(revealedCorrectValues).forEach(columnName => {
+        const value = revealedCorrectValues[columnName];
+        const colIndex = colIndexMap[columnName];
+        
+        // Apply hint text to current row and all subsequent rows
+        for (let i = currentRow; i < maxGuesses; i++) {
+            const row = gridRows[i];
+            const cell = row.querySelectorAll('.grid-cell')[colIndex];
+            if (cell) {
+                cell.textContent = value;
+                cell.classList.remove('hint-available');
+                cell.classList.add('hint-text');
+                cell.style.cursor = 'default';
+                delete cell.dataset.hintCol;
+            }
+        }
+    });
     
     // Show hints if available
     if (hintsAvailable > hintsUsed) {
