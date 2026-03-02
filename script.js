@@ -401,6 +401,7 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false, result
     // Car make color
     if (result.make_correct) {
         cells[1].classList.add('correct');
+        correctColumns.add('make');
     } else {
         cells[1].classList.add('incorrect');
     }
@@ -461,7 +462,7 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false, result
         
         // Track correct columns
         if (isCorrect) {
-            const colNames = ['model', 'year', 'country', 'cylinders', 'hp', 'fuel'];
+            const colNames = ['year', 'country', 'cylinders', 'hp', 'fuel'];
             correctColumns.add(colNames[index]);
         }
     });
@@ -487,12 +488,12 @@ async function displayCarStats(carName, rowIndex, skipAnimations = false, result
         const nextCells = nextRow.querySelectorAll('.grid-cell');
         
         const colMap = [
-            { index: 2, col: 'model' },
-            { index: 3, col: 'year' },
-            { index: 4, col: 'country' },
-            { index: 5, col: 'cylinders' },
-            { index: 6, col: 'hp' },
-            { index: 7, col: 'fuel' }
+            { index: 1, col: 'make' },
+            { index: 2, col: 'year' },
+            { index: 3, col: 'country' },
+            { index: 4, col: 'cylinders' },
+            { index: 5, col: 'hp' },
+            { index: 6, col: 'fuel' }
         ];
         
         colMap.forEach(({ index, col }) => {
@@ -590,11 +591,12 @@ enterBtn.addEventListener('click', async function() {
         input.value = '';
         suggestionsDiv.classList.remove('active');
         
-        // Check for hints after guess 2 and 5
-        if (currentRow === 2 && correctColumns.size === 0) {
+        // Check for hints: if neither country nor make is correct after guess 2
+        // or if both country and make are not correct by end of guess 5
+        if (currentRow === 2 && !correctColumns.has('country') && !correctColumns.has('make')) {
             hintsAvailable++;
             showHintMessage();
-        } else if (currentRow === 5 && correctColumns.size < 2) {
+        } else if (currentRow === 5 && (!correctColumns.has('country') || !correctColumns.has('make'))) {
             hintsAvailable++;
             showHintMessage();
         }
@@ -638,9 +640,10 @@ function showHintMessage() {
         const nextRow = gridRows[currentRow];
         const cells = nextRow.querySelectorAll('.grid-cell');
         
-        // Column indices for data columns (skip # and Car Make)
+        // Column indices for data columns
         // Grid: #, Make, Year, Country, Cylinders, Horsepower, Fuel Capacity
         const colMap = [
+            { index: 1, col: 'make' },
             { index: 2, col: 'year' },
             { index: 3, col: 'country' },
             { index: 4, col: 'cylinders' },
@@ -689,6 +692,7 @@ async function revealColumn(columnName) {
     
     // Add faint text to this column for current row and ALL subsequent rows
     const colIndexMap = {
+        'make': 1,
         'year': 2,
         'country': 3,
         'cylinders': 4,

@@ -611,7 +611,7 @@ async def reveal_hint(request: dict):
         "country": safe_value(correct_car["Country"])
     }
     
-    if column_name not in column_map:
+    if column_name not in column_map:   
         return {"error": "Invalid column name"}
     
     return {
