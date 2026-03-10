@@ -131,22 +131,25 @@ def chooseCar() -> dict:
         from ddgs import DDGS
         with DDGS() as ddgs:
             print("LOG: Searching images")
-            results = ddgs.images(name, max_results=1)
+            # Try multiple results to increase chance of a valid image
+            results = ddgs.images(name, max_results=5)
             print(f"LOG: Got {len(results)} results")
             for result in results:
-                r = result["image"]
+                r = result.get("image")
                 print(f"LOG: Checking image URL: {r}")
+                if not r:
+                    continue
                 try:
                     print("LOG: Fetching image to verify")
-                    Image.open(BytesIO(requests.get(r).content))
+                    resp = requests.get(r, timeout=10)
+                    Image.open(BytesIO(resp.content))
                     print("LOG: Image is valid")
-                except Exception as e:
-                    print(f"LOG: Image invalid: {e}")
-                    r = None
-                if r:
                     car["url"] = r
                     print(f"LOG: Selected car: {car['Make']} {car['Model']}")
                     return car
+                except Exception as e:
+                    print(f"LOG: Image invalid: {e}")
+                    continue
     print("LOG: No valid car found")
     return None
 
@@ -450,38 +453,16 @@ async def get_day_info():
 async def get_history_day(day_number: int):
     """Get the car for a specific historical day"""
     print(f"LOG: Loading historical day {day_number}")
-    
-    # Use the same logic as chooseCar but for a specific day
-    random.seed(day_number + SEED)
-    shuffled = selectable_documents.copy()
-    random.shuffle(shuffled)
-    
-    for car in shuffled:
-        year = car.get("Year", "")
-        name = f'"{car["Make"]} {car["Model"]}" {year}'
-        from ddgs import DDGS
-        try:
-            with DDGS() as ddgs:
-                results = ddgs.images(name, max_results=1)
-                for result in results:
-                    r = result["image"]
-                    try:
-                        Image.open(BytesIO(requests.get(r).content))
-                    except:
-                        r = None
-                    if r:
-                        car["url"] = r
-                        # Return car info without modifying global state
-                        return {
-                            "day_number": day_number,
-                            "car_name": f"{car['Make']} {car['Model']}",
-                            "make": car["Make"],
-                            "model": car["Model"]
-                        }
-        except:
-            continue
-    
-    return {"error": "No car found for this day"}
+    car_for_day = get_car_for_day(day_number)
+    if not car_for_day:
+        return {"error": "No car found for this day"}
+
+    return {
+        "day_number": day_number,
+        "car_name": f"{car_for_day['Make']} {car_for_day['Model']}",
+        "make": car_for_day["Make"],
+        "model": car_for_day["Model"]
+    }
 
 @app.get("/car/{car_name}")
 async def get_car_details(car_name: str):
@@ -506,9 +487,35 @@ def get_car_for_day(day_number: int):
     random.seed(day_number + SEED)
     shuffled = selectable_documents.copy()
     random.shuffle(shuffled)
-    
-    # Return the first car (matching the logic in chooseCar)
-    return shuffled[0] if shuffled else None
+
+    # Try to find a car that has at least one loadable image. If none, return None.
+    from ddgs import DDGS
+    for car in shuffled:
+        year = car.get("Year", "")
+        name = f'"{car["Make"]} {car["Model"]}" {year}'
+        try:
+            with DDGS() as ddgs:
+                # Try multiple results to increase chance of a loadable image
+                results = ddgs.images(name, max_results=5)
+                for result in results:
+                    r = result.get("image")
+                    if not r:
+                        continue
+                    try:
+                        resp = requests.get(r, timeout=10)
+                        Image.open(BytesIO(resp.content))
+                        # Valid image found for this car
+                        car["url"] = r
+                        return car
+                    except Exception:
+                        # Try next image result for this car
+                        continue
+        except Exception:
+            # If DDGS fails for this car, skip it
+            continue
+
+    # No car with a valid image found for this day
+    return None
 
 @app.post("/check-guess")
 async def check_guess(guess: dict):
@@ -651,47 +658,31 @@ async def get_clue(guess: int = 0):
 async def get_history_clue(day: int, guess: int = 0):
     """Get clue image for a specific historical day and guess number"""
     print(f"LOG: Loading history clue for day {day}, guess {guess}")
-    
-    # Get the car for this historical day
-    random.seed(day + SEED)
-    shuffled = selectable_documents.copy()
-    random.shuffle(shuffled)
-    
-    historical_car = None
-    historical_img = None
-    
-    for car in shuffled:
-        year = car.get("Year", "")
-        name = f'"{car["Make"]} {car["Model"]}" {year}'
-        from ddgs import DDGS
-        try:
-            with DDGS() as ddgs:
-                results = ddgs.images(name, max_results=1)
-                for result in results:
-                    r = result["image"]
-                    try:
-                        img_response = requests.get(r)
-                        historical_img = Image.open(BytesIO(img_response.content))
-                        # Resize to max 800x600 to match current day logic
-                        max_size = (800, 600)
-                        historical_img.thumbnail(max_size, Image.Resampling.LANCZOS)
-                        historical_car = car
-                        break
-                    except:
-                        continue
-                if historical_car:
-                    break
-        except:
-            continue
-    
-    if not historical_img:
+    # Get a car for this historical day that has a loadable image
+    historical_car = get_car_for_day(day)
+    if not historical_car or 'url' not in historical_car:
         # Return a blank/error image if no car found
         blank_img = Image.new('RGB', (400, 300), color='gray')
         img_byte_arr = BytesIO()
         blank_img.save(img_byte_arr, format='PNG')
         img_byte_arr.seek(0)
-        return StreamingResponse(img_byte_arr, media_type="image/png")
-    
+        return StreamingResponse(img_byte_arr, media_type='image/png')
+
+    # Fetch the image from the validated URL
+    try:
+        img_response = requests.get(historical_car['url'], timeout=10)
+        historical_img = Image.open(BytesIO(img_response.content))
+    except Exception:
+        blank_img = Image.new('RGB', (400, 300), color='gray')
+        img_byte_arr = BytesIO()
+        blank_img.save(img_byte_arr, format='PNG')
+        img_byte_arr.seek(0)
+        return StreamingResponse(img_byte_arr, media_type='image/png')
+
+    # Resize to max 800x600 to match current day logic
+    max_size = (800, 600)
+    historical_img.thumbnail(max_size, Image.Resampling.LANCZOS)
+
     # Create clue variants for this historical image
     greyscale_hist = historical_img.convert("L")
     width_hist, height_hist = greyscale_hist.size
@@ -702,16 +693,16 @@ async def get_history_clue(day: int, guess: int = 0):
         int(width_hist*0.6),
         int(height_hist*0.6)
     ))
-    
+
     historical_clue_variants = create_clue_variants(historical_img, clue_hist, maxGuesses)
-    
+
     # Clamp guess to valid range
     guess = max(0, min(guess, len(historical_clue_variants) - 1))
-    
+
     img_byte_arr = BytesIO()
     historical_clue_variants[guess].save(img_byte_arr, format='PNG')
     img_byte_arr.seek(0)
-    return StreamingResponse(img_byte_arr, media_type="image/png")
+    return StreamingResponse(img_byte_arr, media_type='image/png')
 
 @app.get("/full-image.png")
 async def get_full_image():
